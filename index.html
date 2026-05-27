@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行為改變研究與理論 · Behavior Change Research and Theory</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 12px 40px rgba(0,0,0,.16);--r:14px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,'PingFang TC','Noto Sans TC',sans-serif;
+     background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+a{text-decoration:none;color:inherit}
+
+/* ── Update Banner ── */
+.update-banner{
+  background:linear-gradient(90deg,#1e3a5f,#1d4ed8);
+  color:rgba(255,255,255,.92);
+  font-size:12.5px;letter-spacing:.4px;
+  text-align:center;padding:9px 16px;
+  position:sticky;top:0;z-index:200;
+}
+.update-banner span{opacity:.6;margin:0 12px}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 52%,#7c3aed 100%);
+  color:#fff;padding:80px 24px 72px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-60%;left:-40%;
+  width:200%;height:220%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.06) 0%,transparent 65%);
+  animation:hpulse 10s ease-in-out infinite;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-30%;right:-20%;
+  width:120%;height:120%;
+  background:radial-gradient(ellipse,rgba(124,58,237,.25) 0%,transparent 60%);
+  pointer-events:none;
+}
+@keyframes hpulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.06) rotate(2deg)}}
+
+.hero-inner{position:relative;z-index:1;max-width:840px;margin:0 auto}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  padding:6px 20px;border-radius:24px;font-size:12.5px;
+  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:22px;
+}
+.hero-badge-dot{width:7px;height:7px;background:#7ee787;border-radius:50%;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-book-title{
+  font-size:clamp(1rem,2.5vw,1.25rem);font-weight:500;
+  opacity:.78;margin-bottom:10px;letter-spacing:.3px;
+}
+.hero h1{
+  font-size:clamp(2rem,5.5vw,3.6rem);font-weight:900;
+  line-height:1.15;margin-bottom:8px;
+  text-shadow:0 3px 16px rgba(0,0,0,.3);
+}
+.hero h1 .en-title{
+  display:block;font-size:.46em;font-weight:600;
+  opacity:.85;margin-top:6px;line-height:1.3;
+}
+.hero-sub{
+  font-size:1.05rem;opacity:.82;
+  max-width:600px;margin:14px auto 10px;
+  font-style:italic;
+}
+.hero-authors{
+  font-size:.88rem;opacity:.65;margin-bottom:30px;
+}
+.hero-stats{
+  display:flex;justify-content:center;gap:32px;
+  flex-wrap:wrap;margin-top:36px;
+}
+.hero-stat{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.hero-stat-num{
+  font-size:2rem;font-weight:800;line-height:1;
+}
+.hero-stat-label{font-size:.78rem;opacity:.7;letter-spacing:.5px;}
+
+/* ── Main Layout ── */
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+
+/* ── Section Heading ── */
+.section-heading{
+  text-align:center;margin:64px 0 36px;
+}
+.section-heading h2{
+  font-size:clamp(1.4rem,3vw,2rem);font-weight:800;
+  color:var(--text);line-height:1.2;margin-bottom:6px;
+}
+.section-heading .en-sub{
+  font-size:.92rem;color:var(--muted);font-style:italic;
+}
+.section-heading .divider{
+  width:56px;height:4px;
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  border-radius:2px;margin:14px auto 0;
+}
+
+/* ── Chapters Grid ── */
+.chapters-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  margin-bottom:72px;
+}
+@media(max-width:900px){.chapters-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.chapters-grid{grid-template-columns:1fr}}
+
+/* ── Chapter Card ── */
+.chapter-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  display:flex;flex-direction:column;
+  transition:transform .22s ease,box-shadow .22s ease;
+  overflow:hidden;
+  cursor:pointer;
+}
+.chapter-card:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--sh2);
+}
+.chapter-card:hover .card-arrow{
+  transform:translateX(4px);
+  opacity:.9;
+}
+.card-top{
+  padding:22px 22px 0;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.ch-badge{
+  flex-shrink:0;
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.82rem;font-weight:800;color:#fff;letter-spacing:-.3px;
+}
+.ch-badge.b-blue{background:var(--blue)}
+.ch-badge.b-purple{background:var(--purple)}
+.ch-badge.b-green{background:var(--green)}
+.ch-badge.b-amber{background:var(--amber)}
+
+.card-titles{flex:1;min-width:0}
+.card-zh-title{
+  font-size:1rem;font-weight:800;
+  color:var(--text);line-height:1.3;
+  margin-bottom:4px;
+}
+.card-en-title{
+  font-size:.8rem;color:var(--muted);
+  line-height:1.4;font-style:italic;
+}
+.card-body{
+  padding:14px 22px 18px;
+  flex:1;display:flex;flex-direction:column;gap:12px;
+}
+.card-tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:4px;
+}
+.tag{
+  font-size:11px;font-weight:600;letter-spacing:.3px;
+  padding:3px 10px;border-radius:20px;
+  line-height:1.5;white-space:nowrap;
+}
+.tag-blue{background:#dbeafe;color:#1d4ed8}
+.tag-purple{background:#ede9fe;color:#6d28d9}
+.tag-green{background:#d1fae5;color:#065f46}
+.tag-amber{background:#fef3c7;color:#92400e}
+.tag-red{background:#fee2e2;color:#991b1b}
+.tag-slate{background:#f1f5f9;color:#475569}
+
+.card-footer{
+  padding:0 22px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;
+}
+.card-chapter-num{
+  font-size:.75rem;font-weight:600;
+  color:var(--muted);letter-spacing:.4px;text-transform:uppercase;
+}
+.card-arrow{
+  font-size:1rem;color:var(--blue);
+  transition:transform .2s,opacity .2s;opacity:.5;
+}
+
+/* accent stripe at top of each card */
+.card-stripe{height:4px;width:100%}
+.stripe-blue{background:linear-gradient(90deg,var(--blue),#60a5fa)}
+.stripe-purple{background:linear-gradient(90deg,var(--purple),#a78bfa)}
+.stripe-green{background:linear-gradient(90deg,var(--green),#34d399)}
+.stripe-amber{background:linear-gradient(90deg,var(--amber),#fbbf24)}
+
+/* ── Features Section ── */
+.features-section{
+  background:linear-gradient(135deg,#f0f7ff 0%,#f5f3ff 100%);
+  border:1px solid #e0e7ff;border-radius:18px;
+  padding:52px 40px;margin-bottom:72px;
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:28px;margin-top:32px;
+}
+@media(max-width:800px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.features-grid{grid-template-columns:1fr}}
+
+.feature-item{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:12px;
+}
+.feature-icon{
+  font-size:2.4rem;line-height:1;
+  padding:16px;background:#fff;
+  border-radius:16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);
+}
+.feature-zh{font-size:.97rem;font-weight:700;color:var(--text)}
+.feature-en{font-size:.8rem;color:var(--muted);font-style:italic}
+.feature-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* ── About Book Section ── */
+.about-section{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:44px 44px;
+  margin-bottom:72px;
+  display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;
+}
+@media(max-width:640px){.about-section{grid-template-columns:1fr;padding:32px 24px}}
+
+.book-cover-placeholder{
+  width:130px;flex-shrink:0;
+  background:linear-gradient(145deg,#1e3a5f,#2563eb 60%,#7c3aed);
+  border-radius:8px;aspect-ratio:2/3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:#fff;padding:16px 12px;text-align:center;
+  box-shadow:4px 6px 20px rgba(0,0,0,.2),0 0 0 1px rgba(0,0,0,.1);
+}
+@media(max-width:640px){.book-cover-placeholder{width:100px}}
+.book-cover-icon{font-size:2rem;margin-bottom:8px}
+.book-cover-label{font-size:.65rem;opacity:.8;line-height:1.5;font-weight:600;letter-spacing:.3px}
+
+.about-text h3{
+  font-size:1.15rem;font-weight:800;color:var(--text);
+  margin-bottom:6px;
+}
+.about-text .en-sub{
+  font-size:.88rem;color:var(--muted);font-style:italic;margin-bottom:16px;
+}
+.about-text p{font-size:.92rem;color:var(--muted);line-height:1.8;margin-bottom:10px}
+.about-meta{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;
+}
+.meta-chip{
+  font-size:.8rem;font-weight:500;
+  padding:4px 14px;border-radius:20px;
+  background:#f1f5f9;color:#475569;
+  border:1px solid var(--border);
+}
+
+/* ── Footer ── */
+footer{
+  background:#1e293b;color:rgba(255,255,255,.7);
+  text-align:center;padding:28px 24px;font-size:.85rem;
+  line-height:1.9;
+}
+footer strong{color:#fff}
+footer .footer-sub{font-size:.75rem;opacity:.45;margin-top:4px}
+
+/* ── Scroll to top ── */
+.scroll-hint{
+  text-align:center;padding:16px 0 60px;
+  font-size:.82rem;color:var(--muted);
+}
+.scroll-hint a{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--blue);font-weight:600;
+  padding:8px 18px;border:1px solid #bfdbfe;border-radius:20px;
+  transition:background .2s;
+}
+.scroll-hint a:hover{background:#eff6ff}
+</style>
+</head>
+<body>
+
+<!-- ── Update Banner ── -->
+<div class="update-banner">
+  課程網站正在持續更新中
+  <span>·</span>
+  This course site is continuously updated
+</div>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      互動課程 · Interactive Course
+    </div>
+
+    <div class="hero-book-title">
+      基於教科書 · Based on the textbook
+    </div>
+
+    <h1>
+      行為改變研究與理論
+      <span class="en-title">Behavior Change Research and Theory</span>
+    </h1>
+
+    <p class="hero-sub">
+      心理學與科技視角 · Psychological and Technological Perspectives
+    </p>
+
+    <p class="hero-authors">
+      Little, Sillence &amp; Joinson (Eds.) &nbsp;·&nbsp; Elsevier, 2017
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">9</span>
+        <span class="hero-stat-label">章節 Chapters</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">雙語</span>
+        <span class="hero-stat-label">中英並列 Bilingual</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">互動</span>
+        <span class="hero-stat-label">測驗練習 Quizzes</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">免費</span>
+        <span class="hero-stat-label">開放使用 Open Access</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Main ── -->
+<main class="container">
+
+  <!-- Chapter Index Heading -->
+  <div class="section-heading">
+    <h2>課程章節 <span style="font-weight:400;color:var(--muted)">Course Chapters</span></h2>
+    <p class="en-sub">選擇章節開始學習 · Select a chapter to begin</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- ── 9 Chapter Cards ── -->
+  <div class="chapters-grid">
+
+    <!-- Ch 1 -->
+    <a href="ch01_planning_interventions.html" class="chapter-card">
+      <div class="card-stripe stripe-blue"></div>
+      <div class="card-top">
+        <div class="ch-badge b-blue">CH 1</div>
+        <div class="card-titles">
+          <div class="card-zh-title">規劃行為改變介入</div>
+          <div class="card-en-title">Planning Interventions to Change Behavior</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-blue">NUDGE</span>
+          <span class="tag tag-blue">Intervention Mapping</span>
+          <span class="tag tag-purple">IMB Model</span>
+          <span class="tag tag-green">RE-AIM</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第一章 · Chapter 1</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 2 -->
+    <a href="ch02_adolescent_mhealth.html" class="chapter-card">
+      <div class="card-stripe stripe-purple"></div>
+      <div class="card-top">
+        <div class="ch-badge b-purple">CH 2</div>
+        <div class="card-titles">
+          <div class="card-zh-title">青少年行動健康介入</div>
+          <div class="card-en-title">Adolescent mHealth Interventions</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-purple">COM-B</span>
+          <span class="tag tag-purple">BCW</span>
+          <span class="tag tag-blue">PCA</span>
+          <span class="tag tag-green">PEGASO</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第二章 · Chapter 2</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 3 -->
+    <a href="ch03_persuasive_design_patterns.html" class="chapter-card">
+      <div class="card-stripe stripe-green"></div>
+      <div class="card-top">
+        <div class="ch-badge b-green">CH 3</div>
+        <div class="card-titles">
+          <div class="card-zh-title">說服性軟體設計模式</div>
+          <div class="card-en-title">Software Design Patterns for Persuasive Dialogue</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-green">PSD Model</span>
+          <span class="tag tag-blue">Instant Feedback</span>
+          <span class="tag tag-amber">Reminder</span>
+          <span class="tag tag-green">Reward</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第三章 · Chapter 3</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 4 -->
+    <a href="ch04_mobile_bcss_evaluation.html" class="chapter-card">
+      <div class="card-stripe stripe-amber"></div>
+      <div class="card-top">
+        <div class="ch-badge b-amber">CH 4</div>
+        <div class="card-titles">
+          <div class="card-zh-title">行動式行為改變支持系統評估</div>
+          <div class="card-en-title">Evaluating Mobile BCSSs</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-amber">O/C Design Matrix</span>
+          <span class="tag tag-blue">12 iPhone Apps</span>
+          <span class="tag tag-slate">BCSS Evaluation</span>
+          <span class="tag tag-green">mHealth</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第四章 · Chapter 4</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 5 -->
+    <a href="ch05_self_affirmation.html" class="chapter-card">
+      <div class="card-stripe stripe-blue"></div>
+      <div class="card-top">
+        <div class="ch-badge b-blue">CH 5</div>
+        <div class="card-titles">
+          <div class="card-zh-title">自我肯定介入</div>
+          <div class="card-en-title">Self-Affirmation Interventions</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-blue">SAT</span>
+          <span class="tag tag-purple">Defensive Processing</span>
+          <span class="tag tag-blue">Values Essay</span>
+          <span class="tag tag-green">Health Messaging</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第五章 · Chapter 5</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 6 -->
+    <a href="ch06_cybersecurity_behavior.html" class="chapter-card">
+      <div class="card-stripe stripe-purple"></div>
+      <div class="card-top">
+        <div class="ch-badge b-purple">CH 6</div>
+        <div class="card-titles">
+          <div class="card-zh-title">網路安全行為改變</div>
+          <div class="card-en-title">Behavior Change for Cybersecurity</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-purple">MINDSPACE</span>
+          <span class="tag tag-red">PMT</span>
+          <span class="tag tag-blue">Choice Architecture</span>
+          <span class="tag tag-slate">Nudge</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第六章 · Chapter 6</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 7 -->
+    <a href="ch07_smartphone_tracking.html" class="chapter-card">
+      <div class="card-stripe stripe-green"></div>
+      <div class="card-top">
+        <div class="ch-badge b-green">CH 7</div>
+        <div class="card-titles">
+          <div class="card-zh-title">智慧型手機行為追蹤</div>
+          <div class="card-en-title">Automatic Behavior Tracking with Smartphones</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-green">Passive Sensing</span>
+          <span class="tag tag-blue">JITAI</span>
+          <span class="tag tag-amber">Ethical Issues</span>
+          <span class="tag tag-slate">Ubicomp</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第七章 · Chapter 7</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 8 -->
+    <a href="ch08_online_intervention_evaluation.html" class="chapter-card">
+      <div class="card-stripe stripe-amber"></div>
+      <div class="card-top">
+        <div class="ch-badge b-amber">CH 8</div>
+        <div class="card-titles">
+          <div class="card-zh-title">線上介入評估</div>
+          <div class="card-en-title">Intervening Online: Evaluation Methods</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-amber">RCT</span>
+          <span class="tag tag-blue">Effect Size</span>
+          <span class="tag tag-green">Case Studies</span>
+          <span class="tag tag-purple">Research Design</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第八章 · Chapter 8</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Ch 9 -->
+    <a href="ch09_bincam.html" class="chapter-card">
+      <div class="card-stripe stripe-blue"></div>
+      <div class="card-top">
+        <div class="ch-badge b-blue">CH 9</div>
+        <div class="card-titles">
+          <div class="card-zh-title">BinCam 多尺度說服</div>
+          <div class="card-en-title">BinCam: Evaluating Persuasion at Multiple Scales</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag tag-blue">Food Waste</span>
+          <span class="tag tag-green">Social Media</span>
+          <span class="tag tag-purple">Societal Critique</span>
+          <span class="tag tag-amber">Multi-Scale</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-chapter-num">第九章 · Chapter 9</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div><!-- /chapters-grid -->
+
+
+  <!-- ── Course Features ── -->
+  <div class="features-section">
+    <div class="section-heading" style="margin:0 0 0">
+      <h2>課程特色 <span style="font-weight:400;color:var(--muted)">Course Features</span></h2>
+      <p class="en-sub">為什麼選擇這門課 · What makes this course distinctive</p>
+      <div class="divider"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">📚</div>
+        <div>
+          <div class="feature-zh">全本覆蓋</div>
+          <div class="feature-en">Complete Coverage</div>
+          <div class="feature-desc" style="margin-top:6px">9章完整精讀，完整涵蓋教科書全部內容</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌐</div>
+        <div>
+          <div class="feature-zh">中英雙語</div>
+          <div class="feature-en">Bilingual Text</div>
+          <div class="feature-desc" style="margin-top:6px">中英對照並列，關鍵術語雙語呈現</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🧠</div>
+        <div>
+          <div class="feature-zh">互動測驗</div>
+          <div class="feature-en">Interactive Quizzes</div>
+          <div class="feature-desc" style="margin-top:6px">每章附即時測驗，自我評估學習成效</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💡</div>
+        <div>
+          <div class="feature-zh">視覺模型</div>
+          <div class="feature-en">Diagrams &amp; Frameworks</div>
+          <div class="feature-desc" style="margin-top:6px">框架圖解視覺化，幫助理解複雜理論</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── About the Book ── -->
+  <div class="section-heading">
+    <h2>關於本書 <span style="font-weight:400;color:var(--muted)">About the Book</span></h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="about-section">
+    <div class="book-cover-placeholder">
+      <div class="book-cover-icon">📖</div>
+      <div class="book-cover-label">Behavior Change<br>Research &amp;<br>Theory<br>Elsevier 2017</div>
+    </div>
+    <div class="about-text">
+      <h3>行為改變研究與理論</h3>
+      <div class="en-sub">Behavior Change Research and Theory: Psychological and Technological Perspectives</div>
+      <p>
+        本書由 Little、Sillence 與 Joinson 三位學者主編，匯集行為改變領域跨學科的前沿研究。
+        涵蓋心理學介入、行動健康、說服性科技、網路安全、數位追蹤等多元主題，
+        提供理論模型與實證案例的完整整合。
+      </p>
+      <p>
+        This edited volume brings together interdisciplinary perspectives on behavior change,
+        spanning psychological theory, mobile health interventions, persuasive technology design,
+        cybersecurity, and digital tracking. Each chapter offers a unique lens on how digital
+        tools and behavioral science can be combined to promote positive change.
+      </p>
+      <div class="about-meta">
+        <span class="meta-chip">Elsevier Academic Press</span>
+        <span class="meta-chip">2017</span>
+        <span class="meta-chip">Little · Sillence · Joinson (Eds.)</span>
+        <span class="meta-chip">Psychology &amp; HCI</span>
+        <span class="meta-chip">ISBN 978-0-12-802690-8</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- scroll hint -->
+  <div class="scroll-hint">
+    <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      ↑ 回到頂部 · Back to top
+    </a>
+  </div>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div>版權所有 © <strong>葉欲禾（Gary Yu-Ho Yeh）</strong> · All Rights Reserved</div>
+  <div class="footer-sub">課程教材依據 Little, Sillence &amp; Joinson (2017) 編製 · Course materials based on Little, Sillence &amp; Joinson (2017), Elsevier</div>
+</footer>
+
+</body>
+</html>

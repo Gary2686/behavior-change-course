@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7: Automatic Tracking of Behavior With Smartphones｜智慧型手機行為自動追蹤</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#0f172a,#1a3355 35%,#1d4ed8 65%,#059669);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:680px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+.hero-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+
+/* ── Bilingual ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:18px 0}
+
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl.red{border-color:var(--red);background:#fef2f2}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}.tc{background:#e0f2fe;color:#0369a1}
+
+/* ── Callout ── */
+.callout{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Warning Callout ── */
+.warn-callout{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fff;border-radius:var(--r);padding:24px 28px;margin:22px 0;border-left:5px solid #fca5a5}
+.warn-callout h4{font-size:1.05rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.warn-callout ul{list-style:none;padding:0}
+.warn-callout ul li{padding:6px 0;font-size:.9rem;opacity:.93;border-bottom:1px solid rgba(255,255,255,.12);display:flex;gap:10px;align-items:flex-start}
+.warn-callout ul li:last-child{border:none}
+.warn-callout ul li::before{content:'⚠';font-size:.9rem;flex-shrink:0;margin-top:2px}
+
+/* ── Sensor Grid ── */
+.sensor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin:20px 0}
+.sensor-card{border-radius:var(--r);padding:18px 14px;text-align:center;transition:transform .22s,box-shadow .22s;cursor:default;position:relative;overflow:hidden}
+.sensor-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.1)}
+.sensor-card:hover{transform:translateY(-5px);box-shadow:var(--sh2)}
+.sensor-icon{font-size:2.4rem;line-height:1;margin-bottom:8px}
+.sensor-name-en{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.sensor-name-zh{font-size:.82rem;font-weight:600;margin-bottom:8px;opacity:.88}
+.sensor-detect{font-size:.76rem;line-height:1.5;opacity:.9;border-top:1px solid rgba(255,255,255,.22);padding-top:8px;text-align:left}
+.s-gps{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff}
+.s-bt{background:linear-gradient(135deg,#4338ca,#6d28d9);color:#fff}
+.s-acc{background:linear-gradient(135deg,#059669,#10b981);color:#fff}
+.s-mic{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff}
+.s-cam{background:linear-gradient(135deg,#0e7490,#06b6d4);color:#fff}
+.s-wifi{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.s-call{background:linear-gradient(135deg,#be185d,#ec4899);color:#fff}
+.s-sms{background:linear-gradient(135deg,#7c2d12,#c2410c);color:#fff}
+.s-app{background:linear-gradient(135deg,#065f46,#34d399 120%);color:#fff}
+.s-cell{background:linear-gradient(135deg,#1e293b,#475569);color:#fff}
+
+/* ── Inference Chain ── */
+.chain-wrap{background:linear-gradient(135deg,#f0f7ff,#faf5ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:28px 24px;margin:22px 0}
+.chain-wrap h4{text-align:center;font-size:1.05rem;font-weight:700;color:var(--blue-d);margin-bottom:22px}
+.chain-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.chain-block{border-radius:var(--rs);padding:16px 18px;min-width:140px;text-align:center;font-size:.85rem;font-weight:600;line-height:1.4;flex:1;min-width:130px;max-width:200px}
+.chain-block strong{display:block;font-size:.95rem;margin-bottom:4px}
+.chain-block .cb-sub{font-size:.75rem;font-weight:400;opacity:.88;margin-top:4px;line-height:1.4}
+.chain-arrow{display:flex;align-items:center;padding:0 6px;color:var(--muted);font-size:1.6rem;font-weight:300;flex-shrink:0}
+.cb-raw{background:linear-gradient(135deg,#1e293b,#334155);color:#fff}
+.cb-ml{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff}
+.cb-pred{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff}
+.cb-int{background:linear-gradient(135deg,#059669,#047857);color:#fff}
+
+/* ── Studies Table ── */
+.studies-table{width:100%;border-collapse:collapse;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin:22px 0;font-size:.85rem}
+.studies-table thead tr{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff}
+.studies-table thead th{padding:12px 14px;text-align:left;font-weight:700;font-size:.82rem}
+.studies-table tbody tr:nth-child(even){background:#f8fafc}
+.studies-table tbody tr:hover{background:#eff6ff}
+.studies-table tbody td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.acc-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.78rem}
+.acc-high{background:#d1fae5;color:#065f46}
+.acc-mid{background:#fef3c7;color:#92400e}
+.acc-low{background:#fee2e2;color:#991b1b}
+.acc-na{background:#f1f5f9;color:#64748b}
+
+/* ── JITAI ── */
+.jitai-wrap{background:linear-gradient(135deg,#0f172a,#1a3a5c);color:#fff;border-radius:var(--r);padding:28px;margin:22px 0}
+.jitai-wrap h4{text-align:center;font-size:1.05rem;font-weight:700;margin-bottom:20px}
+.jitai-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.jitai-item{background:rgba(255,255,255,.08);border-radius:var(--rs);padding:14px 12px;text-align:center}
+.jitai-item .ji-icon{font-size:1.8rem;margin-bottom:6px}
+.jitai-item .ji-label{font-size:.8rem;font-weight:700;margin-bottom:4px}
+.jitai-item .ji-desc{font-size:.72rem;opacity:.8;line-height:1.4}
+.jitai-arrow{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:2rem;margin:4px 0}
+.jitai-outcome{background:rgba(5,150,105,.3);border:1px solid rgba(52,211,153,.4);border-radius:var(--rs);padding:14px 18px;text-align:center}
+.jitai-outcome strong{display:block;font-size:1rem;margin-bottom:4px;color:#6ee7b7}
+
+/* ── Steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc p{margin:0;font-size:.92rem}
+
+/* ── Stats Row ── */
+.stats-row{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0;justify-content:center}
+.stat-card{background:var(--card);border-radius:var(--r);padding:20px 24px;text-align:center;box-shadow:var(--sh);border:2px solid var(--border);flex:1;min-width:140px;max-width:200px}
+.stat-num{font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:4px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.78rem;color:var(--muted);line-height:1.4}
+
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
+
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.qexpl{margin-top:14px;padding:12px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.qexpl.show{display:block}
+.qexpl.right{background:#f0fdf4;border:1px solid #a7f3d0;color:#065f46}
+.qexpl.wrong{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+.quiz-btn{display:block;width:100%;max-width:320px;margin:28px auto 0;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:var(--rs);font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.quiz-btn:hover{background:var(--blue-d)}
+.quiz-score{text-align:center;font-size:1.25rem;font-weight:700;color:var(--blue-d);margin-top:20px;display:none}
+.score-bar{height:10px;background:#dbeafe;border-radius:5px;margin:12px auto;max-width:320px;overflow:hidden}
+.score-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:5px;transition:width .5s}
+
+/* ── Footer ── */
+.footer{background:#0f172a;color:rgba(255,255,255,.55);text-align:center;padding:28px 24px;font-size:.85rem}
+.footer strong{color:rgba(255,255,255,.8)}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .main{padding:32px 16px 48px}
+  #quiz{padding:28px 18px}
+  .sensor-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .chain-row{flex-direction:column;align-items:center}
+  .chain-arrow{transform:rotate(90deg)}
+  .jitai-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-tag">Chapter 7 · 第七章</div>
+    <h1>智慧型手機行為自動追蹤
+      <small>Automatic Tracking of Behavior With Smartphones: Potential for Behavior Change Interventions</small>
+    </h1>
+    <p class="hero-sub">
+      利用嵌入式感測器被動收集數位足跡，結合機器學習，推論行為、情緒與心理狀態，打造個人化行為改變介入
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge">L. Piwek · A. Joinson</span>
+      <span class="hero-badge">University of Bath</span>
+      <span class="hero-badge">Little, Sillence &amp; Joinson (2017)</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#intro" class="toc-link">01 導論</a>
+    <a href="#sensors" class="toc-link">02 感測器</a>
+    <a href="#predictions" class="toc-link">03 行為預測</a>
+    <a href="#studies" class="toc-link">04 研究綜述</a>
+    <a href="#jitai" class="toc-link">05 情境感知介入</a>
+    <a href="#emotion" class="toc-link">06 情緒偵測</a>
+    <a href="#ethics" class="toc-link">07 倫理議題</a>
+    <a href="#practice" class="toc-link">08 實踐建議</a>
+    <a href="#quiz" class="toc-link">09 測驗</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: 導論
+════════════════════════════════════════════════ -->
+<section class="section" id="intro">
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div class="sec-title">
+      <h2>導論：智慧型手機與個人大數據</h2>
+      <div class="en-sub">Introduction: Smartphones &amp; Personal Big Data</div>
+    </div>
+  </div>
+
+  <p>智慧型手機早已不是單純的通話工具，而是同時身兼數位相機、GPS 導航、音樂播放器、行事曆、氣象預報員等多重功能的全方位數位助理（Miller, 2012）。這部隨身攜帶的裝置每隔數秒便持續記錄著大量變數——從使用者的位置、移動程度，到每通電話的通聯紀錄、簡訊中打了幾個字，乃至通勤途中經過哪些藍牙裝置。</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">370M</div>
+      <div class="stat-label">2009年行動寬頻用戶數</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">720M</div>
+      <div class="stat-label">2011年行動寬頻用戶數</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2B</div>
+      <div class="stat-label">2015年預估行動寬頻用戶數</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">34×</div>
+      <div class="stat-label">每日查看手機次數（舊估算，Oulasvirta et al., 2012）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">85×</div>
+      <div class="stat-label">每日使用手機次數（新估算，Andrews et al., 2015）</div>
+    </div>
+  </div>
+
+  <p>如此頻繁且多面向的連結，使使用者每天產生大量的「<span class="en">personal big data</span>」（個人大數據）。每當你與手機互動，甚至只是隨身攜帶它，你都留下了一道<span class="en">digital footprint</span>（數位足跡）——包含位置時間戳、電池電量、連接的行動天線、周圍的藍牙裝置或 Wi-Fi 熱點，以及每一通電話的數位痕跡（Kosinski, Stillwell, &amp; Graepel, 2013）。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tb" style="margin-bottom:10px">核心概念</div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:10px">被動推論 Passive Inference</h3>
+      <div class="en-quote">"By passive inference we mean that there is no input or user interaction or engagement with the smartphone, but rather the smartphone samples behavior passively, in the background, using onboard sensors and data collection services."</div>
+      <div class="zh-note">所謂「被動推論」，是指使用者無需主動輸入任何資訊，手機在背景中自動運用板載感測器與數據收集服務，對行為進行採樣。相對於要求使用者手動輸入數據的「主動式」應用程式，被動推論大幅降低使用門檻。</div>
+    </div>
+    <div class="card">
+      <div class="tag tp" style="margin-bottom:10px">核心概念</div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--purple);margin-bottom:10px">數位足跡 Digital Footprint</h3>
+      <p style="font-size:.9rem">每當使用者與智慧型手機互動或只是攜帶它，便會留下位置時間戳、通訊紀錄、感測器讀數等數位痕跡。這些痕跡累積成龐大的「個人大數據」，有潛力揭示使用者的行為模式、情緒狀態、社交關係，以及決策習慣。</p>
+      <div class="hl purple" style="margin:10px 0 0;padding:10px 14px;font-size:.86rem">
+        <p style="margin:0">對行為改變研究者而言，數位足跡可能是解碼複雜行為模式的關鍵——也是設計「適時、適地、適人」介入的基礎。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>本章核心問題</h4>
+    <p>智慧型手機感測器被動收集的數據，能否被用來推論使用者的行為、情緒與心理狀態？若能，又應如何將這些能力轉化為有效的行為改變介入策略？</p>
+    <div class="en-quote-w">How can the capabilities of smartphone sensors be harnessed to support behavior change interventions? The key insight is combining sensor data with machine learning to enable context-aware, just-in-time interventions tailored to the individual.</div>
+  </div>
+
+  <p>本章回顧了橫跨工程、電腦科學、貝葉斯統計、機器學習與認知心理學等領域的 <strong>45 篇相關研究</strong>，探討四大方向：（1）預測使用者活動與社交互動、（2）情緒、心情與心理健康、（3）人格特質、（4）健康行為與身體活動。</p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: 感測器
+════════════════════════════════════════════════ -->
+<section class="section" id="sensors">
+  <div class="sec-header">
+    <div class="sec-num">02</div>
+    <div class="sec-title">
+      <h2>智慧型手機感測器</h2>
+      <div class="en-sub">Smartphone Sensors: What Each Can Detect</div>
+    </div>
+  </div>
+
+  <p>現代智慧型手機內建豐富的感測器與數據收集服務，能持續記錄使用者的行為與環境情境。下方每張感測器卡片說明其主要功能與可偵測的行為或情境類型：</p>
+
+  <div class="sensor-grid">
+    <div class="sensor-card s-gps">
+      <div class="sensor-icon">📍</div>
+      <div class="sensor-name-en">GPS</div>
+      <div class="sensor-name-zh">全球定位系統</div>
+      <div class="sensor-detect">位置與移動路徑、常去地點、通勤模式、地理軌跡的時間戳記、都市 vs 農村行為差異</div>
+    </div>
+    <div class="sensor-card s-bt">
+      <div class="sensor-icon">🔵</div>
+      <div class="sensor-name-en">Bluetooth</div>
+      <div class="sensor-name-zh">藍牙</div>
+      <div class="sensor-detect">鄰近裝置偵測、社交互動距離、人群密度估算、人際關係強弱、重要社交場所識別</div>
+    </div>
+    <div class="sensor-card s-acc">
+      <div class="sensor-icon">📱</div>
+      <div class="sensor-name-en">Accelerometer</div>
+      <div class="sensor-name-zh">加速度計</div>
+      <div class="sensor-detect">身體活動類型（走路、跑步、騎車）、運動強度、坐立躺等日常姿勢、步態分析、睡眠估算</div>
+    </div>
+    <div class="sensor-card s-mic">
+      <div class="sensor-icon">🎤</div>
+      <div class="sensor-name-en">Microphone</div>
+      <div class="sensor-name-zh">麥克風</div>
+      <div class="sensor-detect">情緒識別（憤怒、喜悅、悲傷）、壓力偵測、語音特徵分析、環境聲音分類、幸福感評估</div>
+    </div>
+    <div class="sensor-card s-cam">
+      <div class="sensor-icon">📷</div>
+      <div class="sensor-name-en">Camera</div>
+      <div class="sensor-name-zh">相機</div>
+      <div class="sensor-detect">環境脈絡記錄、食物日記影像、面部表情識別（配合前鏡頭）、光線環境感知</div>
+    </div>
+    <div class="sensor-card s-wifi">
+      <div class="sensor-icon">📶</div>
+      <div class="sensor-name-en">Wi-Fi</div>
+      <div class="sensor-name-zh">無線網路</div>
+      <div class="sensor-detect">室內定位、鄰近度偵測（Comm2Sense 平台）、場所識別（家/公司/咖啡館）、人際距離估算</div>
+    </div>
+    <div class="sensor-card s-call">
+      <div class="sensor-icon">📞</div>
+      <div class="sensor-name-en">Call Logs</div>
+      <div class="sensor-name-zh">通話紀錄</div>
+      <div class="sensor-detect">社交關係強度、通聯網絡結構、友誼推論、生活面向分類（家庭/工作/社交）、人格外向性</div>
+    </div>
+    <div class="sensor-card s-sms">
+      <div class="sensor-icon">💬</div>
+      <div class="sensor-name-en">SMS Logs</div>
+      <div class="sensor-name-zh">簡訊紀錄</div>
+      <div class="sensor-detect">情緒狀態、心情偵測、語言內容分析、人格特質推論（開放性、外向性）、社交互動模式</div>
+    </div>
+    <div class="sensor-card s-app">
+      <div class="sensor-icon">🔲</div>
+      <div class="sensor-name-en">App Usage</div>
+      <div class="sensor-name-zh">應用程式使用紀錄</div>
+      <div class="sensor-detect">未來 App 使用預測、使用者興趣推論、宗教信仰、感情狀態、語言、育兒狀態</div>
+    </div>
+    <div class="sensor-card s-cell">
+      <div class="sensor-icon">📡</div>
+      <div class="sensor-name-en">Cell Tower Data</div>
+      <div class="sensor-name-zh">基地台數據</div>
+      <div class="sensor-detect">大規模行動模式追蹤、城鄉行為差異分析、93% 移動可預測性、個體身份識別（4個時空點即可）</div>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p><strong>感測器融合的力量</strong></p>
+    <p>單一感測器的數據價值有限，但現代機器學習技術能將多種感測器數據融合分析。例如，結合 GPS（位置）+ 加速度計（活動強度）+ 藍牙（社交接近程度）+ 通話紀錄（關係強度），便可建立完整的使用者行為輪廓（behavioral profile）。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3: 行為預測
+════════════════════════════════════════════════ -->
+<section class="section" id="predictions">
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div class="sec-title">
+      <h2>從感測器到行為預測</h2>
+      <div class="en-sub">Behavior Predictions from Passive Sensor Data</div>
+    </div>
+  </div>
+
+  <p>原始感測器數據本身資訊量有限，但透過決策樹、貝葉斯方法、模糊邏輯、異常分析或神經網絡等機器學習演算法，便能從龐大的行動數位足跡中提取有意義的行為預測（Avci &amp; Bosch, 2010）。下方展示從原始數據到情境感知介入的完整推論鏈：</p>
+
+  <div class="chain-wrap">
+    <h4>被動推論流程：原始數據 → 機器學習 → 行為預測 → 個人化介入</h4>
+    <div class="chain-row">
+      <div class="chain-block cb-raw">
+        <strong>原始感測器數據</strong>
+        <div class="cb-sub">GPS 座標、藍牙訊號、加速度值、通話/簡訊紀錄、麥克風音頻、App 使用日誌、Wi-Fi 訊號</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-block cb-ml">
+        <strong>機器學習演算法</strong>
+        <div class="cb-sub">決策樹、貝葉斯網絡、神經網絡、支持向量機、深度學習特徵提取與模式識別</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-block cb-pred">
+        <strong>行為預測</strong>
+        <div class="cb-sub">位置移動、社交互動、情緒狀態、壓力水平、身體活動、睡眠品質、人格特質</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-block cb-int">
+        <strong>情境感知介入</strong>
+        <div class="cb-sub">適時（just-in-time）、適地、適人的個人化行為改變推送，在最佳時機提供最相關的介入</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>主要可預測的行為類型</h3>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tb" style="margin-bottom:10px">位置與移動</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Location &amp; Mobility Patterns</h3>
+      <p style="font-size:.88rem">Song et al. (2010) 分析 50,000 名用戶的基地台數據，發現人類移動模式具有 <strong>93% 的可預測性</strong>，表明儘管我們渴望自發性，日常移動其實高度規律。de Montjoye et al. (2013) 更發現，只需 4 個時空數據點，便能唯一識別 <strong>95%</strong> 的個體。</p>
+    </div>
+    <div class="card">
+      <div class="tag tp" style="margin-bottom:10px">社交互動</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Social Communication Patterns</h3>
+      <p style="font-size:.88rem">Eagle et al. (2009b) 利用通話紀錄、藍牙與基地台數據，以 <strong>95% 準確率</strong>推論友誼網絡結構。Min et al. (2013) 則使用通話與簡訊紀錄，以 <strong>90% 準確率</strong>將聯絡人分類為家庭、工作或社交關係。</p>
+    </div>
+    <div class="card">
+      <div class="tag tg" style="margin-bottom:10px">情緒與心情</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Mood, Emotion &amp; Stress</h3>
+      <p style="font-size:.88rem">Rachuri et al. (2010) 的 EmotionSense 系統使用麥克風，以超過 <strong>70% 準確率</strong>辨識憤怒、喜悅、悲傷等基本情緒。LiKamWa et al. (2013) 的 MoodScope 應用程式則在 2 個月個人化訓練後，將心情偵測準確率提升至 <strong>93%</strong>。</p>
+    </div>
+    <div class="card">
+      <div class="tag ta" style="margin-bottom:10px">身體活動</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Physical Activity &amp; Movement</h3>
+      <p style="font-size:.88rem">加速度計可精確分類多種身體活動，包括：走路（90–100%）、跑步（90–98%）、跳躍（90–98%）、騎車、坐立躺等姿勢轉換。Arora et al. (2014) 更以 <strong>97–98% 的靈敏度與特異性</strong>，利用加速度計診斷帕金森氏症症狀。</p>
+    </div>
+    <div class="card">
+      <div class="tag tc" style="margin-bottom:10px">睡眠品質</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Sleep Quality &amp; Estimation</h3>
+      <p style="font-size:.88rem">基於動作記錄儀學（<span class="en">actigraphy</span>）原理，加速度計可估算睡眠品質、睡眠時長與晝夜節律。Natale et al. (2012) 以 iPhone 加速度計與醫療級動作記錄儀比對，結果令人滿意；Chen et al. (2013) 的算法推算睡眠時長誤差僅約 <strong>40 分鐘</strong>。</p>
+    </div>
+    <div class="card">
+      <div class="tag tr" style="margin-bottom:10px">人群與空間</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Crowd Density &amp; Visitor Flow</h3>
+      <p style="font-size:.88rem">Morrison et al. (2009) 與 Versichele et al. (2012) 利用藍牙訊號追蹤體育場活動人群（最多達 80,828 人），用於人流密度估算與訪客動線分析。Osmani et al. (2014) 的 Comm2Sense 系統則以中位誤差 0.5 m 偵測人際距離。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4: 研究綜述
+════════════════════════════════════════════════ -->
+<section class="section" id="studies">
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div class="sec-title">
+      <h2>45 篇研究綜述：關鍵發現</h2>
+      <div class="en-sub">Review of 45 Studies: Key Findings &amp; Accuracy Rates</div>
+    </div>
+  </div>
+
+  <p>作者們系統回顧了 45 篇來自工程、電腦科學、貝葉斯統計、機器學習與認知心理學等領域的研究，研究方法涵蓋小型實驗室研究到分析數百萬用戶的大數據計畫。以下精選 10 篇具代表性的研究：</p>
+
+  <div style="overflow-x:auto">
+  <table class="studies-table">
+    <thead>
+      <tr>
+        <th>研究者 / 年份</th>
+        <th>使用手機</th>
+        <th>感測器 / 數據</th>
+        <th>行為預測目標</th>
+        <th>樣本</th>
+        <th>準確率</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Song et al.</strong><br>(2010)</td>
+        <td>Any（基地台）</td>
+        <td>基地台數據</td>
+        <td>位置與移動模式可預測性</td>
+        <td>50,000 人</td>
+        <td><span class="acc-badge acc-high">93%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Eagle et al.</strong><br>(2009b)</td>
+        <td>Nokia 6600</td>
+        <td>通話紀錄、藍牙、基地台、App使用、手機狀態</td>
+        <td>社交溝通模式、社交接觸類型</td>
+        <td>94 人</td>
+        <td><span class="acc-badge acc-high">95%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Min et al.</strong><br>(2013)</td>
+        <td>Android</td>
+        <td>通話紀錄、簡訊紀錄</td>
+        <td>社交關係分類（家庭/工作/社交）</td>
+        <td>40 人</td>
+        <td><span class="acc-badge acc-high">90%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Rachuri et al.</strong><br>(2010)</td>
+        <td>Nokia Symbian</td>
+        <td>麥克風</td>
+        <td>情緒識別（EmotionSense）</td>
+        <td>10–18 人</td>
+        <td><span class="acc-badge acc-mid">70%+</span></td>
+      </tr>
+      <tr>
+        <td><strong>LiKamWa et al.</strong><br>(2013)</td>
+        <td>iPhone</td>
+        <td>簡訊、通話、App使用、GPS</td>
+        <td>每日心情偵測（MoodScope）</td>
+        <td>32 人</td>
+        <td><span class="acc-badge acc-high">93%</span>（2個月訓練後）</td>
+      </tr>
+      <tr>
+        <td><strong>Bogomolov et al.</strong><br>(2014)</td>
+        <td>Android</td>
+        <td>通話、簡訊、藍牙、天氣、人格</td>
+        <td>每日壓力識別</td>
+        <td>117 人</td>
+        <td><span class="acc-badge acc-mid">72%</span></td>
+      </tr>
+      <tr>
+        <td><strong>He &amp; Li</strong><br>(2013)</td>
+        <td>Samsung Nexus S</td>
+        <td>加速度計</td>
+        <td>跳躍、跑步、走路、躺、坐</td>
+        <td>NA</td>
+        <td><span class="acc-badge acc-high">90–98%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Arora et al.</strong><br>(2014)</td>
+        <td>LG Optimus S</td>
+        <td>加速度計</td>
+        <td>帕金森氏症症狀識別</td>
+        <td>20 人</td>
+        <td><span class="acc-badge acc-high">97%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Osmani et al.</strong><br>(2014)</td>
+        <td>HTC Desire / Samsung Nexus S</td>
+        <td>藍牙、Wi-Fi</td>
+        <td>社交互動鄰近距離偵測</td>
+        <td>7 人</td>
+        <td><span class="acc-badge acc-high">85–86%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Seneviratne et al.</strong><br>(2014)</td>
+        <td>Android</td>
+        <td>App使用紀錄、App清單</td>
+        <td>宗教信仰、感情狀態、語言、育兒狀況</td>
+        <td>200 人</td>
+        <td><span class="acc-badge acc-high">70–90%</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>研究局限性與挑戰</strong></p>
+    <p>儘管上述研究成果令人振奮，Piwek &amp; Joinson 也指出幾項關鍵限制：（1）許多研究樣本量偏小（部分僅有 7-20 人），且在實驗室環境中進行，尚未驗證真實世界的有效性；（2）技術進步速度極快，部分研究（如使用 Nokia Symbian 系統的研究）技術基礎已過時；（3）大量研究需要用戶安裝專屬 App，並非全然被動；（4）電腦科學家與社會科學家之間的跨領域合作仍然不足。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5: JITAI 情境感知介入
+════════════════════════════════════════════════ -->
+<section class="section" id="jitai">
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div class="sec-title">
+      <h2>情境感知介入與 JITAI</h2>
+      <div class="en-sub">Context-Aware Interventions &amp; Just-in-Time Adaptive Interventions</div>
+    </div>
+  </div>
+
+  <p>被動感測器推論最重要的應用，是實現<span class="en">Just-In-Time Adaptive Interventions (JITAI)</span>——即時適應性介入。JITAI 的核心理念是，在正確的時間、正確的地點，針對個人當下的心理與情境狀態，提供最相關的介入內容，而非靜態、千篇一律的訊息推送。</p>
+
+  <div class="jitai-wrap">
+    <h4>JITAI 情境感知介入架構：以運動促進 App 為例</h4>
+    <div class="jitai-grid">
+      <div class="jitai-item">
+        <div class="ji-icon">📍</div>
+        <div class="ji-label">GPS 位置感知</div>
+        <div class="ji-desc">偵測使用者是否在公園、辦公室或家中，判斷運動可行性</div>
+      </div>
+      <div class="jitai-item">
+        <div class="ji-icon">🏃</div>
+        <div class="ji-label">加速度計活動偵測</div>
+        <div class="ji-desc">評估當天已累積的活動量，判斷是否達到建議運動量</div>
+      </div>
+      <div class="jitai-item">
+        <div class="ji-icon">🌤</div>
+        <div class="ji-label">天氣資訊整合</div>
+        <div class="ji-desc">結合氣象預報，在適合戶外活動時推送運動邀請</div>
+      </div>
+      <div class="jitai-item">
+        <div class="ji-icon">📅</div>
+        <div class="ji-label">行事曆分析</div>
+        <div class="ji-desc">識別使用者的空閒時段，避免在繁忙時段打擾</div>
+      </div>
+      <div class="jitai-item">
+        <div class="ji-icon">🧠</div>
+        <div class="ji-label">心理狀態偵測</div>
+        <div class="ji-desc">透過麥克風與使用模式判斷壓力水平，選擇最佳介入時機</div>
+      </div>
+      <div class="jitai-item">
+        <div class="ji-icon">👥</div>
+        <div class="ji-label">社交脈絡感知</div>
+        <div class="ji-desc">藍牙偵測周圍人群，推薦適合個人或群體的運動活動</div>
+      </div>
+    </div>
+    <div class="jitai-arrow">↓</div>
+    <div class="jitai-outcome">
+      <strong>個人化即時介入 Personalized Just-in-Time Push</strong>
+      「現在是下午 3 點，天氣晴朗，您附近有公園且您今天尚未達到建議活動量——這是快走 20 分鐘的好時機！您的壓力水平目前偏高，戶外活動有助於緩解壓力。」
+    </div>
+  </div>
+
+  <h3>永續旅行介入的類似情境</h3>
+  <div class="hl green">
+    <p>一個針對永續交通的 JITAI 應用程式，可以整合使用者的當日計畫、天氣預報、當地交通狀況，以及昨日消耗與攝入的卡路里，向使用者推薦環保且有利健康的通勤方式（如步行、騎單車或搭大眾運輸）。介入時機、頻率和內容，均根據使用者的即時情境自動調整。</p>
+  </div>
+
+  <h3>JITAI 的設計原則</h3>
+  <ul class="steps">
+    <li>
+      <div class="sc">
+        <strong>即時性（Timeliness）</strong>
+        <p>在使用者最有意願改變且環境條件最有利的時機提供介入——例如偵測到久坐後立即推送站立提醒，而非在使用者正忙碌時打擾。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>相關性（Relevance）</strong>
+        <p>介入內容須與使用者當下的具體情境高度相關，而非泛用型訊息。掌握使用者的位置、活動、社交狀態，能顯著提升介入的說服力。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>適應性（Adaptiveness）</strong>
+        <p>系統隨時間學習個別使用者的模式，持續調整介入策略。初期準確率可能偏低，但隨著個人化訓練數據累積，效果會逐步提升（如 MoodScope 的初始準確率 66% → 訓練後 93%）。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>最小干擾（Minimal Intrusiveness）</strong>
+        <p>被動感測器不需要使用者的主動輸入，大幅降低使用負擔。相比需要手動記錄飲食或心情的應用程式，被動方式的長期使用率更高。</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6: 情緒與壓力偵測
+════════════════════════════════════════════════ -->
+<section class="section" id="emotion">
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div class="sec-title">
+      <h2>情緒、壓力與心理健康偵測</h2>
+      <div class="en-sub">Emotion, Stress &amp; Mental Health Detection</div>
+    </div>
+  </div>
+
+  <p>情緒是有機體對具有特殊意義的內部或外部事件產生的離散且一致的反應（Nesse, 1990）。大多數理論學家認同 Ekman &amp; Friesen（1978）的「基本情緒」概念：喜悅、悲傷、驚訝、恐懼、憤怒、厭惡與輕蔑，並認為這些情緒都有清晰的行為特徵，例如憤怒會透過音調（高音調、廣音域、快節奏）、表情和肢體動作表現出來，提供了透過感測器偵測的基礎。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tb" style="margin-bottom:10px">情緒識別研究</div>
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--blue-d);margin-bottom:12px">EmotionSense (Rachuri et al., 2010; Lathia et al., 2013)</h3>
+      <div class="en-quote">"EmotionSense achieved over 70% accuracy for broad emotion recognition."</div>
+      <div class="zh-note">EmotionSense 是一款被動監測 App，使用麥克風自動捕捉情緒、行為和社交信號。研究者利用機器學習技術，從語音情感表達轉錄庫（LDC2002S28）選取 5 種廣義情緒（憤怒、恐懼、喜悅、中性、悲傷），以超過 70% 準確率識別情緒。</div>
+    </div>
+    <div class="card">
+      <div class="tag tg" style="margin-bottom:10px">心情偵測研究</div>
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--green);margin-bottom:12px">MoodScope (LiKamWa et al., 2013)</h3>
+      <div class="en-quote">"Using broad communication information, the authors statistically inferred a user's daily average mood with an initial accuracy of 66%, which gradually improved to 93% after a 2-month personalized training period."</div>
+      <div class="zh-note">MoodScope 整合電話通話、電子郵件、簡訊、App 使用歷史、網頁瀏覽記錄和位置變化，統計推論使用者的每日平均心情。個人化訓練使準確率大幅提升，體現出「適應性系統」的潛力。</div>
+    </div>
+  </div>
+
+  <h3>壓力偵測：StressSense</h3>
+  <div class="callout">
+    <h4>Lu et al. (2012) — StressSense：從聲音識別壓力</h4>
+    <p>StressSense 利用智慧型手機麥克風，從人聲中無干擾地識別壓力（聲音振幅、基頻、音調、能量、頻譜特性、語速等）。透過模型自適應，以少量新觀測數據即可個人化校準，達到室內 <strong>81%</strong>、室外 <strong>76%</strong> 的識別準確率。</p>
+    <div class="en-quote-w">Bogomolov et al. (2014) extended this approach: using call logs, SMS, Bluetooth proximity, weather data, and self-reported personality traits to achieve 72% accuracy for daily stress recognition from 117 participants tracked over 6 months.</div>
+  </div>
+
+  <h3>憂鬱症與躁鬱症偵測</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tr" style="margin-bottom:10px">憂鬱症</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Mobilyze! (Burns et al., 2011)</h3>
+      <p style="font-size:.88rem">結合 GPS、Wi-Fi、藍牙、加速度計、環境光、App 使用等多種感測器，預測憂鬱症患者的心情、情緒、認知狀態、活動和社交脈絡。位置預測準確率 60–91%，惟情緒量表的預測表現較弱。</p>
+    </div>
+    <div class="card">
+      <div class="tag tp" style="margin-bottom:10px">躁鬱症</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0 10px">Muaremi et al. (2014)</h3>
+      <p style="font-size:.88rem">利用電話統計數據、通話語音參數（諧噪比、短輪廓數量、基頻音調方差 F0）建構用戶特異性分類模型，以 <strong>82% 平均準確率</strong>預測躁鬱症發作。Grünerbl et al. (2012) 也發現輕度憂鬱症患者通話時間更長、頻率更高。</p>
+    </div>
+  </div>
+
+  <h3>幸福感研究：Mappiness</h3>
+  <div class="hl green">
+    <p><strong>MacKerron &amp; Mourato (2013) — Mappiness App</strong></p>
+    <p>Mappiness 在隨機時刻提示參與者填寫簡短問卷，同時以 GPS 記錄地理座標。超過 20,000 名參與者提供了 <strong>100 萬份以上</strong>的回應。研究發現，在所有綠色/自然棲息地（「農村環境」）中，參與者的主觀幸福感顯著高於城市環境——即便控制了天氣、日照、活動、陪伴和時間等因素後，結論依然成立。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7: 倫理議題
+════════════════════════════════════════════════ -->
+<section class="section" id="ethics">
+  <div class="sec-header">
+    <div class="sec-num">07</div>
+    <div class="sec-title">
+      <h2>倫理議題</h2>
+      <div class="en-sub">Ethical Issues in Passive Smartphone Data Collection</div>
+    </div>
+  </div>
+
+  <p>智慧型手機行為追蹤的潛力雖然令人振奮，但也帶來了嚴峻的倫理挑戰。連續行動活動的數字痕跡能揭示我們的身份、情境、體能活動、情緒和壓力。使用者的行為與活動模式足夠獨特，外部信息便可能將匿名數據重新連結至特定個體（Sweeney, 2002；Zang &amp; Bolot, 2011）。</p>
+
+  <div class="warn-callout">
+    <h4>主要倫理疑慮 Key Ethical Concerns</h4>
+    <ul>
+      <li>
+        <div>
+          <strong>隱私侵犯（Privacy Violation）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">被動數據收集在使用者無意識的情況下持續進行，個人可能無法充分了解或控制哪些數據正在被收集及分析。人類移動軌跡的獨特性（僅需 4 個時空點即可識別 95% 的個體）使「匿名化」難以真正保護隱私。</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>知情同意的複雜性（Complexity of Informed Consent）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">被動數據收集的範圍廣泛且持續演變，傳統的一次性同意程序難以充分涵蓋所有數據用途。使用者可能同意安裝 App，但未能真正理解其數據使用的全部含義。</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>數據安全（Data Security）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">智慧型手機上儲存的大量個人行為數據若被竊取或不當使用，後果嚴重。監管機構在整合手機 App 和追蹤解決方案到醫療保健體系時，目前存在多種漏洞，可能導致不可靠甚至有害的應用程式被採用。</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>設計者與使用者間的權力不對等（Power Imbalance）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">擁有分析技術的研究者和設計者，對於使用者數據所揭示的訊息擁有遠超過後者的了解。這種「知識鴻溝」創造了一種潛在的操控風險，使介入設計者對使用者產生不當的影響力。</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>商業利益剝削（Commercial Exploitation）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">被動收集的個人行為數據具有高度商業價值。若科技公司將這些數據用於商業目的（如精準廣告、信用評分），而使用者對此毫不知情，則侵害了使用者的基本數位權利。</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>敏感特徵的推論（Sensitive Trait Inference）</strong><br>
+          <span style="font-size:.85rem;opacity:.9">單憑 App 清單，研究者便能以 70–90% 準確率推論使用者的宗教信仰、感情狀態和育兒狀況。透過語言內容可推論人格特質；透過電話習慣可推論躁鬱症症狀。這些數據若被保險公司或雇主取得，將帶來嚴重的歧視風險。</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <h4>作者的呼籲</h4>
+    <p>「智慧型手機生成的個人大數據的無處不在、人類痕跡的獨特性，以及可從中推論出的信息，突顯了理解隱私邊界的重要性。以智慧型手機收集的數據為基礎的行為改變介入，若要充分實現其潛力，必須認真對待用戶隱私和數據安全。」</p>
+    <div class="en-quote-w">"Behavior change interventions based around the data collected from smartphones must take user privacy and the security of data seriously if the promise of smartphone behavior change is to be fully realized." — Piwek &amp; Joinson, 2017</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8: 實踐建議
+════════════════════════════════════════════════ -->
+<section class="section" id="practice">
+  <div class="sec-header">
+    <div class="sec-num">08</div>
+    <div class="sec-title">
+      <h2>實踐建議</h2>
+      <div class="en-sub">Practical Applications: Designing Smartphone-Based Behavior Change Interventions</div>
+    </div>
+  </div>
+
+  <p>綜合本章所有研究回顧，以下提供設計智慧型手機行為改變介入的具體建議：</p>
+
+  <ul class="steps">
+    <li>
+      <div class="sc">
+        <strong>優先採用被動感測器，減少使用者負擔</strong>
+        <p>相比要求使用者手動輸入的應用程式，利用 GPS、加速度計、藍牙等被動感測器自動收集數據，能大幅降低使用者負擔，提升長期依從率。研究者應避免設計過度依賴自我報告的系統。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>整合多種感測器以提升預測準確率</strong>
+        <p>單一感測器的預測能力有限，但多感測器融合（如 GPS + 加速度計 + 藍牙 + 通話紀錄）能顯著提升預測準確性，並實現更豐富的情境理解。Eagle et al. (2009b) 整合五種感測器，使友誼推論準確率達 95%。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>實施個人化訓練期以提升準確率</strong>
+        <p>許多系統在初期準確率偏低，但隨著個人化數據累積，效果顯著提升（如 MoodScope：66% → 93%）。介入設計應預留個人化訓練期，並向使用者說明此過程的原因與價值。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>跨學科合作是關鍵</strong>
+        <p>目前電腦科學家快速開發出各種被動追蹤工具，但社會科學家與行為改變研究者的參與不足，使許多工具淪為「概念驗證展示」而缺乏真實應用。建立跨領域合作機制，是將技術轉化為有效介入的必要條件。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>優先進行真實世界驗證</strong>
+        <p>大多數研究在小樣本實驗室環境中進行，真實世界的有效性尚待驗證。未來研究應採用隨機對照試驗（RCT）設計、更大樣本量，以及更長的研究週期，才能充分探索智慧型手機在身體活動量測與介入方面的能力。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>建立完善的倫理規範框架</strong>
+        <p>任何基於被動數據收集的介入，都必須設計清晰透明的知情同意流程、數據最小化原則、嚴格的數據安全措施，以及讓使用者有意義地控制和刪除其數據的機制。使用者的數位自主權應被視為核心設計原則，而非事後補充。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>善用情境感知實現即時介入（JITAI）</strong>
+        <p>智慧型手機追蹤最大的優勢，在於能夠識別行為改變的「可接受時窗」——使用者在此時機最容易接受介入。設計者應以偵測這些時窗作為核心目標，在最佳時機推送最相關的介入內容，而非以固定時間表批量推送通知。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>監控技術過時風險</strong>
+        <p>行動技術演進極快，許多研究使用的技術基礎（如 Nokia Symbian 系統）已成廢棄技術。即使是最主流的 Android 和 iOS 平台，每次大版本更新也可能破壞既有的被動追蹤方案。持續維護和重新驗證是長期部署的必要條件。</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tg" style="margin-bottom:12px">健康行為介入範例</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:0 0 10px">mHealth 應用場景</h3>
+      <p style="font-size:.88rem;margin-bottom:8px">整合加速度計（活動量）+ GPS（位置）+ 天氣 API + 行事曆，設計個人化運動促進 App。系統學習使用者的生活習慣後，在最可能運動的時機（路過公園、天氣晴朗、行事曆空閒）推送鼓勵訊息，而非固定每天上午 9 點提醒。</p>
+      <div class="tag ta">準確率目標：比基線高出 >15%</div>
+    </div>
+    <div class="card">
+      <div class="tag tc" style="margin-bottom:12px">心理健康介入範例</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:0 0 10px">壓力管理情境感知系統</h3>
+      <p style="font-size:.88rem;margin-bottom:8px">結合麥克風（語音特徵）+ 通話紀錄（社交互動減少）+ 天氣資訊（陰雨天氣），偵測高壓期。當系統判斷使用者正處於壓力累積期，自動推送正念冥想練習或建議戶外活動，在最需要的時刻提供心理支持。</p>
+      <div class="tag tp">技術基礎：StressSense + JITAI 框架</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════════════
+     QUIZ
+════════════════════════════════════════════════ -->
+<section id="quiz">
+  <div class="qhead">
+    <h2>章節測驗</h2>
+    <p>隨機抽取 5 題，測試你對智慧型手機行為追蹤的理解</p>
+  </div>
+  <div id="quiz-container"></div>
+  <button class="quiz-btn" id="submit-btn" onclick="submitQuiz()">提交答案 Submit</button>
+  <div class="quiz-score" id="quiz-score">
+    <div id="score-text"></div>
+    <div class="score-bar"><div class="score-fill" id="score-fill"></div></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p><strong>版權所有 © 葉欲禾（Gary Yu-Ho Yeh）</strong></p>
+  <p style="margin-top:6px">本教材依據 Little, Sillence &amp; Joinson (2017) <em>Behavior Change Research and Theory</em> 第七章製作，僅供學術教學使用。</p>
+  <p style="margin-top:6px">Chapter 7: Automatic Tracking of Behavior With Smartphones / L. Piwek, A. Joinson / University of Bath</p>
+</footer>
+
+<script>
+// ─── TOC active state ───
+const sections = document.querySelectorAll('.section, #quiz');
+const links = document.querySelectorAll('.toc-link');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => io.observe(s));
+
+// ─── Quiz Data ───
+const allQuestions = [
+  {
+    q: "根據 Andrews et al. (2015) 的研究，人們平均每天使用智慧型手機幾次？",
+    opts: ["34 次", "50 次", "85 次", "120 次"],
+    ans: 2,
+    expl: "Andrews et al. (2015) 的最新估算顯示，人們平均每天使用智慧型手機多達 85 次。較早的研究（Oulasvirta et al., 2012）估算為 34 次，但使用已成習慣後頻率顯著提升。"
+  },
+  {
+    q: "「被動推論」（passive inference）的正確定義是：",
+    opts: [
+      "使用者主動在 App 中輸入數據供系統分析",
+      "智慧型手機在背景中使用板載感測器自動採樣行為，無需使用者互動",
+      "研究者透過問卷調查收集使用者行為數據",
+      "使用者透過語音指令告知手機當前活動"
+    ],
+    ans: 1,
+    expl: "被動推論（passive inference）意指無需使用者輸入任何資訊，手機在背景中自動運用板載感測器與數據收集服務進行行為採樣。這與要求使用者主動輸入的「主動式」方法相對。"
+  },
+  {
+    q: "哪種智慧型手機感測器最適合用於偵測情緒狀態（如憤怒、喜悅、悲傷）？",
+    opts: ["GPS 全球定位系統", "加速度計", "麥克風", "基地台數據"],
+    ans: 2,
+    expl: "麥克風（microphone）是情緒識別的核心感測器。研究（如 Rachuri et al., 2010 的 EmotionSense）顯示，可以透過分析聲音的音調、音量、語速、能量等聲學特徵，以超過 70% 準確率識別基本情緒。"
+  },
+  {
+    q: "GPS 感測器在行為追蹤中主要能偵測什麼？",
+    opts: [
+      "使用者的情緒狀態與壓力水平",
+      "位置、移動路徑與移動模式",
+      "社交互動的頻率與對象",
+      "睡眠品質與作息規律"
+    ],
+    ans: 1,
+    expl: "GPS 主要用於追蹤使用者的位置與移動模式，包括常去地點、通勤路線、移動速度等。Song et al. (2010) 利用基地台數據（類似 GPS 的位置資訊）發現人類移動具有 93% 的可預測性。"
+  },
+  {
+    q: "JITAI 的全名是什麼？其核心概念為何？",
+    opts: [
+      "Just-in-Time Artificial Intelligence；以 AI 自動生成介入內容",
+      "Just-in-Time Adaptive Interventions；在正確時機針對個人當下狀態提供最相關介入",
+      "Joint Intervention Technology for AI；整合多種 AI 技術的介入平台",
+      "Just-in-Time App Interventions；僅透過行動 App 進行的介入"
+    ],
+    ans: 1,
+    expl: "JITAI 全名為 Just-in-Time Adaptive Interventions（即時適應性介入），核心概念是在正確時間、正確地點，針對個人當下的情境和心理狀態，提供最相關的個人化介入——而非靜態、千篇一律的訊息。"
+  },
+  {
+    q: "Rachuri et al. (2010) 的 EmotionSense 研究，情緒識別準確率達到多少？",
+    opts: ["約 50%", "超過 70%", "約 93%", "超過 95%"],
+    ans: 1,
+    expl: "EmotionSense 系統使用麥克風採集語音數據，並透過機器學習分類 5 種基本情緒（憤怒、恐懼、喜悅、中性、悲傷），達到超過 70% 的識別準確率。這是迄今為止最全面展示手機情緒自動偵測能力的研究之一。"
+  },
+  {
+    q: "「數位足跡」（digital footprint）的正確定義是：",
+    opts: [
+      "使用者在社群媒體上刻意公開的個人資訊",
+      "每當使用者與手機互動或攜帶手機時留下的數位痕跡（位置、通訊、感測器數據等）",
+      "手機廠商收集的設備使用統計數據",
+      "使用者在 App 中主動輸入的個人偏好設定"
+    ],
+    ans: 1,
+    expl: "數位足跡（digital footprint）是指每當使用者與智慧型手機互動，甚至只是隨身攜帶它時，留下的位置時間戳、通訊紀錄、感測器讀數等數位痕跡（Kosinski, Stillwell, & Graepel, 2013）。這些痕跡累積成豐富的個人大數據。"
+  },
+  {
+    q: "被動數據收集（passive data collection）的主要倫理疑慮是什麼？",
+    opts: [
+      "感測器耗電量過高，影響手機電池壽命",
+      "收集的數據準確率不夠高，無法用於醫療診斷",
+      "隱私侵犯、知情同意困難、數據安全、設計者與使用者間的權力不對等",
+      "技術成本過高，難以廣泛部署"
+    ],
+    ans: 2,
+    expl: "被動數據收集的主要倫理問題包括：隱私侵犯（使用者可能不知道哪些數據被收集）、知情同意困難（傳統一次性同意難以涵蓋持續演變的數據用途）、數據安全（大量個人行為數據被竊取的風險）、以及設計者與使用者之間的知識和權力不對等。"
+  },
+  {
+    q: "藍牙（Bluetooth）感測器在行為追蹤中主要能偵測什麼？",
+    opts: [
+      "使用者的地理位置（精確度與 GPS 相當）",
+      "社交互動距離與鄰近程度、人群密度、人際關係強弱",
+      "使用者的睡眠品質與身體活動強度",
+      "手機應用程式的使用模式"
+    ],
+    ans: 1,
+    expl: "藍牙感測器主要用於偵測鄰近裝置，可推論社交互動距離（Osmani et al., 2014）、人群密度（Morrison et al., 2009；Versichele et al., 2012）、人際關係強弱（Eagle & Pentland, 2006），以及重要社交場所（Hermersdorf et al., 2006）。"
+  },
+  {
+    q: "情境感知介入（context-aware intervention）相較於傳統介入的主要優點是：",
+    opts: [
+      "完全不需要使用者同意即可部署",
+      "可以在使用者最有意願改變且環境最有利的時機，提供最相關的個人化介入",
+      "介入成本更低，技術門檻更高",
+      "可以強制使用者改變行為，不需要使用者的主動配合"
+    ],
+    ans: 1,
+    expl: "情境感知介入的核心優點是「適時、適地、適人」——在使用者最可能接受改變的時機（如剛路過健康飲食餐廳時）提供最相關的個人化介入，而非在固定時間點批量發送千篇一律的通知，從而大幅提升介入效果。"
+  },
+  {
+    q: "「個人大數據」（personal big data）的主要特性是什麼？",
+    opts: [
+      "數據量龐大但內容單一，主要來源為社群媒體發文",
+      "由智慧型手機持續自動生成，涵蓋位置、通訊、活動等多面向的高度個人化數據",
+      "只有大型科技公司才能收集和分析的企業級數據",
+      "使用者刻意分享的公開個人信息集合"
+    ],
+    ans: 1,
+    expl: "個人大數據（personal big data）是指因頻繁、多面向使用智慧型手機而自動生成的大量個人化數據，涵蓋位置、通訊、感測器讀數等。這些數據代表使用者留下的數位足跡，有潛力揭示行為模式、情緒狀態和決策習慣。"
+  },
+  {
+    q: "智慧型手機行為追蹤研究面臨的主要挑戰是什麼？",
+    opts: [
+      "手機感測器的精確度不足，無法收集有意義的數據",
+      "使用者不願意使用智慧型手機，導致數據不足",
+      "許多研究樣本量小且在實驗室進行，技術進步快速導致研究過時，以及電腦科學與社會科學的跨域合作不足",
+      "現有機器學習算法無法處理手機收集的複雜數據"
+    ],
+    ans: 2,
+    expl: "Piwek & Joinson 指出三大挑戰：(1) 許多研究樣本小且在實驗室環境中進行，尚未驗證真實世界有效性；(2) 手機技術進化飛快，許多解決方案（如 Nokia Symbian）很快便過時；(3) 電腦科學家與社會科學家之間的跨領域合作不足，大量工具停留在「概念驗證」階段，未能轉化為真實行為改變應用。"
+  }
+];
+
+// Pick 5 random questions
+function pickRandom(arr, n) {
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+}
+
+let selectedQuestions = [];
+
+function buildQuiz() {
+  selectedQuestions = pickRandom(allQuestions, 5);
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  selectedQuestions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) => `
+      <li>
+        <input type="radio" name="q${i}" id="q${i}o${j}" value="${j}">
+        <label for="q${i}o${j}">
+          <span class="olet">${letters[j]}</span>
+          ${o}
+        </label>
+      </li>`).join('');
+    container.innerHTML += `
+      <div class="qcard" id="qcard-${i}">
+        <div class="qnum">${i+1}</div>
+        <p class="qtext">${q.q}</p>
+        <ul class="opts">${optsHtml}</ul>
+        <div class="qexpl" id="expl-${i}"></div>
+      </div>`;
+  });
+  document.getElementById('quiz-score').style.display = 'none';
+  document.getElementById('submit-btn').style.display = 'block';
+  document.getElementById('submit-btn').textContent = '提交答案 Submit';
+  document.getElementById('submit-btn').onclick = submitQuiz;
+}
+
+function submitQuiz() {
+  let score = 0;
+  selectedQuestions.forEach((q, i) => {
+    const chosen = document.querySelector(`input[name="q${i}"]:checked`);
+    const expl = document.getElementById(`expl-${i}`);
+    const labels = document.querySelectorAll(`#qcard-${i} .opts label`);
+    labels.forEach(l => { l.classList.remove('correct','wrong'); });
+    if (chosen) {
+      const val = parseInt(chosen.value);
+      if (val === q.ans) {
+        score++;
+        labels[val].classList.add('correct');
+        expl.className = 'qexpl show right';
+        expl.innerHTML = '✓ 正確！ ' + q.expl;
+      } else {
+        labels[val].classList.add('wrong');
+        labels[q.ans].classList.add('correct');
+        expl.className = 'qexpl show wrong';
+        expl.innerHTML = '✗ 錯誤。正確答案：' + q.opts[q.ans] + '。' + q.expl;
+      }
+    } else {
+      labels[q.ans].classList.add('correct');
+      expl.className = 'qexpl show wrong';
+      expl.innerHTML = '未作答。正確答案：' + q.opts[q.ans] + '。' + q.expl;
+    }
+  });
+  const pct = Math.round(score / selectedQuestions.length * 100);
+  const scoreEl = document.getElementById('quiz-score');
+  const fillEl = document.getElementById('score-fill');
+  document.getElementById('score-text').innerHTML =
+    `得分：${score} / ${selectedQuestions.length}（${pct}%）${pct >= 80 ? ' — 優秀！' : pct >= 60 ? ' — 繼續加油！' : ' — 請複習後再試。'}`;
+  scoreEl.style.display = 'block';
+  fillEl.style.width = pct + '%';
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = '重新測驗 Retry';
+  btn.onclick = buildQuiz;
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

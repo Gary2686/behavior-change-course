@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: Behavior Change Interventions for Cybersecurity｜網路安全行為改變介入</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#0f172a,#1e3a5f 40%,#2563eb 70%,#7c3aed);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:680px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+.hero-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+
+/* ── Bilingual ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl.red{border-color:var(--red);background:#fef2f2}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+
+/* ── Callout ── */
+.callout{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── MINDSPACE Grid ── */
+.ms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:20px 0}
+.ms-card{border-radius:var(--r);padding:20px 16px;text-align:center;transition:transform .22s,box-shadow .22s;cursor:default;position:relative;overflow:hidden}
+.ms-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:70px;height:70px;border-radius:50%;opacity:.12;background:rgba(255,255,255,.4)}
+.ms-card:hover{transform:translateY(-5px);box-shadow:var(--sh2)}
+.ms-letter{font-size:2.8rem;font-weight:900;line-height:1;margin-bottom:6px}
+.ms-name-en{font-size:.92rem;font-weight:700;margin-bottom:2px}
+.ms-name-zh{font-size:.82rem;font-weight:600;margin-bottom:10px;opacity:.85}
+.ms-app{font-size:.78rem;line-height:1.5;opacity:.88;border-top:1px solid rgba(255,255,255,.25);padding-top:9px;margin-top:4px;text-align:left}
+/* MINDSPACE colors */
+.ms-M{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff}
+.ms-I{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.ms-N{background:linear-gradient(135deg,#059669,#10b981);color:#fff}
+.ms-D{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff}
+.ms-S{background:linear-gradient(135deg,#dc2626,#f87171);color:#fff}
+.ms-P{background:linear-gradient(135deg,#0e7490,#06b6d4);color:#fff}
+.ms-A{background:linear-gradient(135deg,#be185d,#ec4899);color:#fff}
+.ms-C{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.ms-E{background:linear-gradient(135deg,#065f46,#34d399);color:#fff}
+
+/* ── PMT Diagram ── */
+.pmt-wrapper{background:linear-gradient(135deg,#f0f7ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:28px 24px;margin:22px 0}
+.pmt-wrapper h4{text-align:center;font-size:1.05rem;font-weight:700;color:var(--blue-d);margin-bottom:22px}
+.pmt-row{display:flex;align-items:stretch;justify-content:center;gap:0;flex-wrap:wrap}
+.pmt-block{border-radius:var(--rs);padding:16px 18px;min-width:150px;text-align:center;font-size:.85rem;font-weight:600;line-height:1.4}
+.pmt-threat{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;flex:1;min-width:170px}
+.pmt-cope{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;flex:1;min-width:170px}
+.pmt-motive{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;min-width:150px}
+.pmt-behav{background:linear-gradient(135deg,#059669,#047857);color:#fff;min-width:150px}
+.pmt-arrow{display:flex;align-items:center;padding:0 8px;color:var(--muted);font-size:1.5rem;font-weight:300}
+.pmt-sub{font-size:.75rem;font-weight:400;opacity:.88;margin-top:5px;line-height:1.35}
+.pmt-block strong{display:block;font-size:.95rem;margin-bottom:3px}
+.pmt-plus{display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;font-weight:700;padding:0 4px}
+.pmt-inner{display:flex;align-items:center;justify-content:center;gap:0;width:100%}
+
+.pmt-appraisals{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px;width:100%;justify-content:center}
+.pmt-ap-col{flex:1;min-width:180px;max-width:300px}
+.pmt-ap-head{border-radius:var(--rs) var(--rs) 0 0;padding:10px 14px;text-align:center;font-weight:700;font-size:.88rem;color:#fff}
+.pmt-ap-head.threat-h{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.pmt-ap-head.cope-h{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+.pmt-ap-body{border:2px solid;border-radius:0 0 var(--rs) var(--rs);padding:12px 14px;border-top:none}
+.pmt-ap-body.threat-b{border-color:#fca5a5;background:#fef2f2}
+.pmt-ap-body.cope-b{border-color:#93c5fd;background:#eff6ff}
+.pmt-component{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.07);font-size:.85rem}
+.pmt-component:last-child{border:none}
+.pmt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-red{background:var(--red)}.dot-orange{background:#f97316}.dot-blue{background:var(--blue)}.dot-cyan{background:#0891b2}.dot-red2{background:#be123c}
+.pmt-result{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin-top:12px}
+
+/* ── Dual Process ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+@media(max-width:600px){.dual{grid-template-columns:1fr}}
+.proc{border-radius:var(--r);padding:22px;border:2px solid}
+.proc.sys1{background:linear-gradient(135deg,#fff7ed,#fed7aa);border-color:#fdba74}
+.proc.sys2{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.proc h4{font-size:1rem;font-weight:700;margin-bottom:12px;text-align:center}
+.proc.sys1 h4{color:#c2410c}.proc.sys2 h4{color:#1d4ed8}
+.proc ul{list-style:none;padding:0}
+.proc ul li{padding:5px 0;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px}
+.proc ul li:last-child{border:none}
+.proc ul li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:1px}
+.proc.sys1 ul li::before{color:#ea580c}.proc.sys2 ul li::before{color:#2563eb}
+.proc-badge{text-align:center;padding:6px 14px;border-radius:20px;font-size:.78rem;font-weight:700;margin-bottom:14px}
+.proc.sys1 .proc-badge{background:rgba(234,88,12,.15);color:#c2410c}
+.proc.sys2 .proc-badge{background:rgba(37,99,235,.15);color:#1d4ed8}
+
+/* ── Integration Framework ── */
+.int-frame{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border-radius:var(--r);padding:28px;margin:22px 0}
+.int-frame h4{text-align:center;font-size:1.1rem;font-weight:700;margin-bottom:20px}
+.int-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:600px){.int-grid{grid-template-columns:1fr}}
+.int-col{background:rgba(255,255,255,.08);border-radius:var(--rs);padding:18px}
+.int-col h5{font-size:.92rem;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.2)}
+.int-col.threat-c h5{color:#fca5a5}
+.int-col.cope-c h5{color:#93c5fd}
+.int-tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.76rem;font-weight:600;margin:3px 2px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1)}
+.int-desc{font-size:.83rem;opacity:.82;margin-top:8px;line-height:1.5}
+.int-arrow-center{display:flex;align-items:center;justify-content:center;padding:8px 0;color:rgba(255,255,255,.5);font-size:1.4rem}
+
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
+
+/* ── Implication steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc p{margin:0;font-size:.92rem}
+
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.qexpl{margin-top:14px;padding:12px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.qexpl.show{display:block}
+.qexpl.right{background:#f0fdf4;border:1px solid #a7f3d0;color:#065f46}
+.qexpl.wrong{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+.quiz-btn{display:block;width:100%;max-width:320px;margin:28px auto 0;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:var(--rs);font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.quiz-btn:hover{background:var(--blue-d)}
+.quiz-score{text-align:center;font-size:1.25rem;font-weight:700;color:var(--blue-d);margin-top:20px;display:none}
+.score-bar{height:10px;background:#dbeafe;border-radius:5px;margin:12px auto;max-width:320px;overflow:hidden}
+.score-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:5px;transition:width .5s}
+
+/* ── Footer ── */
+.footer{background:#0f172a;color:rgba(255,255,255,.55);text-align:center;padding:28px 24px;font-size:.85rem}
+.footer strong{color:rgba(255,255,255,.8)}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .main{padding:32px 16px 48px}
+  #quiz{padding:28px 18px}
+  .ms-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .int-grid{grid-template-columns:1fr}
+  .pmt-appraisals{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-tag">Chapter 6 · 第六章</div>
+    <h1>網路安全行為改變介入
+      <small>Behavior Change Interventions for Cybersecurity</small>
+    </h1>
+    <p class="hero-sub">
+      結合行為經濟學、MINDSPACE 框架與保護動機理論，設計有效的網路安全行為改變策略
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge">P. Briggs · D. Jeske · L. Coventry</span>
+      <span class="hero-badge">Northumbria University &amp; Edinburgh Napier University</span>
+      <span class="hero-badge">Little, Sillence &amp; Joinson (2017)</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#intro" class="toc-link">01 導論</a>
+    <a href="#choice" class="toc-link">02 選擇架構</a>
+    <a href="#dual" class="toc-link">03 雙系統思維</a>
+    <a href="#mindspace" class="toc-link">04 MINDSPACE</a>
+    <a href="#pmt" class="toc-link">05 PMT 理論</a>
+    <a href="#integrate" class="toc-link">06 整合框架</a>
+    <a href="#implications" class="toc-link">07 實踐建議</a>
+    <a href="#quiz" class="toc-link">08 測驗</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: 導論
+════════════════════════════════════════════════ -->
+<section class="section" id="intro">
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div class="sec-title">
+      <h2>導論：行為經濟學遇見網路安全</h2>
+      <div class="en-sub">Introduction: Behavioral Economics Meets Cybersecurity</div>
+    </div>
+  </div>
+
+  <p>近年來，如何運用<span class="en">behavior change models</span>（行為改變模型）來設計行為介入策略，已成為學術研究與政策制定的核心議題。其中，<span class="en">behavioral economics</span>（行為經濟學）領域的研究尤為突出——不同於傳統經濟學預設人是「完全理性」的決策者，行為經濟學承認人類決策充滿可預測的偏誤，並主張可以利用這些偏誤設計更有效的介入措施。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tb" style="margin-bottom:10px">行為經濟學經典著作</div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:12px">Thaler &amp; Sunstein (2008)</h3>
+      <div class="en-quote">"Nudge: Improving Decisions About Health, Wealth and Happiness"</div>
+      <div class="zh-note">提出「推力」概念，探討如何透過設計選擇環境，在不強制的情況下引導人們做出更好的決定。</div>
+    </div>
+    <div class="card">
+      <div class="tag tp" style="margin-bottom:10px">認知心理學奠基之作</div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--purple);margin-bottom:12px">Kahneman (2011)</h3>
+      <div class="en-quote">"Thinking, Fast and Slow"</div>
+      <div class="zh-note">提出<span class="en">System 1</span>（快速直覺思維）與<span class="en">System 2</span>（慢速分析思維）的雙歷程理論，說明大多數日常決策仰賴快速的直覺判斷。</div>
+    </div>
+  </div>
+
+  <p>與此同時，傳統心理學模型如 <span class="en">Theory of Reasoned Action</span>（Fishbein &amp; Ajzen, 1975）和 <span class="en">Theory of Planned Behavior</span>（Ajzen, 1991）則著重描述態度與行為之間的關係。本章將這兩種取向整合，聚焦於如何在網路安全領域設計有效的行為改變介入。</p>
+
+  <div class="callout">
+    <h4>本章核心問題</h4>
+    <p>如何結合行為經濟學的「推力」工具（MINDSPACE 框架）與心理學的動機理論（保護動機理論 PMT），設計出能真正改變使用者網路安全行為的介入策略？</p>
+    <div class="en-quote-w">How can MINDSPACE nudges and Protection Motivation Theory (PMT) be effectively linked to provide a more integrated framework for shaping cybersecurity behavior change strategies?</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: 選擇架構與推力
+════════════════════════════════════════════════ -->
+<section class="section" id="choice">
+  <div class="sec-header">
+    <div class="sec-num">02</div>
+    <div class="sec-title">
+      <h2>行為經濟學與選擇架構</h2>
+      <div class="en-sub">Behavioral Economics &amp; Choice Architecture</div>
+    </div>
+  </div>
+
+  <h3>選擇架構的定義</h3>
+  <p><span class="en">Choice architecture</span>（選擇架構）是指透過刻意安排選項的呈現方式，在特定環境中引導決策的系統性設計。本質上，選項的呈現從來就沒有「中立」的方式——每種設計都在有意或無意地偏向某些選項。</p>
+
+  <div class="hl">
+    <p><strong>核心概念：選擇架構的運作邏輯</strong></p>
+    <p>選擇架構透過<span class="en">default settings</span>（預設值）、簡化的通知、社會規範的暗示，以及各種訊息框架操作，使某些選項看起來更容易或更有吸引力。這些設計在人們快速決策時（仰賴 System 1）尤其有效。</p>
+  </div>
+
+  <h3>推力（Nudge）的定義</h3>
+  <div class="callout">
+    <h4>Nudge 的操作定義</h4>
+    <div class="en-quote-w">"A nudge is any aspect of the choice architecture that alters people's behavior in a predictable way without forbidding any options or significantly changing their economic incentives."</div>
+    <p style="margin-top:12px;font-size:.93rem">「推力」是指選擇架構中任何能以可預測方式改變人們行為的設計，但並不禁止任何選項，也不顯著改變其經濟誘因。換言之，推力保留了選擇的自由，同時巧妙地引導行為。</p>
+  </div>
+
+  <h3>英國政府行為洞察團隊（Nudge Unit）</h3>
+  <p>在英國，行為經濟學的應用已形成正式政策工具。2013年，<span class="en">UK Government Behavioural Insights Team</span>（英國政府行為洞察團隊）成立，俗稱「<span class="en">Nudge Unit</span>」（推力小組）。這個團隊的任務是運用行為科學的洞見制定公共政策，範圍涵蓋健康、退休規劃、投票參與等領域。最重要的是，他們發展出了 <span class="en">MINDSPACE</span> 框架——一套系統整理行為影響因素的工具。</p>
+
+  <h3>網路安全中的推力應用</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tb">智慧型手機</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0">鎖定行為的推力</h3>
+      <p style="font-size:.88rem;margin:0">Van Bruggen 等人（2013）以道德、威懾、誘因三種框架的訊息，推動使用者鎖定智慧型手機。研究顯示，不同框架對鎖定行為有差異化影響。</p>
+    </div>
+    <div class="card">
+      <div class="tag tp">隱私評分</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0">視覺化隱私指標</h3>
+      <p style="font-size:.88rem;margin:0">Choe 等人（2013）嘗試透過訊息框架（正面/負面）與視覺化隱私評分（顏色與符號）推動使用者避開侵犯隱私的 App。發現視覺指標比訊息框架更能影響安裝決策。</p>
+    </div>
+    <div class="card">
+      <div class="tag tg">防火牆</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0">風險訊息傳達</h3>
+      <p style="font-size:.88rem;margin:0">Raja 等人（2011）發現，傳遞風險資訊及更安全線上行為的訊息，能顯著提升使用者對防火牆功能的理解，並改善他們評估行為後果的能力。</p>
+    </div>
+    <div class="card">
+      <div class="tag ta">無線網路</div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:8px 0">選單排序與色彩編碼</h3>
+      <p style="font-size:.88rem;margin:0">Turland 等人（2015）利用菜單排序與色彩編碼，使安全的無線網路選項更突出，成功引導使用者選擇較安全的網路連接。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3: 雙系統思維
+════════════════════════════════════════════════ -->
+<section class="section" id="dual">
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div class="sec-title">
+      <h2>雙系統思維在網路安全中的角色</h2>
+      <div class="en-sub">System 1 vs. System 2 in Cybersecurity Decision-Making</div>
+    </div>
+  </div>
+
+  <p>Kahneman（2011）提出的雙歷程理論，為理解使用者網路安全決策提供了關鍵框架。選擇架構的設計應對應不同的思維系統，因為人們在面對安全提示時，往往依賴快速的直覺判斷，而非深思熟慮的分析。</p>
+
+  <div class="dual">
+    <div class="proc sys1">
+      <div class="proc-badge">System 1 · 快思維</div>
+      <h4>Fast Thinking 快速直覺系統</h4>
+      <ul>
+        <li><div><strong>自動化運作</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">無需刻意思考，快速做出反應</span></div></li>
+        <li><div><strong>依賴捷思法</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">運用過去習慣與經驗做判斷</span></div></li>
+        <li><div><strong>選擇架構的主要目標</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">推力設計在此系統下最為有效</span></div></li>
+        <li><div><strong>點擊警告通知</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">多數人習慣性地忽略安全警告</span></div></li>
+        <li><div><strong>使用預設密碼</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">不更改預設值的惰性行為</span></div></li>
+        <li><div><strong>開啟釣魚郵件</strong><span style="display:block;font-size:.82rem;color:#7c2d12;margin-top:2px">未仔細分析就點擊可疑連結</span></div></li>
+      </ul>
+    </div>
+    <div class="proc sys2">
+      <div class="proc-badge">System 2 · 慢思維</div>
+      <h4>Slow Thinking 慢速分析系統</h4>
+      <ul>
+        <li><div><strong>刻意分析與評估</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">需要時間和認知資源的深度思考</span></div></li>
+        <li><div><strong>理性的威脅評估</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">對威脅嚴重性與自身脆弱性的判斷</span></div></li>
+        <li><div><strong>PMT 理論的核心</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">保護動機理論依賴此系統運作</span></div></li>
+        <li><div><strong>評估密碼強度</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">主動思考並選擇更強的密碼</span></div></li>
+        <li><div><strong>驗證電子郵件真偽</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">核查發件人、連結與內容的一致性</span></div></li>
+        <li><div><strong>制定組織安全政策</strong><span style="display:block;font-size:.82rem;color:#1e3a5f;margin-top:2px">深思熟慮的政策規劃與風險管理</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>關鍵洞見：</strong>在一般情況下（例如超市購物），System 1 主導決策。<strong>選擇架構和推力在人們快速依賴 System 1 決策時最為有效</strong>。當網路安全問題被設計進日常操作介面中，就可以在不需要使用者深思的情況下，引導出更安全的行為。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4: MINDSPACE 框架
+════════════════════════════════════════════════ -->
+<section class="section" id="mindspace">
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div class="sec-title">
+      <h2>MINDSPACE 框架：九大行為影響因素</h2>
+      <div class="en-sub">MINDSPACE Framework: Nine Behavioral Influencers</div>
+    </div>
+  </div>
+
+  <p><span class="en">MINDSPACE</span> 框架由 Dolan 等人（2012）為輔助政策制定而發展，與英國政府行為洞察團隊密切相關。它精煉了行為改變底層歷程、心理限制與認知偏誤的學術研究成果，形成九個影響因素，作為建構選擇架構的基礎。</p>
+
+  <div class="en-quote">"MINDSPACE concisely documents the academic research on the underlying processes, mental constraints, and cognitive biases of behavior change, pulling these into a set of nine influences upon which choice architectures can be built." — Dolan et al. (2012)</div>
+  <div class="zh-note">MINDSPACE 框架精煉了學術研究成果，整合行為改變底層歷程、心理限制與認知偏誤，形成九個可供選擇架構建構的影響因素，兼顧環境、社會與個人三個層面的影響。</div>
+
+  <!-- MINDSPACE Grid -->
+  <div class="ms-grid">
+
+    <!-- M: Messenger -->
+    <div class="ms-card ms-M">
+      <div class="ms-letter">M</div>
+      <div class="ms-name-en">Messenger Effects</div>
+      <div class="ms-name-zh">傳訊者效應</div>
+      <div class="ms-app">訊息傳遞者的可信度影響行為。員工更傾向信任同儕或直屬主管，而非 IT 部門「專家」，從而形成組織內的「影子安全」文化（shadow security）。</div>
+    </div>
+
+    <!-- I: Incentives -->
+    <div class="ms-card ms-I">
+      <div class="ms-letter">I</div>
+      <div class="ms-name-en">Incentives</div>
+      <div class="ms-name-zh">誘因機制</div>
+      <div class="ms-app">獎勵與制裁對安全行為的效果不一。Herath &amp; Rao（2009）發現，<strong>過嚴的懲罰反而降低未來遵從意圖</strong>。適度制裁在能被偵測到且政策合理時效果最好。</div>
+    </div>
+
+    <!-- N: Norms -->
+    <div class="ms-card ms-N">
+      <div class="ms-letter">N</div>
+      <div class="ms-name-en">Norms</div>
+      <div class="ms-name-zh">社會規範</div>
+      <div class="ms-app">規範信念是員工遵從安全政策意圖的最強預測因子（Herath &amp; Rao, 2009; Siponen et al., 2010）。社會佐證介入可增加登入通知、登入核准等安全功能的採用率。</div>
+    </div>
+
+    <!-- D: Defaults -->
+    <div class="ms-card ms-D">
+      <div class="ms-letter">D</div>
+      <div class="ms-name-en">Defaults</div>
+      <div class="ms-name-zh">預設值</div>
+      <div class="ms-app">使用者鮮少更改預設設定，即使已獲得專業建議（Shah &amp; Sandvig, 2008）。「隱私預設」（privacy by default）可自動設定較高的安全配置，無需使用者主動操作。</div>
+    </div>
+
+    <!-- S: Salience -->
+    <div class="ms-card ms-S">
+      <div class="ms-letter">S</div>
+      <div class="ms-name-en">Salience</div>
+      <div class="ms-name-zh">顯著性</div>
+      <div class="ms-app">使某些選項的後果更為突顯可改善安全決策。視覺化隱私評分、色彩編碼的安全警告，以及針對未預期訊息接收者的即時提示，均被證明有效。</div>
+    </div>
+
+    <!-- P: Priming -->
+    <div class="ms-card ms-P">
+      <div class="ms-letter">P</div>
+      <div class="ms-name-en">Priming</div>
+      <div class="ms-name-zh">情境促發</div>
+      <div class="ms-app">安全相關的環境線索可在無意識層面影響後續行為。預期收到釣魚郵件的使用者在偵測攻擊上明顯較佳（Parsons et al., 2015）。紅色（警示）／綠色（安全）的色彩促發已被驗證有效。</div>
+    </div>
+
+    <!-- A: Affect -->
+    <div class="ms-card ms-A">
+      <div class="ms-letter">A</div>
+      <div class="ms-name-en">Affect</div>
+      <div class="ms-name-zh">情感效應</div>
+      <div class="ms-app">恐懼訴求是常見但效果有限的工具——過度的恐懼反而可能引發否認（maladaptive response）。負面情感（羞恥感、預期性後悔）在某些情境下有效，如鼓勵鎖定手機或遵循密碼規則。</div>
+    </div>
+
+    <!-- C: Commitment -->
+    <div class="ms-card ms-C">
+      <div class="ms-letter">C</div>
+      <div class="ms-name-en">Commitment</div>
+      <div class="ms-name-zh">承諾機制</div>
+      <div class="ms-app">公開承諾可強化後續行為的一致性。然而，許多員工對職場安全責任的承諾感薄弱——技術知識低落者尤其缺乏安全承諾（Jenkins et al., 2010）。</div>
+    </div>
+
+    <!-- E: Ego -->
+    <div class="ms-card ms-E">
+      <div class="ms-letter">E</div>
+      <div class="ms-name-en">Ego</div>
+      <div class="ms-name-zh">自我形象</div>
+      <div class="ms-app">人們傾向維持正面且一致的自我形象。獲得管理層支持的員工更願意採取安全行為；能同時兼顧生產力與安全的環境，會強化安全行為；提升自我效能感（self-efficacy）的介入具有正面效果。</div>
+    </div>
+
+  </div><!-- end ms-grid -->
+
+  <hr class="div">
+
+  <!-- M - Detailed -->
+  <h3>M — 傳訊者效應 <span style="font-size:.82rem;font-weight:400;color:var(--muted);font-style:italic">Messenger Effects</span></h3>
+  <p>傳訊者效應在廣告業廣為人知，但在網路安全領域研究相對有限。核心問題在於：<strong>網路安全「專家」有時被視為不切實際安全政策的執法者</strong>。</p>
+  <div class="en-quote">"Employees don't always turn to IT or cybersecurity experts for information and advice, but will, instead, approach peers or immediate line managers as these people are seen as more useful as a source of unofficial but practical cybersecurity knowledge."</div>
+  <div class="zh-note">員工往往不向 IT 或網路安全專家尋求建議，而是轉向同事或直屬主管——因為後者被視為非正式但實用安全知識的來源。這種做法導致組織內形成「<span class="en">shadow security</span>」（影子安全）系統（Kirlappos et al., 2015）。</div>
+
+  <!-- I - Detailed -->
+  <h3>I — 誘因機制 <span style="font-size:.82rem;font-weight:400;color:var(--muted);font-style:italic">Incentives</span></h3>
+  <p>誘因在網路安全中的效果呈現複雜面貌：</p>
+  <div class="grid-2">
+    <div class="hl red">
+      <p><strong>制裁的局限性</strong></p>
+      <p style="font-size:.88rem">Herath &amp; Rao（2009）發現，<strong>最嚴重的懲罰實際上降低了未來遵從政策的意圖</strong>。過度控制可能破壞心理契約，導致員工將遵從壓力視為工作干擾，以不遵從作為抗議。</p>
+    </div>
+    <div class="hl green">
+      <p><strong>有效制裁的條件</strong></p>
+      <p style="font-size:.88rem">Siponen 等人（2010）指出，當<strong>（1）違規行為可被可靠偵測</strong>，且<strong>（2）制裁被早期執行</strong>時，制裁才是提升安全政策遵從的有效方式。員工還必須認為政策合理且有效。</p>
+    </div>
+  </div>
+
+  <!-- N - Detailed -->
+  <h3>N — 社會規範 <span style="font-size:.82rem;font-weight:400;color:var(--muted);font-style:italic">Norms</span></h3>
+  <p>規範是指群體成員認為在特定情境中理想或適當的行為。在多項研究中，「<span class="en">normative beliefs</span>」（規範信念）是員工遵從安全政策意圖的<strong>最大單一預測因子</strong>。</p>
+  <div class="hl purple">
+    <p><strong>「影子安全」（Shadow Security）與社會規範</strong></p>
+    <p style="font-size:.88rem">當官方安全規範被視為不切實際時，員工會自發建立自己的非正式安全規範——即「影子安全」系統。這些非正式規範往往比官方政策更受員工信任，反映了真實工作環境中的生產力-安全取捨。</p>
+  </div>
+
+  <!-- D - Detailed -->
+  <h3>D — 預設值 <span style="font-size:.82rem;font-weight:400;color:var(--muted);font-style:italic">Defaults</span></h3>
+  <p>預設值是網路安全中最直接的選擇架構工具之一：</p>
+  <ul style="list-style:none;padding:0;margin-bottom:16px">
+    <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:.9rem">› <strong>預設隱私設定</strong>：自動設定較嚴格的 SNS 隱私配置（Fank &amp; LeFevre, 2010）</li>
+    <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:.9rem">› <strong>強制密碼規則</strong>：預設要求密碼具備特定複雜度（Florencio &amp; Herley, 2010）</li>
+    <li style="padding:6px 0;font-size:.9rem">› <strong>反例注意</strong>：部分預設值反而阻礙安全（如 Android 權限預設設定）</li>
+  </ul>
+
+  <!-- E - Detailed -->
+  <h3>E — 自我形象 <span style="font-size:.82rem;font-weight:400;color:var(--muted);font-style:italic">Ego</span></h3>
+  <div class="en-quote">"People are naturally driven to adopt more of those behaviors that make them feel better about themselves and less of those behaviors that make them feel worse. People strive to present a positive and consistent self-image."</div>
+  <div class="zh-note">人們天生傾向採取讓自己感覺更好的行為，並努力呈現正面且一致的自我形象。在網路安全領域，獲得管理層支持的員工、能兼顧安全與生產力的環境，以及強化自我效能感的介入，都能有效促進安全行為。</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5: 保護動機理論 PMT
+════════════════════════════════════════════════ -->
+<section class="section" id="pmt">
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div class="sec-title">
+      <h2>保護動機理論（PMT）</h2>
+      <div class="en-sub">Protection Motivation Theory by Rogers (1975)</div>
+    </div>
+  </div>
+
+  <p><span class="en">Protection Motivation Theory</span>（PMT；Rogers, 1975）最初是為了釐清恐懼作為行為動機的機制而發展，後來擴展到更廣泛的說服性溝通心理機制研究。PMT 在健康行為領域廣泛應用，近年來也成為網路安全領域最常引用的行為改變模型之一。</p>
+
+  <!-- PMT Diagram -->
+  <div class="pmt-wrapper">
+    <h4>PMT 模型結構圖 — Protection Motivation Theory Flow</h4>
+
+    <div class="pmt-appraisals">
+      <!-- Threat Appraisal Column -->
+      <div class="pmt-ap-col">
+        <div class="pmt-ap-head threat-h">威脅評估 Threat Appraisal</div>
+        <div class="pmt-ap-body threat-b">
+          <div class="pmt-component">
+            <div class="pmt-dot dot-red"></div>
+            <div>
+              <strong style="font-size:.85rem;color:var(--red)">感知嚴重性</strong>
+              <div style="font-size:.78rem;color:var(--muted)">Perceived Severity</div>
+              <div style="font-size:.8rem;margin-top:3px">對威脅破壞程度的個人評估，受個人心智模型與專業知識影響</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--red);font-size:1rem;padding:4px 0;font-weight:700">＋</div>
+          <div class="pmt-component">
+            <div class="pmt-dot dot-orange"></div>
+            <div>
+              <strong style="font-size:.85rem;color:#ea580c">感知脆弱性</strong>
+              <div style="font-size:.78rem;color:var(--muted)">Perceived Vulnerability</div>
+              <div style="font-size:.8rem;margin-top:3px">個人認為自己會受到威脅影響的程度，受個性特質與行為習慣影響</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coping Appraisal Column -->
+      <div class="pmt-ap-col">
+        <div class="pmt-ap-head cope-h">因應評估 Coping Appraisal</div>
+        <div class="pmt-ap-body cope-b">
+          <div class="pmt-component">
+            <div class="pmt-dot dot-blue"></div>
+            <div>
+              <strong style="font-size:.85rem;color:var(--blue)">反應效能</strong>
+              <div style="font-size:.78rem;color:var(--muted)">Response Efficacy</div>
+              <div style="font-size:.8rem;margin-top:3px">相信某行為能有效應對威脅的程度（知道「做什麼」）</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--blue);font-size:1rem;padding:4px 0;font-weight:700">＋</div>
+          <div class="pmt-component">
+            <div class="pmt-dot dot-cyan"></div>
+            <div>
+              <strong style="font-size:.85rem;color:#0891b2">自我效能感</strong>
+              <div style="font-size:.78rem;color:var(--muted)">Self-Efficacy</div>
+              <div style="font-size:.8rem;margin-top:3px">對自己能夠執行保護行為的信心（知道「怎麼做」）</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--red);font-size:1rem;padding:4px 0;font-weight:700">−</div>
+          <div class="pmt-component">
+            <div class="pmt-dot dot-red2"></div>
+            <div>
+              <strong style="font-size:.85rem;color:#be123c">反應成本</strong>
+              <div style="font-size:.78rem;color:var(--muted)">Response Cost</div>
+              <div style="font-size:.8rem;margin-top:3px">採取保護行為所需付出的時間、精力與生產力代價</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Flow -->
+    <div class="pmt-result">
+      <div class="pmt-block pmt-motive">
+        <strong>保護動機</strong>
+        <div class="pmt-sub">Protection Motivation<br>威脅評估高 ＋ 因應評估高<br>= 形成保護動機</div>
+      </div>
+      <div class="pmt-arrow">→</div>
+      <div class="pmt-block pmt-behav">
+        <strong>保護行為</strong>
+        <div class="pmt-sub">Protective Behavior<br>採取具體的網路安全保護行動</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>威脅評估：感知嚴重性</h3>
+  <p><span class="en">Perceived severity</span>（感知嚴重性）是個人理解與經驗的函數，反映個人圍繞網路安全所建立的心智模型。專業知識在威脅感知評估中扮演重要角色——資安長（CISO）等高階管理者更能校正其威脅感知。</p>
+  <div class="hl amber">
+    <p><strong>組織環境的重要性：</strong>設有專屬 IT 部門的組織，員工可能將威脅評估責任完全委託出去，無意間使自身的威脅意識減弱。因此，<strong>組織環境塑造了員工的威脅意識與應對責任感</strong>。</p>
+  </div>
+
+  <h3>威脅評估：感知脆弱性</h3>
+  <p><span class="en">Perceived vulnerability</span>（感知脆弱性）反映個人認為自己會受到威脅影響的程度。Pew Research Institute 調查顯示，在 Heartbleed 漏洞事件公告後，39% 的網路使用者更改了密碼或取消帳號——這說明<strong>高度顯著的個人威脅感知能觸發真實的行為改變</strong>。</p>
+  <p>感知脆弱性受個人差異影響：</p>
+  <div class="grid-2">
+    <div class="hl">
+      <p><strong>個性特質的影響</strong></p>
+      <p style="font-size:.88rem">高度「<span class="en">openness to experience</span>」（開放性）的使用者較不擔心隱私威脅，更易受攻擊（Halevi et al., 2013）；內向者則在線上行為中表現出更高的謹慎度（Kraut et al., 1998）。</p>
+    </div>
+    <div class="hl green">
+      <p><strong>個人化介入的效果</strong></p>
+      <p style="font-size:.88rem">能確保更現實威脅感知、或針對個人擔憂與誤解量身訂製的介入，比「一體適用」方法更為有效（Rasul &amp; Hollywood, 2012）。</p>
+    </div>
+  </div>
+
+  <h3>因應評估：反應成本的關鍵角色</h3>
+  <p><span class="en">Response cost</span>（反應成本）是指使用者為了應對安全威脅而必須犧牲生產力的程度。這是網路安全行為中最被忽視卻最重要的因素之一。</p>
+  <div class="en-quote">"Most security actions require that users step away from their primary task and devote unrealistic amounts of time and effort into protection... Such solutions are not considered productive and can in fact cost an organization both time and money."</div>
+  <div class="zh-note">大多數安全措施要求使用者暫停主要工作，花費不切實際的時間和精力來進行防護。這類解決方案被視為無生產力，實際上會讓組織付出時間和金錢的代價。這正是「<span class="en">shadow security</span>」（影子安全）文化形成的根本原因——員工採取自認為能提供足夠保護、但又不過多犧牲生產力的折衷行為。</div>
+
+  <h3>自我效能感在網路安全中的角色</h3>
+  <p><span class="en">Self-efficacy</span>（自我效能感；Bandura, 1977）是指個人對自己能夠完成任務的信念。低自我效能感的使用者往往對管理威脅缺乏自信，研究顯示其與多種安全行為相關：</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="tag tg" style="margin-bottom:8px">正相關行為</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">› 病毒防護軟體使用行為</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">› 個人防火牆的啟用</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">› 電子郵件附件的謹慎處理</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">› 防間諜軟體的採用</li>
+        <li style="padding:4px 0">› 遵守密碼準則</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="tag tr" style="margin-bottom:8px">重要警示</div>
+      <p style="font-size:.88rem">Rhee 等人（2009）發現，<strong>遭遇安全事件的經歷與自我效能感呈負相關</strong>——安全威脅的經歷反而可能降低個人的安全自我效能感。因此，<strong>提升自我效能感的介入措施在改善安全行為上具有重要效益</strong>（He et al., 2014）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6: 整合框架
+════════════════════════════════════════════════ -->
+<section class="section" id="integrate">
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div class="sec-title">
+      <h2>MINDSPACE + PMT 整合框架</h2>
+      <div class="en-sub">An Integrated Approach to Cybersecurity Interventions</div>
+    </div>
+  </div>
+
+  <p>MINDSPACE 提供了實用主義的方法——九個影響因素是可以直接操控行為的「槓桿」，但它本身並不深入探討這些影響因素背後的心理構件。PMT 則相反，它著重於使用者如何在心理層面評估威脅和因應能力。整合兩者，可以為組織的網路安全介入設計提供更完整的工具包。</p>
+
+  <div class="int-frame">
+    <h4>PMT 的兩大評估維度 × MINDSPACE 的介入工具</h4>
+    <div class="int-grid">
+      <div class="int-col threat-c">
+        <h5>提升威脅評估（Threat Appraisal）</h5>
+        <p style="font-size:.82rem;opacity:.8;margin-bottom:10px">目標：增強對威脅嚴重性與個人脆弱性的感知</p>
+        <div>
+          <span class="int-tag">S 顯著性</span>
+          <span class="int-tag">A 情感訴求</span>
+          <span class="int-tag">M 傳訊者</span>
+          <span class="int-tag">N 社會規範</span>
+          <span class="int-tag">I 誘因</span>
+          <span class="int-tag">E 自我形象</span>
+        </div>
+        <div class="int-desc">
+          <strong>具體介入策略：</strong><br>
+          · 重新設計威脅訊息（調整語言、時機與持續時間）<br>
+          · 利用傳訊者效應強化訊息公信力<br>
+          · 個人化「量身訂製」訊息提升相關性<br>
+          · 道德/情感訴求（謹慎過度，避免否認反應）<br>
+          · 重設對話框設計以更清楚傳遞威脅
+        </div>
+      </div>
+      <div class="int-col cope-c">
+        <h5>提升因應評估（Coping Appraisal）</h5>
+        <p style="font-size:.82rem;opacity:.8;margin-bottom:10px">目標：增強反應效能與自我效能感，降低反應成本</p>
+        <div>
+          <span class="int-tag">M 傳訊者</span>
+          <span class="int-tag">N 社會規範</span>
+          <span class="int-tag">I 誘因</span>
+          <span class="int-tag">E 自我效能</span>
+          <span class="int-tag">C 承諾</span>
+          <span class="int-tag">D 預設值</span>
+        </div>
+        <div class="int-desc">
+          <strong>具體介入策略：</strong><br>
+          · 同儕或主管作為可接觸的因應建議來源<br>
+          · 同儕認可（正面情感/自我）作為社會獎勵<br>
+          · 提升員工對適切安全回應的理解<br>
+          · 制裁作為短期遵從激勵（謹慎過度）<br>
+          · 透過預設值降低安全行為的認知成本
+        </div>
+      </div>
+    </div>
+    <div class="int-arrow-center">↓</div>
+    <div style="background:rgba(255,255,255,.1);border-radius:var(--rs);padding:16px;text-align:center">
+      <strong style="font-size:.95rem">整合效果：從惰性到行動的行為鐘擺</strong>
+      <p style="font-size:.83rem;opacity:.8;margin-top:6px;margin-bottom:0">同時提升威脅評估與因應評估，才能有效將行為從「不行動」推向「保護性行動」。單一維度的介入效果有限。</p>
+    </div>
+  </div>
+
+  <h3>改變威脅評估的挑戰</h3>
+  <div class="en-quote">"While threat awareness is necessary, it is by no means a sufficient means of inducing secure behavior."</div>
+  <div class="zh-note">威脅意識雖然必要，但絕非引發安全行為的充分條件。人們只有在感受到對「威脅對象」的所有感（例如個人的數位資產或組織）時，才會真正體驗到威脅。這解釋了為何僅靠恐懼訴求效果有限。</div>
+
+  <p>有效的威脅訊息設計原則（Modic &amp; Anderson, 2014）：</p>
+  <div class="grid-2">
+    <div class="hl">
+      <p><strong>1. 清晰、具體、非技術性</strong></p>
+      <p style="font-size:.88rem">最有效的惡意軟體警告是那些清楚定義個人若忽略警告所面臨的風險範圍者。避免過於技術性的描述。</p>
+    </div>
+    <div class="hl purple">
+      <p><strong>2. 社會影響力</strong></p>
+      <p style="font-size:.88rem">引用權威來源或社群意見（甚至 Facebook 好友的意見）可增強訊息效果。社交媒體友人的意見有時比一般朋友更具影響力。</p>
+    </div>
+  </div>
+
+  <h3>改變因應評估的策略</h3>
+  <p>提升使用者採取行動的動機，同時降低行動的感知成本，是因應評估介入的核心目標：</p>
+  <div class="hl green">
+    <p><strong>關鍵洞見：「生產性安全」（Productive Security）</strong></p>
+    <p style="font-size:.88rem">減少安全行為對生產力影響的方法至關重要。組織應探索「生產性安全」——即在不大幅降低工作效率的前提下實現安全目標的方法。這既是反應成本的問題，也是組織文化與工作設計的問題。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7: 實踐建議
+════════════════════════════════════════════════ -->
+<section class="section" id="implications">
+  <div class="sec-header">
+    <div class="sec-num">07</div>
+    <div class="sec-title">
+      <h2>對網路安全管理者的實踐建議</h2>
+      <div class="en-sub">Practical Implications for Cybersecurity Managers</div>
+    </div>
+  </div>
+
+  <p>將 MINDSPACE 與 PMT 整合應用於組織的網路安全策略設計，需遵循幾個關鍵原則。Briggs 等人（2017）提出了以下成功行為改變框架的必要條件：</p>
+
+  <ol class="steps">
+    <li>
+      <div class="sc">
+        <strong>確認目標行為的現實性與可達成性</strong>
+        <p>評估目標受眾是否能在現實工作需求下執行目標行為。許多 PMT 研究聚焦於安全政策遵從，但這些政策有時對兼顧多重工作需求的員工而言根本不切實際。</p>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:4px;font-style:italic">Is the target behavior realistic and achievable for the target audience given their existing work demands?</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>建立清晰一致的訊息框架</strong>
+        <p>相較於健康領域（「戒菸」、「多喝水」等訊息明確且獲廣泛支持），網路安全領域充斥著關於理想行為的矛盾訊息。組織應確立清楚、一致且可操作的核心安全訊息。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>選擇最適切的行為模型</strong>
+        <p>不同行為改變模型各有優缺點。本章聚焦 PMT，但分析當前選擇架構時，也需理解為何使用者不執行期望行為，並留意潛藏的隱性激勵與影響因素。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>分析現有選擇架構中的障礙</strong>
+        <p>深入了解現有介面與流程設計如何阻礙理想安全行為，特別注意那些隱而不顯的激勵與影響因素，包括員工對便利性的追求與對安全政策的感知合理性。</p>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>借鑑過去設計的經驗教訓</strong>
+        <p>文獻中充滿了未能建立在先前研究基礎上的設計失敗案例。更系統、更連貫的證據體系在此領域極為珍貴。組織應系統性地評估過去介入的效果，並將學習成果轉化為下一輪設計。</p>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:4px;font-style:italic">"The literature is fraught with design failures that didn't build appropriately on previous work." — Briggs et al. (2017)</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout">
+    <h4>結語：邁向整合性網路安全行為改變策略</h4>
+    <p>有效的行為改變方法，可能需要結合行為模型的分析深度，與對各種影響因素（如何成為障礙或促進因素）的理解，同時建立在過去已被驗證有效的介入措施之上。這個研究領域才剛起步，仍有許多關於介入設計、威脅評估改善與因應評估強化的知識需要建立。</p>
+    <div class="en-quote-w">"An effective behavior change approach is likely to combine the analytical strength of a behavioral model with an understanding of how different influencers may be acting as barriers or facilitators to the desired behavior, but will also build upon a more nuanced understanding of those interventions that have worked in the past."</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8: QUIZ
+════════════════════════════════════════════════ -->
+<section id="quiz">
+  <div class="qhead">
+    <h2>自我測驗</h2>
+    <p>從 12 題中隨機抽取 5 題，測試您對本章內容的理解</p>
+  </div>
+  <div id="quiz-container"></div>
+  <button class="quiz-btn" id="submit-btn" onclick="submitQuiz()">提交答案 Submit</button>
+  <div class="quiz-score" id="score-display">
+    <div id="score-text"></div>
+    <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+    <button class="quiz-btn" style="margin-top:16px;background:var(--green)" onclick="resetQuiz()">重新測驗 Retry</button>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>版權所有 © <strong>葉欲禾（Gary Yu-Ho Yeh）</strong></p>
+  <p style="margin-top:6px;font-size:.78rem">Behavior Change Research and Theory · Little, Sillence &amp; Joinson (2017) · Chapter 6</p>
+  <p style="margin-top:4px;font-size:.78rem">Briggs, P., Jeske, D., &amp; Coventry, L. — Northumbria University &amp; Edinburgh Napier University</p>
+</footer>
+
+<script>
+// ── Quiz Data ──
+const ALL_QUESTIONS = [
+  {
+    q: "【推力 Nudge】以下哪個最能準確描述「推力」（nudge）的定義？",
+    opts: [
+      "禁止某些危險選項以保護使用者",
+      "透過顯著改變經濟誘因來引導行為",
+      "在不禁止任何選項或顯著改變經濟誘因的情況下，以可預測方式改變行為的選擇架構設計",
+      "對不遵從行為施加強制性制裁"
+    ],
+    ans: 2,
+    expl: "Thaler &amp; Sunstein（2008）的定義：推力是選擇架構中任何能以可預測方式改變人們行為的設計，但不禁止任何選項，也不顯著改變其經濟誘因。"
+  },
+  {
+    q: "【選擇架構 Choice Architecture】「選擇架構」最核心的概念是什麼？",
+    opts: [
+      "要求使用者做出最安全選擇的強制性規定",
+      "透過安排選項的呈現方式，刻意偏向某些選擇的系統性設計",
+      "只提供最安全的單一選項",
+      "完全隨機展示所有可用選項"
+    ],
+    ans: 1,
+    expl: "選擇架構的關鍵洞見是「沒有中立的呈現方式」——每種設計都在有意或無意地偏向某些選項。選擇架構刻意利用這一點，引導使用者做出期望的決策，而不需要禁止其他選項。"
+  },
+  {
+    q: "【英國推力小組】英國政府的「推力小組」正式名稱是什麼？",
+    opts: [
+      "UK Nudge Policy Institute",
+      "Government Digital Service",
+      "UK Government Behavioural Insights Team",
+      "National Cybersecurity Behavior Unit"
+    ],
+    ans: 2,
+    expl: "2013年成立的 UK Government Behavioural Insights Team（英國政府行為洞察團隊），俗稱「Nudge Unit」（推力小組），其最重要的貢獻之一是發展了 MINDSPACE 框架。"
+  },
+  {
+    q: "【MINDSPACE - M】MINDSPACE 框架中的「M」代表什麼？在網路安全情境中有何意涵？",
+    opts: [
+      "Memory（記憶）：幫助使用者記住安全規則",
+      "Messenger（傳訊者）：訊息來源的可信度影響行為，員工更信任同儕而非 IT 專家",
+      "Motivation（動機）：內在驅動力是安全行為的主要預測因子",
+      "Monitoring（監控）：持續監控是確保安全合規的最佳方式"
+    ],
+    ans: 1,
+    expl: "M 代表 Messenger Effects（傳訊者效應）。在網路安全中，員工往往不向 IT 部門尋求建議，而是轉向被視為更有實用知識的同儕或直屬主管，從而在組織中形成「影子安全」（shadow security）系統。"
+  },
+  {
+    q: "【MINDSPACE - 預設值】關於網路安全情境中的「預設值」（Defaults），以下哪項敘述最為準確？",
+    opts: [
+      "使用者通常會積極更改預設設定以優化安全性",
+      "預設值在安全領域無關緊要，使用者總是會依自身需求調整",
+      "使用者鮮少更改預設設定，因此「隱私預設」等安全配置能在無需主動操作下發揮保護效果",
+      "預設值只在企業環境中有效，個人使用者不受其影響"
+    ],
+    ans: 2,
+    expl: "Shah &amp; Sandvig（2008）等研究發現，即使在獲得專業建議後，使用者也鮮少更改預設設定。這使得「隱私預設」成為最直接有效的選擇架構工具——可以在不依賴使用者主動介入的情況下，自動設定更安全的配置。"
+  },
+  {
+    q: "【MINDSPACE - 社會規範與影子安全】「影子安全」（shadow security）描述的是什麼現象？",
+    opts: [
+      "駭客在黑暗網路上針對企業系統的攻擊活動",
+      "IT 部門秘密監控員工的安全行為",
+      "員工自發建立的非正式安全實踐，以在官方政策被視為不切實際時尋求折衷方案",
+      "人工智慧系統自動執行的後台安全掃描"
+    ],
+    ans: 2,
+    expl: "當官方安全規範被員工視為不切實際時，他們會自發建立「影子安全」系統（Kirlappos et al., 2015）——一套非正式的安全實踐，被視為能在不過多犧牲生產力的前提下提供足夠保護。這與 Norms（規範）以及 Messenger Effects（員工信任同儕而非專家）密切相關。"
+  },
+  {
+    q: "【PMT - 威脅評估】PMT 的「威脅評估」（Threat Appraisal）包含哪兩個子要素？",
+    opts: [
+      "自我效能感（self-efficacy）與反應效能（response efficacy）",
+      "感知嚴重性（perceived severity）與感知脆弱性（perceived vulnerability）",
+      "威脅意識（threat awareness）與保護動機（protection motivation）",
+      "恐懼程度（fear level）與規避意圖（avoidance intention）"
+    ],
+    ans: 1,
+    expl: "PMT 的威脅評估包含兩個相互獨立的子要素：感知嚴重性（perceived severity，對威脅破壞程度的評估）與感知脆弱性（perceived vulnerability，個人認為自己會受威脅影響的程度）。兩者共同構成整體威脅評估，進而影響保護動機。"
+  },
+  {
+    q: "【PMT - 因應評估】PMT 的「因應評估」（Coping Appraisal）由哪些成分組成？",
+    opts: [
+      "只有反應效能（response efficacy）一個成分",
+      "威脅嚴重性（threat severity）加上自我效能感（self-efficacy）",
+      "反應效能（+）加上自我效能感（+）再減去反應成本（−）",
+      "規範信念（normative beliefs）加上行為意圖（behavioral intention）"
+    ],
+    ans: 2,
+    expl: "因應評估包含三個成分：（1）反應效能（response efficacy）——相信某行為能有效應對威脅；（2）自我效能感（self-efficacy）——對自己能執行該行為的信心；（3）反應成本（response cost）——採取保護行為的代價。前兩者增強保護動機，反應成本則削弱它。"
+  },
+  {
+    q: "【PMT - 反應成本】為什麼「反應成本」（Response Cost）在網路安全行為研究中特別重要？",
+    opts: [
+      "因為安全軟體購買費用是最大的合規障礙",
+      "因為大多數安全措施要求使用者暫停主要工作、付出不切實際的時間，且往往被視為降低生產力",
+      "因為員工通常沒有足夠預算購買安全設備",
+      "因為反應成本是衡量組織安全投資回報的主要指標"
+    ],
+    ans: 1,
+    expl: "反應成本是指為應對威脅而犧牲生產力的程度。研究（Inglesant &amp; Sasse, 2010）顯示，大多數安全措施要求使用者付出不切實際的時間與精力。當員工感受到反應成本過高時，即便理解威脅嚴重性，也可能發展出「影子安全」行為，在安全與生產力之間取得折衷。"
+  },
+  {
+    q: "【雙系統思維】在 Kahneman 的框架中，為什麼「選擇架構」（Choice Architecture）介入在 System 1 情境下更有效？",
+    opts: [
+      "因為 System 1 涉及更深思熟慮的分析，能更好地評估選項",
+      "因為 System 1 是快速、自動化的直覺思維，在無需深思的情況下易受環境設計影響",
+      "因為 System 1 的使用者具有更強的安全意識，更能遵從指導",
+      "因為 System 1 是有意識的決策系統，能辨別各種推力技術"
+    ],
+    ans: 1,
+    expl: "System 1 是快速、自動化的直覺思維系統，不依賴刻意的分析。正因如此，環境設計（選擇架構）能在不需要使用者主動思考的情況下影響其行為。選擇架構在人們依賴快速捷思做決策（如日常點擊行為）時最為有效，而非當人們進行 System 2 的深度分析時。"
+  },
+  {
+    q: "【誘因與制裁】根據 Herath &amp; Rao（2009）的研究，關於制裁在網路安全政策遵從中的效果，以下何者正確？",
+    opts: [
+      "越嚴重的制裁，員工遵從政策的意圖越高",
+      "制裁比獎勵更有效，且嚴厲程度與遵從意圖呈線性正相關",
+      "制裁在能被偵測到且政策被視為合理有效時可作為有效威懾；但最嚴厲的制裁反而降低未來遵從意圖",
+      "制裁對安全行為完全無效，只有正向激勵才有作用"
+    ],
+    ans: 2,
+    expl: "Herath &amp; Rao（2009）發現，制裁在（1）員工合理確信違規會被發現，且（2）員工認為政策合理有效時，才能作為有效威懾。然而，研究同時發現最嚴重的制裁實際上降低了未來遵從政策的意圖——過度控制可能破壞心理契約，導致員工以不遵從作為反彈。"
+  },
+  {
+    q: "【整合框架】將 MINDSPACE 與 PMT 整合的主要目的是什麼？",
+    opts: [
+      "取代現有的所有網路安全政策，以更人性化的方式執行合規",
+      "結合行為模型的分析深度與選擇架構工具的實用性，設計能同時改善威脅評估與因應評估的介入策略",
+      "主要用於評估員工的技術能力水準",
+      "建立自動化系統以取代人類在安全決策中的角色"
+    ],
+    ans: 1,
+    expl: "整合框架的核心價值在於將 PMT 的理論深度（理解使用者為何以特定方式評估威脅與因應能力）與 MINDSPACE 的實用工具（具體的行為介入技術）結合，使組織能夠設計出同時針對「威脅評估」和「因應評估」兩個維度的整合性介入策略，達到將行為從「不行動」推向「保護性行動」的目標。"
+  }
+];
+
+let selected = [];
+let submitted = false;
+
+function pickRandom(arr, n) {
+  const copy = [...arr];
+  const out = [];
+  while (out.length < n && copy.length) {
+    const i = Math.floor(Math.random() * copy.length);
+    out.push(copy.splice(i, 1)[0]);
+  }
+  return out;
+}
+
+function buildQuiz() {
+  selected = pickRandom(ALL_QUESTIONS, 5);
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  selected.forEach((q, qi) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, oi) => `
+      <li>
+        <input type="radio" name="q${qi}" id="q${qi}o${oi}" value="${oi}">
+        <label for="q${qi}o${oi}">
+          <span class="olet">${letters[oi]}</span>${o}
+        </label>
+      </li>`).join('');
+    container.innerHTML += `
+      <div class="qcard" id="qcard-${qi}">
+        <div class="qnum">${qi+1}</div>
+        <div class="qtext">${q.q}</div>
+        <ul class="opts">${optsHtml}</ul>
+        <div class="qexpl" id="expl-${qi}"></div>
+      </div>`;
+  });
+  submitted = false;
+  document.getElementById('score-display').style.display='none';
+  document.getElementById('submit-btn').style.display='block';
+}
+
+function submitQuiz() {
+  if (submitted) return;
+  submitted = true;
+  let correct = 0;
+  selected.forEach((q, qi) => {
+    const chosen = document.querySelector(`input[name="q${qi}"]:checked`);
+    const expl = document.getElementById(`expl-${qi}`);
+    const labels = document.querySelectorAll(`#qcard-${qi} .opts label`);
+    labels[q.ans].classList.add('correct');
+    if (chosen) {
+      const v = parseInt(chosen.value);
+      if (v === q.ans) {
+        correct++;
+        expl.className = 'qexpl show right';
+        expl.innerHTML = '✓ 正確！' + q.expl;
+      } else {
+        labels[v].classList.add('wrong');
+        expl.className = 'qexpl show wrong';
+        expl.innerHTML = '✗ 請再想想。' + q.expl;
+      }
+    } else {
+      expl.className = 'qexpl show wrong';
+      expl.innerHTML = '未作答。' + q.expl;
+    }
+  });
+  const pct = Math.round(correct / selected.length * 100);
+  const sd = document.getElementById('score-display');
+  document.getElementById('score-text').innerHTML = `得分：${correct} / ${selected.length}（${pct}%）`;
+  document.getElementById('score-fill').style.width = pct + '%';
+  sd.style.display = 'block';
+  document.getElementById('submit-btn').style.display = 'none';
+  sd.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz() {
+  buildQuiz();
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+
+// ── TOC active state ──
+const sections = document.querySelectorAll('.section, #quiz');
+const links = document.querySelectorAll('.toc-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, {rootMargin:'-30% 0px -65% 0px'});
+sections.forEach(s => obs.observe(s));
+
+// init
+buildQuiz();
+</script>
+</body>
+</html>

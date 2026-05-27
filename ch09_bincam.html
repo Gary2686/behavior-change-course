@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9: BinCam — 多層次勸說評估｜Evaluating Persuasion at Multiple Scales</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#064e3b,#059669 40%,#0891b2);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:6px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:12px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+.hero-meta span{background:rgba(255,255,255,.12);padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2)}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-num.g{background:var(--green)}.sec-num.p{background:var(--purple)}.sec-num.a{background:var(--amber)}.sec-num.r{background:var(--red)}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
+
+/* ── Bilingual text ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+
+/* ── Highlight boxes ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl.red{border-color:var(--red);background:#fef2f2}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+
+/* ── Callout ── */
+.callout{background:linear-gradient(135deg,#064e3b,#059669);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
+.steps.green li::before{background:var(--green)}
+.steps.green li .sc strong{color:#065f46}
+
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:14px 18px;text-align:left;font-size:.92rem;font-weight:700}
+th.green-th{background:linear-gradient(135deg,var(--green),#047857)}
+td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top;line-height:1.6}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:3px}
+
+/* ── BinCam system flow diagram ── */
+.system-flow{margin:28px 0;padding:24px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-radius:var(--r);border:1px solid #6ee7b7}
+.system-flow h4{text-align:center;font-size:1rem;font-weight:700;color:#065f46;margin-bottom:22px}
+.flow-track{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;min-width:0}
+.flow-node{background:#fff;border-radius:var(--rs);padding:14px 16px;text-align:center;border:2px solid #a7f3d0;box-shadow:0 2px 8px rgba(5,150,105,.12);min-width:110px;flex:0 1 auto}
+.flow-node .fn-icon{font-size:1.8rem;display:block;margin-bottom:6px}
+.flow-node .fn-zh{font-size:.88rem;font-weight:700;color:#065f46;display:block}
+.flow-node .fn-en{font-size:.73rem;color:var(--muted);font-style:italic;display:block;margin-top:2px}
+.flow-arrow{font-size:1.6rem;color:#059669;font-weight:700;flex-shrink:0}
+.flow-outcome{background:linear-gradient(135deg,#059669,#047857);color:#fff;border-radius:var(--rs);padding:14px 20px;text-align:center;margin-top:16px;width:100%}
+.flow-outcome .fo-zh{font-size:.95rem;font-weight:700;display:block}
+.flow-outcome .fo-en{font-size:.78rem;opacity:.85;font-style:italic;display:block;margin-top:3px}
+
+/* ── Concentric circles / multiple scales ── */
+.scales-container{margin:28px 0;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:0}
+.scale-ring{border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s}
+.scale-ring:hover{transform:scale(1.03)}
+.sr4{width:360px;height:360px;background:rgba(220,38,38,.08);border:2px solid #fca5a5}
+.sr3{width:280px;height:280px;background:rgba(217,119,6,.1);border:2px solid #fcd34d;margin:-340px 0 0}
+.sr2{width:200px;height:200px;background:rgba(37,99,235,.1);border:2px solid #93c5fd;margin:-280px 0 0}
+.sr1{width:120px;height:120px;background:rgba(5,150,105,.2);border:2px solid #6ee7b7;margin:-200px 0 0}
+
+/* Alternative: layered cards for multiple scales */
+.scales-cards{margin:28px 0}
+.scale-card{border-radius:var(--rs);padding:18px 20px;margin-bottom:12px;position:relative;border-left:5px solid;transition:transform .15s,box-shadow .15s}
+.scale-card:hover{transform:translateX(4px);box-shadow:var(--sh2)}
+.sc-ind{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#059669}
+.sc-hh{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#2563eb}
+.sc-net{background:linear-gradient(135deg,#faf5ff,#ede9fe);border-color:#7c3aed}
+.sc-soc{background:linear-gradient(135deg,#fff7ed,#fed7aa);border-color:#d97706}
+.scale-card .sk-badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.scale-card h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.scale-card .sk-en{font-size:.82rem;font-style:italic;color:var(--muted);margin-bottom:8px}
+.scale-card p{font-size:.88rem;margin:0;line-height:1.55}
+.scale-card .sk-data{font-size:.78rem;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* ── Media reaction side-by-side ── */
+.media-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+@media(max-width:640px){.media-cols{grid-template-columns:1fr}}
+.media-panel{border-radius:var(--r);padding:20px;border:2px solid}
+.mp-pos{background:#f0fdf4;border-color:#6ee7b7}
+.mp-neg{background:#fef2f2;border-color:#fca5a5}
+.mp-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.mp-header h4{font-size:.97rem;font-weight:700}
+.mp-pos .mp-header h4{color:#065f46}
+.mp-neg .mp-header h4{color:#991b1b}
+.mp-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:.88rem;line-height:1.5}
+.mp-item:last-child{border-bottom:none}
+.mp-item .mi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.mp-pos .mi-dot{background:#059669}
+.mp-neg .mi-dot{background:#dc2626}
+
+/* ── 6-week timeline ── */
+.timeline-6w{margin:24px 0}
+.tl-week{display:flex;gap:0;margin-bottom:10px;align-items:stretch}
+.tl-wlabel{min-width:70px;font-size:.78rem;font-weight:700;color:var(--muted);padding-top:4px;flex-shrink:0}
+.tl-wbar{flex:1;border-radius:var(--rs);padding:10px 14px;font-size:.84rem;line-height:1.4;position:relative;margin-left:8px}
+.wbar-1{background:#eff6ff;border:1px solid #bfdbfe}
+.wbar-2{background:#f0fdf4;border:1px solid #6ee7b7}
+.wbar-3{background:#faf5ff;border:1px solid #c4b5fd}
+.wbar-4{background:#fff7ed;border:1px solid #fed7aa}
+.wbar-5{background:#fef2f2;border:1px solid #fca5a5}
+.wbar-6{background:#f0f9ff;border:1px solid #7dd3fc}
+.tl-wbar strong{display:block;color:var(--text);font-size:.85rem}
+
+/* ── Data row ── */
+.data-row{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#fff;border-radius:var(--rs);border:1px solid var(--border);margin-bottom:10px;transition:box-shadow .2s}
+.data-row:hover{box-shadow:var(--sh)}
+.data-row .dr-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.data-row .dr-content strong{display:block;font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.data-row .dr-content .en{font-size:.8rem}
+.data-row .dr-content p{font-size:.86rem;margin:4px 0 0;color:var(--text)}
+
+/* ── Model/flow box ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}.mnode.r{background:var(--red)}.mnode.a{background:var(--amber)}
+.marrow{font-size:1.3rem;color:var(--muted)}
+
+/* ── Stat box ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:18px 0}
+.stat-box{background:#fff;border-radius:var(--r);padding:20px 16px;text-align:center;border:2px solid var(--border);box-shadow:var(--sh)}
+.stat-box .sb-num{font-size:2rem;font-weight:800;line-height:1;margin-bottom:6px}
+.stat-box .sb-unit{font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:4px}
+.stat-box .sb-label{font-size:.78rem;color:var(--text);line-height:1.4}
+.sb-blue .sb-num{color:var(--blue)}.sb-green .sb-num{color:var(--green)}.sb-amber .sb-num{color:var(--amber)}.sb-red .sb-num{color:var(--red)}.sb-purple .sb-num{color:var(--purple)}
+
+/* ── Bridge concepts ── */
+.bridge-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:22px 0}
+.bridge-card{border-radius:var(--r);padding:22px;border:2px solid;transition:transform .2s,box-shadow .2s}
+.bridge-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.bc1{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.bc2{background:linear-gradient(135deg,#faf5ff,#ede9fe);border-color:#c4b5fd}
+.bc3{background:linear-gradient(135deg,#fff7ed,#fde68a);border-color:#fcd34d}
+.bridge-card .brid-icon{font-size:2rem;margin-bottom:10px;display:block}
+.bridge-card h4{font-size:.97rem;font-weight:700;margin-bottom:3px}
+.bridge-card .brid-en{font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:10px}
+.bridge-card p{font-size:.84rem;margin:0;line-height:1.55}
+
+/* ── Quiz ── */
+.quiz-section{background:linear-gradient(135deg,#064e3b,#059669 50%,#0891b2);border-radius:var(--r);padding:36px;margin-top:32px}
+.quiz-section h2{color:#fff;font-size:1.4rem;font-weight:800;margin-bottom:6px;text-align:center}
+.quiz-section .q-sub{color:rgba(255,255,255,.75);font-size:.9rem;text-align:center;margin-bottom:24px}
+.q-card{background:#fff;border-radius:var(--rs);padding:22px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.q-num{font-size:.75rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.q-text{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.5}
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:2px solid var(--border);background:#f8fafc;cursor:pointer;transition:all .18s;font-size:.9rem;line-height:1.4}
+.q-opt:hover{border-color:var(--blue);background:#eff6ff}
+.q-opt.correct{border-color:var(--green)!important;background:#f0fdf4!important}
+.q-opt.wrong{border-color:var(--red)!important;background:#fef2f2!important}
+.q-opt.reveal-correct{border-color:var(--green)!important;background:#f0fdf4!important}
+.q-opt .opt-letter{min-width:24px;height:24px;background:var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;transition:all .18s;margin-top:1px}
+.q-opt.correct .opt-letter{background:var(--green);color:#fff}
+.q-opt.wrong .opt-letter{background:var(--red);color:#fff}
+.q-opt.reveal-correct .opt-letter{background:var(--green);color:#fff}
+.q-feedback{font-size:.85rem;padding:10px 14px;border-radius:var(--rs);margin-top:10px;display:none;line-height:1.5}
+.q-feedback.show{display:block}
+.q-feedback.fb-ok{background:#f0fdf4;color:#065f46;border:1px solid #6ee7b7}
+.q-feedback.fb-err{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.quiz-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.btn{padding:11px 26px;border-radius:var(--rs);font-size:.92rem;font-weight:600;cursor:pointer;border:none;transition:all .18s}
+.btn-primary{background:#fff;color:var(--blue)}
+.btn-primary:hover{background:#eff6ff}
+.btn-secondary{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-secondary:hover{background:rgba(255,255,255,.25)}
+.quiz-score{text-align:center;padding:18px;background:rgba(255,255,255,.12);border-radius:var(--rs);color:#fff;font-size:1rem;margin-top:16px;display:none}
+.quiz-score.show{display:block}
+.quiz-score strong{font-size:1.6rem;display:block;margin-top:6px}
+
+/* ── Footer ── */
+footer{background:#1e293b;color:rgba(255,255,255,.65);text-align:center;padding:28px 24px;font-size:.85rem;margin-top:32px}
+footer strong{color:rgba(255,255,255,.9)}
+
+/* ── Media ── */
+@media(max-width:640px){
+  .quiz-section{padding:22px 16px}
+  .media-cols{grid-template-columns:1fr}
+  .flow-track{flex-direction:column;align-items:center}
+  .flow-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <div class="hero-tag">Chapter 9 · Behavior Change Research &amp; Theory</div>
+  <h1>BinCam：多層次勸說評估
+    <small>BinCam: Evaluating Persuasion at Multiple Scales</small>
+  </h1>
+  <p class="hero-sub">探索科技如何在個人、家戶、社交網絡與社會層次產生行為改變，並引發廣泛媒體論述</p>
+  <div class="hero-meta">
+    <span>R. Comber &amp; A. Thieme</span>
+    <span>Open Lab, Newcastle University</span>
+    <span>Little, Sillence &amp; Joinson (2017)</span>
+    <span>Ch. 9, pp. 181–193</span>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOC ═══════════════════ -->
+<nav class="toc-bar" aria-label="目錄">
+  <div class="toc-inner">
+    <a class="toc-link" href="#overview">概覽</a>
+    <a class="toc-link" href="#background">背景</a>
+    <a class="toc-link" href="#system">系統設計</a>
+    <a class="toc-link" href="#method">研究方法</a>
+    <a class="toc-link" href="#scales">多層次影響</a>
+    <a class="toc-link" href="#media">媒體反應</a>
+    <a class="toc-link" href="#discussion">個體 vs. 結構</a>
+    <a class="toc-link" href="#conclusions">結論</a>
+    <a class="toc-link" href="#quiz">測驗</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="main">
+
+<!-- ─── S1: 概覽 ─── -->
+<section class="section" id="overview">
+  <div class="sec-header">
+    <div class="sec-num g">1</div>
+    <div class="sec-title">
+      <h2>概覽 <span class="en">Overview</span></h2>
+      <div class="en-sub">BinCam 專案簡介：廚餘桶 + 社群媒體 + 行為改變</div>
+    </div>
+  </div>
+
+  <p><span class="en">BinCam</span> 是一個設計用於說服人們減少<strong>食物廢棄物</strong>（<span class="en">food waste</span>）的系統，在英國家庭環境中部署。該研究以<strong>三次獨立評估</strong>（<span class="en">three separate deployments</span>）進行，本章重點報告<strong>第二次案例研究</strong>（<span class="en">Deployment 2</span>）的經驗與發現。</p>
+
+  <p>BinCam 的故事之所以特別引人入勝，不僅在於參與者與系統之間的互動，更在於系統如何在更廣泛的<strong>媒體與社會層面</strong>（<span class="en">media and society</span>）獲得反響——包括正面的創新讚譽，以及負面的隱私侵犯批評。</p>
+
+  <div class="callout">
+    <h4>核心研究問題 <span style="font-size:.85rem;font-weight:500;opacity:.9">Core Research Question</span></h4>
+    <p>我們能否透過社群媒體改善年輕成人的回收行為？<br>
+    <em style="font-size:.9rem;opacity:.85">Can we improve young adults' recycling behavior using social media?</em></p>
+    <div class="en-quote-w">"…we can evaluate behavior change technology and the resultant narratives that surround technology interventions like BinCam."</div>
+  </div>
+
+  <div class="grid-3" style="margin-top:22px">
+    <div class="card" style="text-align:center;padding:20px 16px">
+      <div style="font-size:2rem;margin-bottom:8px">🗑️</div>
+      <div style="font-size:.95rem;font-weight:700;color:var(--green);margin-bottom:4px">系統核心</div>
+      <div style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:8px">System Core</div>
+      <p style="font-size:.84rem;margin:0">垃圾桶內建攝影機，自動拍攝並上傳廢棄物照片至 Facebook 應用程式</p>
+    </div>
+    <div class="card" style="text-align:center;padding:20px 16px">
+      <div style="font-size:2rem;margin-bottom:8px">📱</div>
+      <div style="font-size:.95rem;font-weight:700;color:var(--blue);margin-bottom:4px">社交比較</div>
+      <div style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:8px">Social Comparison</div>
+      <p style="font-size:.84rem;margin:0">參與家戶可在 Facebook 上相互查看、比較彼此的廢棄物處理行為</p>
+    </div>
+    <div class="card" style="text-align:center;padding:20px 16px">
+      <div style="font-size:2rem;margin-bottom:8px">🌐</div>
+      <div style="font-size:.95rem;font-weight:700;color:var(--red);margin-bottom:4px">廣泛論述</div>
+      <div style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:8px">Public Discourse</div>
+      <p style="font-size:.84rem;margin:0">引發媒體廣泛報導，引爆科技主義（solutionism）與隱私侵犯論戰</p>
+    </div>
+  </div>
+
+  <div class="hl amber" style="margin-top:20px">
+    <p><strong>多重定性</strong>：BinCam 先後被定位為說服性科技（<span class="en">persuasive technology</span>，Thieme et al., 2012）、習慣性行為的輕推（<span class="en">nudge for habitual behavior</span>，Comber &amp; Thieme, 2012）、破壞性介入（<span class="en">disruptive intervention</span>，Poole et al., 2014），以及「侵犯隱私的技術解決主義怪物」（<span class="en">abomination of privacy invading technologies and solutionism</span>，Vines et al., 2013; Morozov, 2014）。</p>
+  </div>
+</section>
+
+<!-- ─── S2: 背景 ─── -->
+<section class="section" id="background">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">
+      <h2>背景 <span class="en">Background</span></h2>
+      <div class="en-sub">食物廢棄、年輕成人、知識–態度–行為落差</div>
+    </div>
+  </div>
+
+  <h3>英國食物廢棄問題 <span class="en">UK Food Waste Problem</span></h3>
+
+  <div class="stat-grid">
+    <div class="stat-box sb-red">
+      <div class="sb-num">5.3M</div>
+      <div class="sb-unit">噸 / tons</div>
+      <div class="sb-label">英國家庭每年不當丟棄的食物<br><em style="font-size:.72rem;color:var(--muted)">Food improperly disposed (WRAP, 2011)</em></div>
+    </div>
+    <div class="stat-box sb-amber">
+      <div class="sb-num">4.9M</div>
+      <div class="sb-unit">噸 / tons</div>
+      <div class="sb-label">每年不當丟棄的可回收包裝<br><em style="font-size:.72rem;color:var(--muted)">Recyclable packaging improperly disposed</em></div>
+    </div>
+    <div class="stat-box sb-blue">
+      <div class="sb-num">18–34</div>
+      <div class="sb-unit">歲</div>
+      <div class="sb-label">對回收議題特別低意識的年齡層<br><em style="font-size:.72rem;color:var(--muted)">Particularly under-aware of recycling</em></div>
+    </div>
+    <div class="stat-box sb-purple">
+      <div class="sb-num">GAP</div>
+      <div class="sb-unit">知識–態度–行為落差</div>
+      <div class="sb-label">在大學生身上尤為明顯（Scott, 2009）<br><em style="font-size:.72rem;color:var(--muted)">KAB gap pronounced for university students</em></div>
+    </div>
+  </div>
+
+  <h3>年輕成人與社群媒體 <span class="en">Young Adults &amp; Social Media</span></h3>
+  <p>年輕成人通常是最具<strong>數位能力</strong>（<span class="en">digitally enabled</span>）的族群，且日常社群媒體使用量持續上升（Pew Internet, 2015）。社群媒體已成為永續性（<span class="en">sustainability</span>）、政治參與及體能活動等行為介入的熱門目標，能夠透過社會影響力（<span class="en">social influence</span>）、支持與社會資本（<span class="en">social capital</span>）放大介入效果。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h4 style="font-size:.95rem;font-weight:700;color:var(--blue-d);margin-bottom:10px">知識–態度–行為落差</h4>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px">Knowledge–Attitude–Behavior Gap</div>
+      <p style="font-size:.86rem;margin:0">研究發現，大學生對回收的<strong>態度普遍正面</strong>，但行為未必與態度一致。在父母家建立的回收習慣並不會自動轉移到大學宿舍（Scott, 2009）。問題在於<strong>缺乏知識</strong>（什麼可以回收？）、<strong>設施不足</strong>，以及<strong>感知到的效果與努力不成比例</strong>。</p>
+    </div>
+    <div class="card">
+      <h4 style="font-size:.95rem;font-weight:700;color:var(--green);margin-bottom:10px">社群媒體的行為改變潛能</h4>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px">Social Media for Behavior Change</div>
+      <p style="font-size:.86rem;margin:0">BinCam 透過社群媒體讓廢棄物處理行為變得<strong>可見</strong>（<span class="en">visible</span>，Ganglbauer et al., 2012），期望激發參與者討論如何更永續地行動。<strong>家戶</strong>（<span class="en">household</span>）也被視為廢棄物的自然單位，有潛力成為改變的集合主體。</p>
+    </div>
+  </div>
+
+  <h3>更廣泛的學術爭論 <span class="en">Broader Academic Debate</span></h3>
+  <p>日益增多的研究與媒體評論指出，需要<strong>超越消費者</strong>（<span class="en">beyond the consumer</span>）作為改變的主要行動者（Morozov, 2014; Dourish, 2010）。這一觀點認為，行為改變介入本質上與<strong>新自由主義</strong>（<span class="en">neoliberalism</span>）的市場取向相連——將社會問題化約為個人道德選擇。</p>
+
+  <div class="en-quote">"By turning the problems of environmentalism into questions of personal moral choice and by turning environmental action into a redirection of consumption patterns, research in HCI for environmental sustainability has systematically ignored important areas for potential action."</div>
+  <div class="zh-note">— Dourish (2010, p. 8)：將環保問題化約為個人道德選擇、將環境行動化約為消費模式的調整，HCI 永續性研究已系統性地忽略了許多重要的潛在行動領域——例如基礎設施的改變，以及重新定義廢棄物的意涵。</div>
+</section>
+
+<!-- ─── S3: 系統設計 ─── -->
+<section class="section" id="system">
+  <div class="sec-header">
+    <div class="sec-num g">3</div>
+    <div class="sec-title">
+      <h2>BinCam 系統設計 <span class="en">System Design</span></h2>
+      <div class="en-sub">兩部分科技系統：智慧垃圾桶 + Facebook 應用程式</div>
+    </div>
+  </div>
+
+  <h3>系統流程圖 <span class="en">System Flow Diagram</span></h3>
+
+  <div class="system-flow">
+    <h4>BinCam 完整系統流程 / Complete System Flow</h4>
+    <div class="flow-track">
+      <div class="flow-node">
+        <span class="fn-icon">🗑️</span>
+        <span class="fn-zh">家用垃圾桶</span>
+        <span class="fn-en">Household Bin</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <span class="fn-icon">📷</span>
+        <span class="fn-zh">蓋子關閉時拍照</span>
+        <span class="fn-en">Photo on lid close</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <span class="fn-icon">📤</span>
+        <span class="fn-zh">自動上傳</span>
+        <span class="fn-en">Auto Upload</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <span class="fn-icon">📘</span>
+        <span class="fn-zh">Facebook 應用程式</span>
+        <span class="fn-en">Facebook App</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <span class="fn-icon">🏆</span>
+        <span class="fn-zh">積分排行榜</span>
+        <span class="fn-en">BinLeague / Points</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <span class="fn-icon">💬</span>
+        <span class="fn-zh">社交比較與討論</span>
+        <span class="fn-en">Social Comparison</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;text-align:center">
+      <div class="flow-outcome">
+        <span class="fo-zh">預期結果：減少食物廢棄 + 提升回收行為意識</span>
+        <span class="fo-en">Expected outcome: Reduced food waste + Increased recycling awareness &amp; behavior</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:24px">
+    <div class="card">
+      <h4 style="font-size:.95rem;font-weight:700;color:#065f46;margin-bottom:8px">🗑️ 硬體：智慧垃圾桶</h4>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px">Hardware: Smart Bin</div>
+      <ul style="font-size:.86rem;line-height:1.7;padding-left:18px">
+        <li>一般家用垃圾桶，蓋子內嵌入<strong>手機</strong></li>
+        <li>利用手機內建<strong>攝影機</strong>與<strong>加速度計</strong>（<span class="en">accelerometer</span>）</li>
+        <li>每次蓋上蓋子時自動拍攝垃圾桶內部</li>
+        <li>意外副作用：拍照後手機發出<strong>震動聲</strong>，成為重要的「行為後提示」（<span class="en">postactional cue</span>）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="font-size:.95rem;font-weight:700;color:#1d4ed8;margin-bottom:8px">📱 軟體：Facebook 應用程式</h4>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px">Software: Facebook Application</div>
+      <ul style="font-size:.86rem;line-height:1.7;padding-left:18px">
+        <li>邀請制封閉應用程式，僅研究參與者可見</li>
+        <li>照片自動分享至 Facebook，供各家戶查看與留言</li>
+        <li>照片由研究員<strong>手動標記</strong>（<span class="en">manual tagging</span>）廢棄物類型</li>
+        <li>計算每個垃圾桶的<strong>回收績效指標</strong>，建立競爭排行榜（<span class="en">BinLeague</span>）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>遊戲化機制 <span class="en">Gamification Mechanisms</span></h3>
+  <div class="grid-3">
+    <div class="card" style="text-align:center;padding:18px 14px">
+      <div style="font-size:2rem;margin-bottom:8px">🏅</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--amber)">BadgeBadge 計分 API</div>
+      <div style="font-size:.76rem;color:var(--muted);font-style:italic;margin-bottom:6px">BadgeBadge Scoring API</div>
+      <p style="font-size:.82rem;margin:0">根據廢棄物分類正確率自動計算積分，給予獎章徽章</p>
+    </div>
+    <div class="card" style="text-align:center;padding:18px 14px">
+      <div style="font-size:2rem;margin-bottom:8px">📊</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--blue)">回收積分</div>
+      <div style="font-size:.76rem;color:var(--muted);font-style:italic;margin-bottom:6px">Recycling Points</div>
+      <p style="font-size:.82rem;margin:0">每週更新，按正確分類比例計分，讓參與者看到自己的進步</p>
+    </div>
+    <div class="card" style="text-align:center;padding:18px 14px">
+      <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--green)">BinLeague 排行榜</div>
+      <div style="font-size:.76rem;color:var(--muted);font-style:italic;margin-bottom:6px">Competitive Leaderboard</div>
+      <p style="font-size:.82rem;margin:0">各家戶互相競爭，促進社交比較（<span class="en">social comparison</span>）動機</p>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>標記挑戰</strong>：初期使用 Amazon Mechanical Turk 眾包標記，誤差率高達 <strong>75%</strong>，導致行為改變結論不可信。後期改用研究員手動標記並建立明確啟發式評估規則，大幅提升資料品質。</p>
+  </div>
+</section>
+
+<!-- ─── S4: 研究方法 ─── -->
+<section class="section" id="method">
+  <div class="sec-header">
+    <div class="sec-num p">4</div>
+    <div class="sec-title">
+      <h2>研究方法 <span class="en">Methodology</span></h2>
+      <div class="en-sub">案例研究 · 混合方法 · 6週部署</div>
+    </div>
+  </div>
+
+  <h3>研究設計 <span class="en">Research Design</span></h3>
+  <p>BinCam 採用<strong>案例研究方法論</strong>（<span class="en">case study methodology</span>），結合多種數據收集工具的<strong>混合方法</strong>（<span class="en">mixed-methods</span>）。考量到家庭廢棄物、社群媒體與個人態度行為在家居環境中的複雜交織，研究者選擇聚焦在少數家戶進行深入探查。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h4 style="font-size:.93rem;font-weight:700;color:var(--blue-d);margin-bottom:10px">第二次研究參與者</h4>
+      <div style="font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:10px">Deployment 2 Participants</div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;gap:10px;margin:0">
+        <div class="stat-box sb-blue" style="padding:12px">
+          <div class="sb-num" style="font-size:1.5rem">34</div>
+          <div class="sb-label">問卷填答人數</div>
+        </div>
+        <div class="stat-box sb-green" style="padding:12px">
+          <div class="sb-num" style="font-size:1.5rem">6</div>
+          <div class="sb-label">參與家戶數</div>
+        </div>
+        <div class="stat-box sb-amber" style="padding:12px">
+          <div class="sb-num" style="font-size:1.5rem">18–27</div>
+          <div class="sb-label">年齡範圍（大學生）</div>
+        </div>
+        <div class="stat-box sb-purple" style="padding:12px">
+          <div class="sb-num" style="font-size:1.5rem">6週</div>
+          <div class="sb-label">部署時間長度</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:.93rem;font-weight:700;color:var(--green);margin-bottom:10px">家戶組成</h4>
+      <div style="font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:10px">Household Composition</div>
+      <ul style="font-size:.86rem;line-height:1.8;padding-left:18px">
+        <li>5 個家戶各有 6 名成員；1 個家戶有 5 名成員</li>
+        <li>3 個混合性別家戶（3 女 3 男）</li>
+        <li>3 個單一性別家戶</li>
+        <li>研究期間所有家戶均位於<strong>共享學生公寓</strong>（共用廚房）</li>
+        <li>個人丟棄物品不與特定個人公開連結（保護隱私）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>數據收集工具 <span class="en">Data Collection Methods</span></h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>分析層次</th>
+          <th>個人 Individual</th>
+          <th>家戶 Household</th>
+          <th>群體 Group</th>
+          <th>社會 Society</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-zh">測量指標<div class="td-en">Measures</div></td>
+          <td>態度 Attitudes</td>
+          <td>行為 Behavior</td>
+          <td>實踐 Practices</td>
+          <td>論述 Discourses</td>
+        </tr>
+        <tr>
+          <td class="td-zh">數據來源<div class="td-en">Data Source</div></td>
+          <td>問卷 Questionnaire</td>
+          <td>BinCam 系統數據</td>
+          <td>訪談 Interviews</td>
+          <td>媒體 Media</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2" style="margin-top:18px">
+    <div>
+      <div class="data-row">
+        <div class="dr-icon">📋</div>
+        <div class="dr-content">
+          <strong>前後測問卷 <span class="en" style="font-size:.78rem">Pre-/Post-Intervention Questionnaires</span></strong>
+          <p>涵蓋回收態度（36題）、食物廢棄（43題）、社群媒體使用（11題）、群體凝聚力（48題）。後測另加隱私顧慮量表（6題 Likert）。</p>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="dr-icon">🖥️</div>
+        <div class="dr-content">
+          <strong>系統數據 <span class="en" style="font-size:.78rem">System Data</span></strong>
+          <p>BinCam 拍攝的廢棄物照片，研究員手動標記，分析「應入垃圾桶」vs「可回收物誤放比率」。每週回饋給參與者。</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="data-row">
+        <div class="dr-icon">🎙️</div>
+        <div class="dr-content">
+          <strong>個別訪談 &amp; 焦點團體 <span class="en" style="font-size:.78rem">Interviews &amp; Focus Groups</span></strong>
+          <p>每家戶隨機選一人進行個別訪談（5場），其餘參與者進行家戶焦點團體（6場，27人）。歸納式主題分析（Braun &amp; Clarke, 2006）。</p>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="dr-icon">📰</div>
+        <div class="dr-content">
+          <strong>媒體反應（意外數據源）<span class="en" style="font-size:.78rem">Media Coverage</span></strong>
+          <p>至少 91 份媒體報導（電視、廣播、報紙、網路），另有 3 個展覽、1 部電視節目。分析論述、隱私觀點及技術主義批評。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>六週部署時間軸 <span class="en">6-Week Deployment Timeline</span></h3>
+  <div class="timeline-6w">
+    <div class="tl-week">
+      <div class="tl-wlabel">第 1 週</div>
+      <div class="tl-wbar wbar-1">
+        <strong>系統安裝 &amp; 基線建立</strong>
+        <div style="font-size:.78rem;color:var(--muted)">System installation; baseline questionnaire; introduction to BinCam &amp; Facebook app</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <div class="tl-wlabel">第 2 週</div>
+      <div class="tl-wbar wbar-2">
+        <strong>熟悉期 &amp; 新奇效應觀察</strong>
+        <div style="font-size:.78rem;color:var(--muted)">Novelty phase; participants explore system; initial social media interactions begin</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <div class="tl-wlabel">第 3–4 週</div>
+      <div class="tl-wbar wbar-3">
+        <strong>主要數據收集 &amp; 社交比較高峰</strong>
+        <div style="font-size:.78rem;color:var(--muted)">Core data collection; BinLeague competition; household discussions on recycling practices; food sharing emerges</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <div class="tl-wlabel">第 5 週</div>
+      <div class="tl-wbar wbar-4">
+        <strong>持續參與度觀察 &amp; 行為變化追蹤</strong>
+        <div style="font-size:.78rem;color:var(--muted)">Long-term engagement; changes in food planning and shopping; awareness of waste patterns</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <div class="tl-wlabel">第 6 週</div>
+      <div class="tl-wbar wbar-5">
+        <strong>結案 &amp; 後測訪談</strong>
+        <div style="font-size:.78rem;color:var(--muted)">Post-intervention questionnaire; individual interviews; focus groups; system removed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── S5: 多層次影響 ─── -->
+<section class="section" id="scales">
+  <div class="sec-header">
+    <div class="sec-num a">5</div>
+    <div class="sec-title">
+      <h2>多層次影響 <span class="en">Multiple Scales of Change</span></h2>
+      <div class="en-sub">個人 → 家戶 → 社交網絡 → 社會</div>
+    </div>
+  </div>
+
+  <p>BinCam 的獨特貢獻在於以<strong>四個層次</strong>同時分析行為改變的影響，從個人態度到社會公共論述，呈現科技介入效果的多元面貌。</p>
+
+  <!-- Concentric circles visual representation as layered cards -->
+  <div style="margin:28px 0;background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:var(--r);padding:28px;border:1px solid var(--border)">
+    <h4 style="text-align:center;font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:22px">多層次同心圓框架 / Multiple Scales Framework (Concentric View)</h4>
+    <div style="position:relative;display:flex;justify-content:center;align-items:center;height:340px">
+      <!-- Outer: Society -->
+      <div style="position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(220,38,38,.06);border:2px dashed #fca5a5;display:flex;align-items:center;justify-content:center">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center">
+          <div style="font-size:.78rem;font-weight:700;color:#991b1b">社會層次</div>
+          <div style="font-size:.68rem;color:var(--muted);font-style:italic">Society</div>
+        </div>
+        <!-- Network -->
+        <div style="position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(217,119,6,.07);border:2px dashed #fcd34d;display:flex;align-items:center;justify-content:center">
+          <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center">
+            <div style="font-size:.75rem;font-weight:700;color:#92400e">社交網絡層次</div>
+            <div style="font-size:.67rem;color:var(--muted);font-style:italic">Social Network</div>
+          </div>
+          <!-- Household -->
+          <div style="position:absolute;width:164px;height:164px;border-radius:50%;background:rgba(37,99,235,.08);border:2px solid #93c5fd;display:flex;align-items:center;justify-content:center">
+            <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center">
+              <div style="font-size:.73rem;font-weight:700;color:#1d4ed8">家戶層次</div>
+              <div style="font-size:.65rem;color:var(--muted);font-style:italic">Household</div>
+            </div>
+            <!-- Individual -->
+            <div style="position:absolute;width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);border:2px solid #059669;display:flex;align-items:center;justify-content:center;flex-direction:column">
+              <div style="font-size:.75rem;font-weight:700;color:#fff;text-align:center;line-height:1.3">個人<br><span style="font-size:.6rem;font-weight:400;opacity:.85">Individual</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scales-cards" style="margin-top:24px">
+    <div class="scale-card sc-ind">
+      <div class="sk-badge" style="color:#059669">
+        <span style="width:22px;height:22px;background:#059669;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">1</span>
+        個人層次 / Individual Level
+      </div>
+      <h4>態度轉變 &amp; 自我意識</h4>
+      <div class="sk-en">Attitude Change &amp; Self-Awareness</div>
+      <p>前後測問卷的統計 t 檢定顯示，在回收態度與自陳行為上<strong>無顯著改變</strong>，僅在飲食計劃與購物行為有邊際顯著。然而，訪談揭示參與者雖知道應該回收，卻不清楚「哪些東西可以回收」，且感受到設施不足（如缺乏廚餘堆肥設施）。</p>
+      <div class="sk-data">數據來源：前後測問卷（態度量表）/ Source: Pre-/post questionnaires (attitude scales)</div>
+    </div>
+
+    <div class="scale-card sc-hh">
+      <div class="sk-badge" style="color:#1d4ed8">
+        <span style="width:22px;height:22px;background:#1d4ed8;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">2</span>
+        家戶層次 / Household Level
+      </div>
+      <h4>廢棄物行為變化 &amp; 共同責任</h4>
+      <div class="sk-en">Waste Behavior Change &amp; Shared Responsibility</div>
+      <p>量化數據分析垃圾桶照片後發現，整體廢棄物量有所減少，但<strong>正確對不正確廢棄物比率</strong>（<span class="en">ratio of appropriate to inappropriate waste</span>）並無顯著改變。然而，訪談指出參與者更主動嘗試<strong>分享食物購買</strong>（如合買麵包）、利用剩菜，以實際減少廢棄物。</p>
+      <div class="sk-data">數據來源：BinCam 系統照片（手動標記）/ Source: BinCam system images (manually tagged)</div>
+    </div>
+
+    <div class="scale-card sc-net">
+      <div class="sk-badge" style="color:#7c3aed">
+        <span style="width:22px;height:22px;background:#7c3aed;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">3</span>
+        群體/社交網絡層次 / Group/Network Level
+      </div>
+      <h4>生活實踐改變 &amp; 社交反思</h4>
+      <div class="sk-en">Practice Change &amp; Social Reflection</div>
+      <p>最令研究者驚訝的發現：雖然量化數據未見顯著廢棄物減少，但參與者<strong>自陳行為改變了</strong>——食物規劃、購物策略及廢棄物處理方式均有調整。參與者 Julia 表示：系統讓她意識到自己的廢棄量，因而減少份量、更注意食物期限。Facebook 網絡也成為意識反思的重要橋梁。</p>
+      <div class="sk-data">數據來源：訪談 &amp; 焦點團體（質性主題分析）/ Source: Interviews &amp; focus groups</div>
+    </div>
+
+    <div class="scale-card sc-soc">
+      <div class="sk-badge" style="color:#d97706">
+        <span style="width:22px;height:22px;background:#d97706;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">4</span>
+        社會層次 / Societal Level
+      </div>
+      <h4>媒體爭議 &amp; 公共論述</h4>
+      <div class="sk-en">Media Controversy &amp; Public Discourse</div>
+      <p>BinCam 引發<strong>至少 91 筆</strong>媒體報導，雖然原本僅針對個人與小群體行為改變，卻意外成為社會層面關於<strong>科技主義</strong>（<span class="en">solutionism</span>）、<strong>隱私監控</strong>，以及現有回收基礎設施是否有效的廣泛辯論焦點。</p>
+      <div class="sk-data">數據來源：媒體論述分析（Vines et al., 2013）/ Source: Media discourse analysis</div>
+    </div>
+  </div>
+
+  <div class="hl green" style="margin-top:24px">
+    <p><strong>參與者直接引述</strong>（Julia, 焦點團體）：</p>
+    <div class="en-quote">"I don't like wasting food. Erm… and I'm definitely aware of the amount that I've wasted as the BinCam has been on. Erm… so it's made me just kind of just reduce my portion size and then think about how much stuff I'm throwing away and trying to catch things before they go out of date and stuff like that."</div>
+    <div class="zh-note">「我不喜歡浪費食物。BinCam 運作以來，我確實意識到自己浪費了多少。它讓我開始縮小份量，思考丟掉多少東西，並試著在食物過期前用掉它。」</div>
+  </div>
+</section>
+
+<!-- ─── S6: 媒體反應 ─── -->
+<section class="section" id="media">
+  <div class="sec-header">
+    <div class="sec-num r">6</div>
+    <div class="sec-title">
+      <h2>媒體反應與爭議 <span class="en">Media Reception &amp; Controversy</span></h2>
+      <div class="en-sub">創新讚譽 vs. 「怪物論」；科技主義批評；隱私論戰</div>
+    </div>
+  </div>
+
+  <p>當 BinCam 系統首度公開亮相，便意外引發<strong>大規模媒體反應</strong>——至少 91 筆報導，涵蓋電視、廣播、報紙與網路媒體。這些媒體反應構成一個「意外的數據集」，揭示行為改變科技如何被公眾解讀。</p>
+
+  <div class="media-cols">
+    <div class="media-panel mp-pos">
+      <div class="mp-header">
+        <span style="font-size:1.4rem">✅</span>
+        <h4>正面反應</h4>
+      </div>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:12px">Positive Reception</div>
+      <div class="mp-item"><div class="mi-dot"></div><div>創新的說服性科技（<span class="en">innovative persuasive technology</span>）</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>提升個人廢棄物意識的有效工具</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>社交媒體結合永續行為的先驅示範</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>學術研究創意轉化為真實介入的範例</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>被納入 3 個展覽 &amp; 1 部未來家居科技電視節目</div></div>
+    </div>
+    <div class="media-panel mp-neg">
+      <div class="mp-header">
+        <span style="font-size:1.4rem">❌</span>
+        <h4>負面反應 / 批評</h4>
+      </div>
+      <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:12px">Negative Reception / Critique</div>
+      <div class="mp-item"><div class="mi-dot"></div><div>「怪物」（<span class="en">abomination</span>）——侵犯隱私（Vines et al., 2013）</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>「技術解決主義」（<span class="en">solutionism</span>）批評（Morozov, 2014）</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>與 CCTV 攝影機相提並論，引發監視聯想</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>「羞辱使用者」（<span class="en">shaming</span>）的家長式科技</div></div>
+      <div class="mp-item"><div class="mi-dot"></div><div>過度簡化的科技決定論社會觀</div></div>
+    </div>
+  </div>
+
+  <h3>關鍵批評聲音 <span class="en">Key Critical Voices</span></h3>
+
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="background:#fef2f2;color:#dc2626;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700">Morozov (2014)</span>
+      <span style="font-size:.82rem;color:var(--muted);font-style:italic">《拯救每一樣東西》</span>
+    </div>
+    <div class="en-quote">"To Save Everything, Click Here: Technology, Solutionism, and the Urge to Fix Problems that Don't Exist."</div>
+    <div class="zh-note">科技主義（<span class="en">solutionism</span>）批評：認為科技只能解決社會問題的表象，而非根本結構。BinCam 被批評為將複雜的社會挑戰（廢棄物問題）過度簡化為可以用一個 app 「修復」的問題。</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="background:#faf5ff;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700">Vines et al. (2013)</span>
+      <span style="font-size:.82rem;color:var(--muted);font-style:italic">HCI in the Press</span>
+    </div>
+    <div class="en-quote">"HCI in the press: online public reactions to mass media portrayals of HCI research."</div>
+    <div class="zh-note">提出 BinCam 被媒體呈現為對重大社會挑戰過度簡化（<span class="en">oversimplistic</span>）且具科技決定論（<span class="en">technologically deterministic</span>）的解法。分析了 91 筆媒體反應，揭示公共論述如何重新定性研究的意涵。</div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="background:#eff6ff;color:#1d4ed8;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700">Dourish (2010)</span>
+      <span style="font-size:.82rem;color:var(--muted);font-style:italic">HCI and Environmental Sustainability, DIS'10</span>
+    </div>
+    <div class="en-quote">"By turning the problems of environmentalism into questions of personal moral choice and by turning environmental action into a redirection of consumption patterns, research in HCI for environmental sustainability has systematically ignored important areas for potential action."</div>
+    <div class="zh-note">Dourish 指出，HCI 永續研究透過將環保問題個人化，系統性地忽視了<strong>基礎設施改革</strong>與<strong>廢棄物概念重構</strong>等更根本的行動領域——不應只在消費端下功夫，而應挑戰廢棄物生產的整體體系。</div>
+  </div>
+
+  <div class="hl red" style="margin-top:20px">
+    <p><strong>研究反思</strong>：BinCam 的媒體反應揭示一個重要矛盾——研究者設計的是針對個人/家戶的行為改變工具，卻觸發了關於「技術能否解決社會問題」的更大辯論。媒體本身成為行為改變論述的<strong>第三個橋梁</strong>（見下節討論）。</p>
+  </div>
+</section>
+
+<!-- ─── S7: 討論 ─── -->
+<section class="section" id="discussion">
+  <div class="sec-header">
+    <div class="sec-num p">7</div>
+    <div class="sec-title">
+      <h2>討論：個體 vs. 結構 <span class="en">Discussion: Individual vs. Structural Change</span></h2>
+      <div class="en-sub">新自由主義批評 · 三種橋梁概念 · 評估的多元視角</div>
+    </div>
+  </div>
+
+  <h3>評估行為改變科技的挑戰 <span class="en">Challenges of Assessing BC Technologies</span></h3>
+  <p>在評估 BinCam 介入效果時，理解影響行為的<strong>複雜因素</strong>（而非僅是介入本身）至關重要。這在解釋「行為為何改變」「為何未改變」或「無法定論」時尤為關鍵。BinCam 的個人與家戶層次結果顯示<strong>有限且軼事性的改變</strong>——是否算成功的行為改變科技，答案相當複雜。</p>
+
+  <div class="hl purple">
+    <p><strong>核心張力</strong>：BinCam 所提出的問題如同一個<strong>探索性假設</strong>（「如果這樣會怎樣？」），來自研究參與者和公眾的回應，都共同回答了這個問題——但方向各異。</p>
+  </div>
+
+  <h3>三種橋梁：跨尺度評估的概念架構</h3>
+  <p><span class="en" style="font-size:.9rem">Three "Bridges" for Cross-Scale Evaluation</span></p>
+
+  <div class="bridge-cards">
+    <div class="bridge-card bc1">
+      <span class="brid-icon">🏠</span>
+      <h4>系統作為橋梁</h4>
+      <div class="brid-en">System as Bridge between Mundane and Provocation</div>
+      <p>BinCam 同時是<strong>日常物件</strong>（垃圾桶）與<strong>科技奇觀</strong>（內嵌攝影機）。這種二元性讓它既是日常生活的一部分，也連結著「理想的永續未來」——或如許多人所見的：監控者的未來。拍照的震動聲打破了系統的「隱形性」，在個人層次引發習慣中斷（<span class="en">habit breaking</span>）；在社會層次，則觸發關於數位監控與科技決定論的廣泛討論。</p>
+    </div>
+    <div class="bridge-card bc2">
+      <span class="brid-icon">🌐</span>
+      <h4>網絡作為橋梁</h4>
+      <div class="brid-en">Network as Bridge for Experiences</div>
+      <p>Facebook 網絡設計讓各家戶得以看到彼此的廢棄物行為，創造一個<strong>經驗性網絡</strong>（<span class="en">experiential network</span>）——不同經驗在此匯聚，可能引發行動。研究發現，光是「<strong>潛在的分享可能性</strong>」（知道廢棄物照片可能被看到）就足以引發反思，不必然需要真實發生互動。</p>
+    </div>
+    <div class="bridge-card bc3">
+      <span class="brid-icon">📡</span>
+      <h4>媒體作為橋梁</h4>
+      <div class="brid-en">Media as Bridge of Discourse</div>
+      <p>最出人意料的回饋來自媒體的評估。媒體報導涵蓋多元觀點，成為公眾理解行為改變科技的<strong>論述資源</strong>（<span class="en">source of discourse</span>）。這引發一個根本問題：媒體<strong>是否應被視為介入的一部分</strong>？當行為改變研究的目標之一是提升回收意識，「有新聞報導就算成功」的說法是否站得住腳？</p>
+    </div>
+  </div>
+
+  <h3>個人行為改變 vs. 結構性改變的爭論</h3>
+  <p><span class="en" style="font-size:.88rem">Individual Behavior Change vs. Structural Change Debate</span></p>
+
+  <div class="grid-2" style="margin-top:14px">
+    <div class="card">
+      <h4 style="font-size:.93rem;font-weight:700;color:var(--blue-d);margin-bottom:10px">個體主義觀點</h4>
+      <div style="font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:10px">Individualist Perspective</div>
+      <ul style="font-size:.86rem;line-height:1.7;padding-left:18px">
+        <li>行為改變介入針對個人態度與習慣</li>
+        <li>個人改變可累積為社會改變</li>
+        <li>科技可提升個人對自身行為的意識</li>
+        <li>家戶作為廢棄物減少的自然改變單位</li>
+        <li>社群媒體放大個人行為改變效果</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="font-size:.93rem;font-weight:700;color:var(--red);margin-bottom:10px">結構主義觀點</h4>
+      <div style="font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:10px">Structuralist Perspective</div>
+      <ul style="font-size:.86rem;line-height:1.7;padding-left:18px">
+        <li>廢棄物問題根植於基礎設施與政策（Dourish, 2010）</li>
+        <li>個人介入強化了新自由主義框架</li>
+        <li>Brynjarsdottir et al. (2012) 質疑永續性個人技術的價值</li>
+        <li>需關注政策、文化、社會實踐等更廣泛的改變單位</li>
+        <li>Morozov：「技術主義」只解決問題的表象</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="en-quote" style="margin-top:20px">"There is a growing body of research and popular media that suggests the need to look beyond the consumer as the chief actor (or subject) of change."</div>
+  <div class="zh-note">日益增多的研究與媒體評論強調，需要<strong>超越消費者</strong>作為改變的主要行動者。行為改變介入的框架本身，就與新自由主義的「市場」取向相連——將社會問題轉化為個人選擇問題。</div>
+
+  <div class="model-box" style="margin-top:22px">
+    <h4>Brynjarsdottir et al. (2012) 的挑戰</h4>
+    <div style="font-size:.86rem;color:var(--muted);font-style:italic;margin-bottom:16px">Sustainably Unpersuaded: Questioning Individual-Level Techniques</div>
+    <div class="model-flow">
+      <div class="mnode">個人行為改變技術<br><span style="font-size:.75rem;opacity:.8">Individual-level BCTs</span></div>
+      <div class="marrow">⟶</div>
+      <div class="mnode r">？永續性疑問<br><span style="font-size:.75rem;opacity:.8">Questionable for sustainability</span></div>
+      <div class="marrow">⟶</div>
+      <div class="mnode a">需看多元社會單位<br><span style="font-size:.75rem;opacity:.8">Practices, policy, culture</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── S8: 結論 ─── -->
+<section class="section" id="conclusions">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">
+      <h2>結論 <span class="en">Conclusions</span></h2>
+      <div class="en-sub">多尺度評估的啟示 · 論述塑造評估的意涵</div>
+    </div>
+  </div>
+
+  <p>本章從<strong>四個層次</strong>——個人、家戶、網絡、公共領域——評估 BinCam 系統，在這些交織的論述中，專案取得了程度不一的成功。是否有顯著或長期效果，目前尚無定論，但從 BinCam 所學到的，是關於<strong>系統、網絡與社會之間預期內外相互連結</strong>如何產生改變的珍貴洞見。</p>
+
+  <div class="callout">
+    <h4>核心結論 / Core Conclusions</h4>
+    <p>系統、網絡與媒體作為<strong>人工物</strong>（artifacts）、<strong>渠道</strong>（channels）與<strong>行動者</strong>（actors），共同促成改變的論述產生——為我們提供新的方式來談論我們的行為，並反思科技在我們生活中的角色。</p>
+    <div class="en-quote-w">"…systems, networks, and media as artifacts, channels, and actors in the production of discourses of change where they give rise to new ways to talk about our behaviors and to reflect on the role of technology in our lives."</div>
+  </div>
+
+  <h3>給未來設計者的啟示 <span class="en">Implications for Future Designers</span></h3>
+
+  <ol class="steps" style="margin-top:16px">
+    <li>
+      <div class="sc">
+        <strong>多尺度評估設計</strong>
+        <div class="zh">不應只關注個人層次，應同時規劃家戶、社交網絡、社會層次的評估機制</div>
+        <div class="en-label">Design evaluation at multiple scales simultaneously: individual, household, network, society</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>預期意外連結</strong>
+        <div class="zh">數位系統在家庭環境與社會環境中扮演多重角色，設計者應分析這些多元角色以更謹慎地設計介入</div>
+        <div class="en-label">Anticipate unexpected interconnections between systems, networks, and society</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>媒體論述作為數據</strong>
+        <div class="zh">公共媒體反應是理解行為改變科技如何被公眾解讀的重要洞察來源，不可忽視</div>
+        <div class="en-label">Treat public media discourse as a meaningful data source for evaluation</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>察覺技術中立假設的陷阱</strong>
+        <div class="zh">系統並非中立地存在於論述中——不應假設技術介入對社會論述沒有影響，即使焦點只是行為改變</div>
+        <div class="en-label">Do not assume systems have a neutral impact on discourses, even when focused on behavior change</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>反思個人化框架的局限</strong>
+        <div class="zh">在永續性領域，個人行為改變介入需意識到自身在新自由主義框架中的定位，並思考是否有助於或阻礙更廣泛的結構性改變</div>
+        <div class="en-label">Critically reflect on how individual-focused interventions relate to structural and policy changes</div>
+      </div>
+    </li>
+  </ol>
+
+  <h3>關鍵參考文獻 <span class="en">Key References</span></h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>作者/年份</th>
+          <th>主要論點</th>
+          <th>與 BinCam 的關係</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-zh">Thieme et al. (2012)<div class="td-en">CHI 2012</div></td>
+          <td>BinCam 作為說服性科技</td>
+          <td>原始 BinCam 第一次部署發表</td>
+        </tr>
+        <tr>
+          <td class="td-zh">Comber &amp; Thieme (2012)<div class="td-en">Personal &amp; Ubiquitous Computing</div></td>
+          <td>設計超越習慣：勸說、社會影響與厭惡情緒</td>
+          <td>BinCam 作為習慣行為的輕推</td>
+        </tr>
+        <tr>
+          <td class="td-zh">Vines et al. (2013)<div class="td-en">CHI 2013</div></td>
+          <td>HCI 在媒體：大眾媒體對 HCI 研究的公眾反應</td>
+          <td>91筆媒體反應的全面分析</td>
+        </tr>
+        <tr>
+          <td class="td-zh">Morozov (2014)<div class="td-en">著作</div></td>
+          <td>「技術主義」：科技解決不存在問題的衝動</td>
+          <td>BinCam 被批評為技術主義的典型</td>
+        </tr>
+        <tr>
+          <td class="td-zh">Dourish (2010)<div class="td-en">DIS 2010</div></td>
+          <td>HCI 與環境永續性：忽視基礎設施</td>
+          <td>個人介入框架的結構性批評</td>
+        </tr>
+        <tr>
+          <td class="td-zh">Brynjarsdottir et al. (2012)<div class="td-en">CHI 2012</div></td>
+          <td>Sustainably Unpersuaded：永續性個人技術的疑問</td>
+          <td>質疑個人層次行為改變技術的價值</td>
+        </tr>
+        <tr>
+          <td class="td-zh">WRAP (2011)<div class="td-en">政府研究</div></td>
+          <td>英國廢棄物研究：5.3M噸食物 + 4.9M噸包裝</td>
+          <td>BinCam 設計的背景問題數據</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════ QUIZ ═══════════════════ -->
+<div class="quiz-section" id="quiz">
+  <h2>🧪 章節測驗</h2>
+  <p class="q-sub">每次隨機抽取 5 題 · 測試對 BinCam 研究的理解 · Each attempt draws 5 random questions</p>
+  <div id="quiz-container"></div>
+  <div class="quiz-actions">
+    <button class="btn btn-primary" onclick="checkAnswers()">提交答案 / Submit</button>
+    <button class="btn btn-secondary" onclick="loadQuiz()">重新出題 / New Set</button>
+  </div>
+  <div class="quiz-score" id="quiz-score"></div>
+</div>
+
+</main>
+
+<footer>
+  <strong>版權所有 © 葉欲禾（Gary Yu-Ho Yeh）</strong><br>
+  <span style="margin-top:6px;display:inline-block">教材來源：Little, Sillence &amp; Joinson (2017). <em>Behavior Change Research and Theory.</em> Elsevier. Chapter 9 by R. Comber &amp; A. Thieme, Open Lab, Newcastle University.</span>
+</footer>
+
+<script>
+// ── TOC active highlighting ──
+const sections = document.querySelectorAll('.section');
+const tocLinks = document.querySelectorAll('.toc-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if(active) active.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+
+// ── Quiz data ──
+const QUESTIONS = [
+  {
+    q: "BinCam 系統的主要設計目的是什麼？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What was the primary design goal of the BinCam system?</em>",
+    opts: [
+      "監控個人隱私行為以進行法規處罰",
+      "說服年輕成人減少食物廢棄物並改善回收行為",
+      "提升智慧家庭科技的商業化程度",
+      "追蹤大學生的日常飲食習慣"
+    ],
+    ans: 1,
+    fb: "BinCam 被設計為一種說服性科技，目標是透過社群媒體改善年輕成人（大學生）的回收行為，並減少食物廢棄物。這是一個「能否用社群媒體改善年輕成人回收行為？」的探索性研究計畫。"
+  },
+  {
+    q: "根據 WRAP (2011)，英國家庭每年不當丟棄的食物量約為多少？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>How much food do UK households improperly dispose of annually?</em>",
+    opts: [
+      "約 1.2 百萬噸",
+      "約 3.7 百萬噸",
+      "約 5.3 百萬噸",
+      "約 8.1 百萬噸"
+    ],
+    ans: 2,
+    fb: "根據 WRAP (2011)，英國家庭每年不當丟棄約 5.3 百萬噸食物，另有 4.9 百萬噸可回收包裝被不當丟棄。這是 BinCam 研究的核心背景數據。"
+  },
+  {
+    q: "BinCam 使用哪種社群媒體平台讓各家戶比較彼此的廢棄物行為？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>Which social media platform did BinCam use for social comparison?</em>",
+    opts: [
+      "Twitter / X",
+      "Instagram",
+      "Facebook",
+      "YouTube"
+    ],
+    ans: 2,
+    fb: "BinCam 使用 Facebook 的邀請制專屬應用程式，讓參與家戶可以查看彼此的垃圾桶照片，進行社交比較，並在留言中互動討論回收行為。"
+  },
+  {
+    q: "第二次 BinCam 部署使用了幾個家戶？部署時間多長？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>How many households and how many weeks in Deployment 2?</em>",
+    opts: [
+      "3 個家戶 / 4 週",
+      "6 個家戶 / 6 週",
+      "10 個家戶 / 8 週",
+      "12 個家戶 / 12 週"
+    ],
+    ans: 1,
+    fb: "第二次部署包含 6 個家戶（5 個各有 6 名成員，1 個有 5 名成員），共 34 名參與者完成問卷，部署時間為 6 週。三次部署共計 16 個家戶、93 名參與者。"
+  },
+  {
+    q: "Morozov (2014) 的「技術主義」(Solutionism) 批評 BinCam 的什麼？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What does Morozov's concept of \"solutionism\" critique about BinCam?</em>",
+    opts: [
+      "BinCam 技術成本過高，不適合大規模推廣",
+      "研究倫理審查不夠嚴謹",
+      "將複雜的社會挑戰過度簡化為可用科技「修復」的問題",
+      "Facebook 的演算法偏見會影響研究結果"
+    ],
+    ans: 2,
+    fb: "「技術主義」(Solutionism) 批評 BinCam 將食物廢棄這個複雜的社會問題過度簡化——認為只需要一個裝了攝影機的垃圾桶加上 Facebook app，就能「解決」一個涉及基礎設施、政策、文化的深層社會挑戰。Morozov 認為這是科技決定論思維的展現。"
+  },
+  {
+    q: "Dourish (2010) 對 HCI 永續性研究最主要的批評是什麼？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What is Dourish's (2010) main critique of HCI sustainability research?</em>",
+    opts: [
+      "HCI 研究人員缺乏環境科學的專業知識",
+      "將環保問題個人化，系統性忽視基礎設施改革等更根本的行動領域",
+      "HCI 的實驗設計方法論不夠嚴謹",
+      "行為改變介入的樣本量太小，無法得出有意義的結論"
+    ],
+    ans: 1,
+    fb: "Dourish 指出，HCI 永續性研究透過「將環保問題轉化為個人道德選擇」和「將環境行動轉化為消費模式的調整」，系統性地忽視了更重要的行動領域——特別是基礎設施的改革，以及重新定義廢棄物的方式（而非只在消費端努力）。"
+  },
+  {
+    q: "BinCam 的多尺度評估框架包含哪四個層次（由小到大）？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What are the four scales of BinCam's evaluation framework (smallest to largest)?</em>",
+    opts: [
+      "態度 → 行為 → 習慣 → 文化",
+      "個人 → 家戶 → 社交網絡/群體 → 社會",
+      "大學生 → 家庭 → 城市 → 國家",
+      "設計 → 部署 → 評估 → 推廣"
+    ],
+    ans: 1,
+    fb: "BinCam 的多尺度框架從小到大分為四層：(1) 個人層次（Individual）—態度變化；(2) 家戶層次（Household）—行為數據；(3) 群體/社交網絡層次（Group/Network）—實踐改變；(4) 社會層次（Society）—公共論述。"
+  },
+  {
+    q: "BinCam 的遊戲化機制包含哪些元素？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What gamification elements did BinCam include?</em>",
+    opts: [
+      "虛擬貨幣、商店、升級系統",
+      "BadgeBadge 計分 API、回收積分、BinLeague 競爭排行榜",
+      "AR 擴增實境、3D 廢棄物視覺化、GPS 定位獎勵",
+      "影片挑戰、朋友邀請機制、病毒式分享"
+    ],
+    ans: 1,
+    fb: "BinCam 的遊戲化元素包含三個核心部分：(1) BadgeBadge 計分 API（根據廢棄物分類正確率計算徽章積分）；(2) 回收積分（每週更新的家戶績效指標）；(3) BinLeague 競爭排行榜（各家戶間的競爭比較）。"
+  },
+  {
+    q: "知識–態度–行為落差（KAB Gap）在 BinCam 研究中如何顯現？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>How did the Knowledge-Attitude-Behavior (KAB) Gap manifest in BinCam?</em>",
+    opts: [
+      "參與者態度負面，但實際行為卻很環保",
+      "參與者態度正面但不知道哪些東西可以回收，且感受到設施不足",
+      "參與者知識豐富但對回收議題漠不關心",
+      "沒有出現 KAB 落差，所有參與者表現一致"
+    ],
+    ans: 1,
+    fb: "BinCam 研究中的 KAB 落差以一種有趣的方式出現：參與者普遍持有正面的回收態度（因為是自願參與的），但問題在於他們不清楚「哪些東西可以回收」，且感受到回收設施不足（如缺乏廚餘堆肥設施）。態度雖好，但知識缺口與設施限制阻礙了實際行為。"
+  },
+  {
+    q: "BinCam 研究採用混合方法，以下哪一組合最能代表其數據收集方式？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>Which combination best represents BinCam's mixed-methods data collection?</em>",
+    opts: [
+      "大規模問卷調查 + 隨機對照試驗 (RCT)",
+      "系統數據（廢棄物照片標記）+ 前後測問卷 + 訪談/焦點團體 + 媒體分析",
+      "神經科學實驗 + 行為觀察 + 眼動追蹤",
+      "僅使用 Facebook 互動量化數據"
+    ],
+    ans: 1,
+    fb: "BinCam 採用真正的混合方法：量化部分包括 BinCam 系統數據（廢棄物照片標記與比率計算）和前後測問卷；質化部分包括個別訪談（5場）和焦點團體（6場）；另有意外出現的第四個數據源——媒體論述分析（Vines et al., 2013）。"
+  },
+  {
+    q: "BinCam 引發的媒體反應對行為改變研究有什麼啟示？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What does BinCam's media reception imply for behavior change research?</em>",
+    opts: [
+      "研究者應避免讓媒體報導其研究成果",
+      "媒體反應是無關緊要的雜音，不應納入評估",
+      "媒體論述本身可能成為行為改變介入的一部分，且塑造了研究的社會意涵",
+      "只有在學術期刊發表才能避免媒體的誤解"
+    ],
+    ans: 2,
+    fb: "BinCam 的媒體反應揭示一個重要啟示：媒體論述可以被視為介入的延伸，甚至是「第三個橋梁」（媒體作為論述的橋梁）。公眾媒體評論提供了理解行為改變科技如何被社會接受或拒絕的洞見，研究者在設計和評估介入時不應忽視這一層面。"
+  },
+  {
+    q: "關於個人行為改變 vs. 結構性改變的爭論，BinCam 章節的立場最接近哪一描述？<br><em style='font-size:.85rem;color:var(--muted);font-weight:400'>What stance does the BinCam chapter take on individual vs. structural change?</em>",
+    opts: [
+      "個人行為改變是最有效的策略，應繼續深化",
+      "結構性改變才是唯一出路，個人層次介入毫無價值",
+      "評估應跨越多個層次，並批判性反思個人框架在新自由主義脈絡中的定位",
+      "媒體批評都是對研究的誤解，研究者不必回應"
+    ],
+    ans: 2,
+    fb: "BinCam 章節並非走極端立場。作者承認個人/家戶層次介入有一定效果，但也認真對待 Dourish、Morozov、Brynjarsdottir 等人的批評——指出需要多尺度評估、批判性反思個人化框架的新自由主義連結，以及關注系統在社會論述中的更廣泛角色。"
+  }
+];
+
+let current = [];
+let answered = [];
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+function loadQuiz(){
+  current = shuffle(QUESTIONS).slice(0,5);
+  answered = new Array(current.length).fill(false);
+  const c = document.getElementById('quiz-container');
+  c.innerHTML = current.map((q,i) => `
+    <div class="q-card" id="qc-${i}">
+      <div class="q-num">Q${i+1} / 5</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map((o,j)=>`
+          <div class="q-opt" id="opt-${i}-${j}" onclick="selectOpt(${i},${j})">
+            <span class="opt-letter">${String.fromCharCode(65+j)}</span>
+            <span>${o}</span>
+          </div>`).join('')}
+      </div>
+      <div class="q-feedback" id="fb-${i}"></div>
+    </div>`).join('');
+  document.getElementById('quiz-score').className = 'quiz-score';
+}
+
+function selectOpt(qi, oi){
+  if(answered[qi]) return;
+  // remove previous selection highlight
+  const opts = document.querySelectorAll(`#qc-${qi} .q-opt`);
+  opts.forEach(o => o.style.borderColor = '');
+  // highlight selected
+  document.getElementById(`opt-${qi}-${oi}`).style.borderColor = 'var(--blue)';
+  document.getElementById(`opt-${qi}-${oi}`).style.background = '#eff6ff';
+  document.getElementById(`opt-${qi}-${oi}`).dataset.sel = 'yes';
+  // store selection
+  opts.forEach(o => delete o.dataset.pending);
+  document.getElementById(`opt-${qi}-${oi}`).dataset.pending = oi;
+  // store answer
+  current[qi]._selected = oi;
+}
+
+function checkAnswers(){
+  let score = 0;
+  current.forEach((q,i) => {
+    if(answered[i]) return;
+    const sel = q._selected;
+    if(sel === undefined) return;
+    answered[i] = true;
+    const opts = document.querySelectorAll(`#qc-${i} .q-opt`);
+    const fb = document.getElementById(`fb-${i}`);
+    opts.forEach((o,j) => {
+      if(j === q.ans) o.classList.add('reveal-correct');
+    });
+    if(sel === q.ans){
+      score++;
+      document.getElementById(`opt-${i}-${sel}`).classList.add('correct');
+      fb.className = 'q-feedback fb-ok show';
+      fb.innerHTML = '✓ 正確！' + q.fb;
+    } else {
+      document.getElementById(`opt-${i}-${sel}`).classList.add('wrong');
+      fb.className = 'q-feedback fb-err show';
+      fb.innerHTML = '✗ 答錯了。' + q.fb;
+    }
+  });
+  const answered_count = answered.filter(Boolean).length;
+  if(answered_count > 0){
+    const sc = document.getElementById('quiz-score');
+    sc.className = 'quiz-score show';
+    sc.innerHTML = `本次得分 / Score<strong>${score} / ${answered_count}</strong><div style="font-size:.88rem;margin-top:6px;opacity:.85">${score===answered_count?'完美！所有作答均正確 Perfect score!':score>=Math.ceil(answered_count*.7)?'做得不錯！Good job!':'建議重新複習章節內容 Review the chapter and try again.'}</div>`;
+  }
+}
+
+loadQuiz();
+</script>
+</body>
+</html>

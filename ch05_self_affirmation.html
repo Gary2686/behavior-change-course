@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Self-Affirmation Interventions to Change Health Behaviors｜自我肯定介入</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#1e3a5f,#1d4ed8 40%,#7c3aed);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
+
+/* ── Bilingual para ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl.red{border-color:var(--red);background:#fef2f2}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+
+/* ── Concept callout ── */
+.callout{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Model flow ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}.mnode.r{background:var(--red)}.mnode.a{background:var(--amber)}
+.marrow{font-size:1.3rem;color:var(--muted)}
+
+/* ── Flow diagram ── */
+.flow-diagram{background:#fff;border-radius:var(--r);padding:28px;box-shadow:var(--sh);border:1px solid var(--border);margin:22px 0}
+.flow-diagram h4{font-size:1.05rem;font-weight:700;color:var(--blue-d);margin-bottom:20px;text-align:center}
+.flow-row{display:flex;align-items:stretch;justify-content:center;flex-wrap:wrap;gap:0;margin-bottom:8px}
+.flow-node{border-radius:var(--rs);padding:14px 18px;text-align:center;font-size:.85rem;line-height:1.4;min-width:130px;position:relative;flex:0 0 auto}
+.flow-node .fzh{font-weight:700;margin-bottom:3px}
+.flow-node .fen{font-size:.75rem;opacity:.8;font-style:italic}
+.fn-blue{background:#dbeafe;border:2px solid #93c5fd;color:#1e40af}
+.fn-red{background:#fee2e2;border:2px solid #fca5a5;color:#991b1b}
+.fn-green{background:#d1fae5;border:2px solid #6ee7b7;color:#065f46}
+.fn-purple{background:#ede9fe;border:2px solid #c4b5fd;color:#5b21b6}
+.fn-amber{background:#fef3c7;border:2px solid #fcd34d;color:#92400e}
+.fn-gray{background:#f1f5f9;border:2px solid #cbd5e1;color:var(--muted)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:1.5rem;color:var(--muted);flex:0 0 auto}
+.flow-interrupt{background:linear-gradient(135deg,#059669,#047857);color:#fff;border-radius:var(--rs);padding:10px 18px;text-align:center;font-size:.82rem;font-weight:700;margin:4px 0;align-self:center}
+.flow-branch{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}
+.flow-vs{display:flex;gap:12px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.vs-node{flex:1;min-width:160px;max-width:200px;border-radius:var(--rs);padding:14px 14px;text-align:center}
+.vs-defend{background:#fee2e2;border:2px solid #fca5a5}
+.vs-adapt{background:#d1fae5;border:2px solid #6ee7b7}
+.vs-node .vt{font-size:.8rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.vs-defend .vt{color:#991b1b}.vs-adapt .vt{color:#065f46}
+.vs-node ul{list-style:none;padding:0;text-align:left;font-size:.82rem;line-height:1.5}
+.vs-node ul li{padding:3px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+.vs-node ul li:last-child{border:none}
+
+/* ── Dual comparison ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+@media(max-width:600px){.dual{grid-template-columns:1fr}}
+.proc{border-radius:var(--r);padding:22px;border:2px solid}
+.proc.def{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5}
+.proc.adp{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#6ee7b7}
+.proc h4{font-size:1rem;font-weight:700;margin-bottom:12px;text-align:center}
+.proc.def h4{color:#991b1b}.proc.adp h4{color:#065f46}
+.proc ul{list-style:none;padding:0}
+.proc ul li{padding:5px 0;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px}
+.proc ul li:last-child{border:none}
+.proc ul li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:1px}
+.proc.def ul li::before{color:#dc2626}.proc.adp ul li::before{color:#059669}
+.proc ul li .zh{display:block;font-size:.82rem;color:var(--muted)}
+
+/* ── Numbered steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
+
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:12px 16px;text-align:left;font-size:.88rem;font-weight:600}
+td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:2px}
+
+/* ── Affirmation cards ── */
+.aff-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:18px 0}
+.aff-card{border-radius:var(--r);padding:22px 18px;text-align:center;border:2px solid;transition:transform .2s,box-shadow .2s}
+.aff-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.aff-card.ac1{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.aff-card.ac2{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.aff-card.ac3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#6ee7b7}
+.aff-card .ac-icon{font-size:2.2rem;margin-bottom:10px}
+.aff-card h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.aff-card .ac-en{font-size:.78rem;font-style:italic;opacity:.7;margin-bottom:10px}
+.aff-card.ac1 h4{color:#1d4ed8}.aff-card.ac2 h4{color:#7c3aed}.aff-card.ac3 h4{color:#059669}
+.aff-card p{font-size:.86rem;color:var(--text);margin:0;line-height:1.55}
+.aff-card .example-box{background:rgba(255,255,255,.7);border-radius:var(--rs);padding:10px 12px;margin-top:10px;font-size:.8rem;font-style:italic;color:var(--muted)}
+
+/* ── Moderator grid ── */
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.mod-card{background:#fff;border-radius:var(--r);padding:18px;border:1px solid var(--border);box-shadow:var(--sh);transition:transform .2s}
+.mod-card:hover{transform:translateY(-3px)}
+.mod-card .mc-icon{font-size:1.8rem;margin-bottom:8px;display:block}
+.mod-card h4{font-size:.95rem;font-weight:700;color:var(--blue-d);margin-bottom:4px}
+.mod-card .mc-en{font-size:.75rem;font-style:italic;color:var(--muted);margin-bottom:8px}
+.mod-card p{font-size:.83rem;color:var(--text);margin:0;line-height:1.5}
+.mod-card .effect-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75rem;font-weight:600;margin-top:8px}
+.tag-ben{background:#d1fae5;color:#065f46}
+.tag-cau{background:#fef3c7;color:#92400e}
+.tag-neg{background:#fee2e2;color:#991b1b}
+
+/* ── Mediator chain ── */
+.med-chain{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:16px 0;padding:18px;background:#f8fafc;border-radius:var(--r);border:1px solid var(--border)}
+.med-node{background:#fff;border:2px solid var(--border);border-radius:var(--rs);padding:10px 14px;text-align:center;font-size:.82rem;line-height:1.4;min-width:110px}
+.med-node .mn-zh{font-weight:700;color:var(--text)}
+.med-node .mn-en{font-size:.72rem;color:var(--muted);font-style:italic}
+.med-arrow{font-size:1.4rem;color:var(--blue)}
+
+/* ── Timeline ── */
+.timeline{position:relative;padding-left:28px;margin:18px 0}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),var(--purple))}
+.tl-item{position:relative;margin-bottom:20px;padding:16px 18px;background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border)}
+.tl-item::before{content:'';position:absolute;left:-23px;top:20px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--blue)}
+.tl-item:nth-child(2)::before{box-shadow:0 0 0 2px var(--purple)}
+.tl-item:nth-child(3)::before{box-shadow:0 0 0 2px var(--green)}
+.tl-item:nth-child(4)::before{box-shadow:0 0 0 2px var(--amber)}
+.tl-item .tl-step{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px}
+.tl-item:nth-child(2) .tl-step{color:var(--purple)}
+.tl-item:nth-child(3) .tl-step{color:var(--green)}
+.tl-item:nth-child(4) .tl-step{color:var(--amber)}
+.tl-item h4{font-size:.97rem;font-weight:700;margin-bottom:4px}
+.tl-item p{font-size:.86rem;margin:0;color:var(--muted)}
+
+/* ── Evidence tags ── */
+.ev-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:.76rem;font-weight:600;margin:2px}
+.ev-pos{background:#d1fae5;color:#065f46}
+.ev-mix{background:#fef3c7;color:#92400e}
+.ev-neg{background:#fee2e2;color:#991b1b}
+
+/* ── Numbered steps (green) ── */
+.steps-g li::before{background:var(--green)}
+
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
+
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.opts input:checked+label .olet{background:var(--blue);color:#fff}
+.opts label.correct .olet{background:var(--green);color:#fff}
+.opts label.wrong .olet{background:var(--red);color:#fff}
+.fb{margin-top:14px;padding:13px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.fb.show{display:block}
+.fb.correct{background:#f0fdf4;color:#065f46;border:1px solid #a7f3d0}
+.fb.wrong{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.qactions{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.btn{padding:13px 28px;border:none;border-radius:8px;font-size:.97rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.btn-o{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-o:hover{background:#eff6ff}
+.scorebox{display:none;text-align:center;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:32px;margin-top:28px}
+.scorebox.show{display:block}
+.score-n{font-size:3.6rem;font-weight:900;line-height:1;margin-bottom:6px}
+.score-l{font-size:1rem;opacity:.9;margin-bottom:6px}
+.score-s{font-size:1.8rem;margin-bottom:10px}
+.score-m{font-size:.95rem;opacity:.85}
+
+/* ── Footer ── */
+footer{background:#1e293b;color:#94a3b8;text-align:center;padding:38px 24px}
+footer strong{color:#f1f5f9;font-size:1.02rem}
+
+@media(max-width:640px){
+  .dual,.mod-grid{grid-template-columns:1fr}
+  .aff-cards{grid-template-columns:1fr}
+  .med-chain{flex-direction:column}
+  #quiz{padding:28px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero">
+  <div class="hero-tag">Chapter 5 · 第五章</div>
+  <h1>自我肯定介入改變健康行為
+    <small>Self-Affirmation Interventions to Change Health Behaviors</small>
+  </h1>
+  <p class="hero-sub">為什麼衛生教育訊息有時無效？自我肯定理論提供了答案——以及解方。</p>
+  <div class="hero-meta">
+    <span>&#9998; B. Schüz, R. Cooke, N. Schüz, G.M. van Koningsbruggen</span>
+    <span>&#128218; Little, Sillence &amp; Joinson (2017)</span>
+    <span>&#127758; Tasmania · Aston · VU Amsterdam</span>
+  </div>
+</div>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#s0" class="toc-link">澳洲案例</a>
+    <a href="#s1" class="toc-link">知識缺失模型</a>
+    <a href="#s2" class="toc-link">自我肯定理論</a>
+    <a href="#s3" class="toc-link">防禦性歷程</a>
+    <a href="#s4" class="toc-link">自我肯定如何作用</a>
+    <a href="#s5" class="toc-link">操縱方法</a>
+    <a href="#s6" class="toc-link">健康行為效果</a>
+    <a href="#s7" class="toc-link">調節因子</a>
+    <a href="#s8" class="toc-link">中介機制</a>
+    <a href="#s9" class="toc-link">介入應用</a>
+    <a href="#quiz" class="toc-link">隨堂測驗</a>
+  </div>
+</nav>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div class="main">
+
+<!-- ─────── S0: 澳洲案例 ─────── -->
+<section class="section" id="s0">
+  <div class="sec-header">
+    <div class="sec-num">&#127470;&#127475;</div>
+    <div class="sec-title">
+      <h2>衛生訊息何時會失效？</h2>
+      <div class="en-sub">When Health Communication Is Ineffective… — Opening Case: Australian Plain Packaging</div>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <strong>&#9888; 真實世界案例</strong>
+    <p>2012 年，澳洲成為全球第一個實施菸品<span class="en">plain packaging（素面包裝）</span>立法的國家；英國於 2016 年跟進，其他國家亦相繼效仿。</p>
+  </div>
+
+  <p>澳洲菸品素面包裝立法規定，所有菸品必須以視覺上不吸引人的統一顏色販售，使用標準字型標示品牌名稱，並在包裝正面放置覆蓋大部分面積的<strong>圖形健康警語</strong>（<span class="en">graphic health warnings</span>）。</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">圖形警語的設計範圍</h3>
+    <div class="grid-2">
+      <div class="hl" style="margin:0">
+        <strong>抽象描繪型</strong><br>
+        <span style="font-size:.88rem">例：某人吹出菸霧，文字提示「吸菸危害周遭他人健康」</span>
+      </div>
+      <div class="hl red" style="margin:0">
+        <strong>極端衝擊型</strong><br>
+        <span style="font-size:.88rem">例：壞疽的足部（ganrenous feet）等令人不適的圖像</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>澳洲衛生部宣稱的三大目標 <span class="en">Stated Aims</span></h3>
+  <div class="en-quote">"To reduce the attractiveness and appeal of tobacco products to consumers, particularly young people; to increase the noticeability and effectiveness of mandated health warnings; to reduce the ability of the retail packaging of tobacco products to mislead consumers about the harms of smoking."</div>
+  <div class="zh-note">降低菸品對消費者（尤其是年輕人）的吸引力；提高法定健康警語的注目度與效果；減少零售包裝誤導消費者低估吸菸危害的能力。<br><em>— 澳洲衛生部（2014）</em></div>
+
+  <h3>然而，研究結果卻令人失望 <span class="en">Backfiring Effects</span></h3>
+
+  <div class="flow-diagram">
+    <h4>&#9888; 素面包裝實際效果：數位體驗研究發現</h4>
+    <div class="grid-2">
+      <div class="card" style="margin:0;border-left:4px solid var(--amber)">
+        <strong style="color:var(--amber)">Schüz et al. (2016)</strong>
+        <p style="font-size:.86rem;margin:8px 0 0">每日吸菸者被要求記錄每次遭遇素面包裝健康警語時的想法與感受。結果：個人<strong>風險感知</strong>與<strong>戒菸意圖</strong>均未因重複接觸健康訊息而改變。</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid var(--red)">
+        <strong style="color:var(--red)">Süssenbach et al. (2013) & Loeber et al. (2011)</strong>
+        <p style="font-size:.86rem;margin:8px 0 0">吸菸者在接觸圖形健康警語後，反而出現<strong>對吸菸更正面的認知</strong>，以及更高的<strong>渴望感與焦慮</strong>。訊息完全<em>逆火</em>。</p>
+      </div>
+    </div>
+    <div class="hl red" style="margin:16px 0 0">
+      <strong>&#9940; 日曬保護的類似悖論（Schüz, Schüz, &amp; Eid, 2013）</strong><br>
+      研究者向參與者提供個人化 UV 照片（顯示皮膚老化與皮膚癌風險），收到警示的高風險參與者反而<strong>增加了不防曬的日曬時間</strong>！
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>&#128161; 核心問題：為何健康風險教育訊息效果有限？</h4>
+    <p>本章使用<span class="en">self-affirmation theory</span>（Cohen &amp; Sherman, 2014; Steele, 1988）來描述並探討健康教育更可能達成預期效果的條件，以及這些條件如何應用於健康行為改變介入。</p>
+    <div class="en-quote-w">"Why are messages educating people about their health risks not more effective in changing health behaviors?"</div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S1: 知識缺失模型 ─────── -->
+<section class="section" id="s1">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">
+      <h2>知識缺失模型及其局限</h2>
+      <div class="en-sub">Knowledge-Deficit Model and Its Limitations</div>
+    </div>
+  </div>
+
+  <p>大多數衛生促進介入都包含一個<strong>健康教育成分</strong>，即傳遞某種健康相關知識，其基本假設是：足夠的知識最終將導致行為改變。</p>
+
+  <div class="callout">
+    <h4>知識缺失模型（Knowledge-Deficit Model）</h4>
+    <p>吸菸者之所以吸菸，是因為他們對這一重要健康議題「知道得不夠多」。如果我們能提高法定健康警語的效果、減少包裝對吸菸危害的誤導，他們就會相應地調整行為。</p>
+    <div class="en-quote-w">Assumption: "People who smoke don't know enough... if they knew enough, they would adjust their behavior accordingly."</div>
+  </div>
+
+  <h3>知識缺失模型的根本問題</h3>
+  <div class="dual">
+    <div class="proc def">
+      <h4>&#10060; 模型假設</h4>
+      <ul>
+        <li><div><strong>知識 → 態度改變</strong><div class="zh">獲得足夠資訊即可改變看法</div></div></li>
+        <li><div><strong>態度 → 行為改變</strong><div class="zh">知道危險就應停止危險行為</div></div></li>
+        <li><div><strong>訊息強度 ↑ → 效果 ↑</strong><div class="zh">圖像越震撼，效果越好</div></div></li>
+        <li><div><strong>理性線性模型</strong><div class="zh">人類是理性決策者</div></div></li>
+      </ul>
+    </div>
+    <div class="proc adp">
+      <h4>&#9989; 現實挑戰</h4>
+      <ul>
+        <li><div><strong>防禦性處理</strong><div class="zh">威脅訊息引發自我保護反應</div></div></li>
+        <li><div><strong>訊息逆火</strong><div class="zh">高風險者反而增加風險行為</div></div></li>
+        <li><div><strong>自我概念干預</strong><div class="zh">行為認同（smoker identity）阻礙改變</div></div></li>
+        <li><div><strong>情緒性因素</strong><div class="zh">焦慮、渴望感等情緒主導反應</div></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <strong>&#128161; 重要發現</strong>：Kessels, Ruiter, &amp; Jansma (2010) 發現，對菸草健康警語的防禦反應（注意迴避）在<strong>吸菸量最大的人身上最強</strong>——也就是說，最需要改變行為的人，反而最不可能適應性地回應健康教育。
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S2: 自我肯定理論 ─────── -->
+<section class="section" id="s2">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">
+      <h2>自我肯定理論</h2>
+      <div class="en-sub">Self-Affirmation Theory (SAT) — Steele (1988); Cohen &amp; Sherman (2014)</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>理論奠基人：Claude Steele (1988)</h4>
+    <p>自我肯定理論（<span class="en">Self-Affirmation Theory, SAT</span>）由 Steele 於 1988 年提出。後經 Sherman &amp; Cohen (2006) 及 Cohen &amp; Sherman (2014) 進一步發展。其核心主張是：人類有一種根本的動機——維持對自己是「總體上良好且稱職之人」的整體感知。</p>
+    <div class="en-quote-w">"...motivated to feel good about ourselves, or to 'maintain a global sense of self-integrity'" — Sherman &amp; Cohen (2006)</div>
+  </div>
+
+  <h3>核心概念 <span class="en">Core Concepts</span></h3>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="aff-card ac1" style="border:none;padding:16px;margin:0">
+        <div class="ac-icon">&#129534;</div>
+        <h4>自我完整性</h4>
+        <div class="ac-en">Self-Integrity</div>
+        <p>對自己是「整體上良好且稱職之人」的全局感知，是自我系統的核心目標。</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="aff-card ac2" style="border:none;padding:16px;margin:0">
+        <div class="ac-icon">&#128218;</div>
+        <h4>自我系統</h4>
+        <div class="ac-en">Self-System</div>
+        <p>對個人而言重要的所有領域和概念的總和，共同構成對連貫且稱職自我的敘事。</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="aff-card ac3" style="border:none;padding:16px;margin:0">
+        <div class="ac-icon">&#128214;</div>
+        <h4>說故事的自我</h4>
+        <div class="ac-en">Self as Storyteller</div>
+        <p>Cohen &amp; Sherman (2014) 的比喻：自我如同說故事者，有動機創造一個連貫且稱職的自我敘事。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>自我系統的靈活性 <span class="en">Flexibility of the Self-System</span></h3>
+  <p>自我肯定理論的關鍵洞見是：自我系統本身具有<strong>靈活性</strong>（<span class="en">flexibility</span>）。這意味著自我可以從各種角色和屬性中汲取資源，來創造和維持自我完整性。</p>
+
+  <div class="en-quote">"The self can draw on a variety of roles and attributes to create and maintain this sense of self-integrity... people strive to be good enough to feel adequate and a good person in general, not superior." — Cohen &amp; Sherman (2014)</div>
+  <div class="zh-note">自我可以從各種角色和屬性中汲取資源，以創造和維持自我完整性感……人們追求的是感到「足夠好、足夠稱職」的一般感受，而非追求優越。</div>
+
+  <div class="hl green">
+    <strong>&#128161; 核心推論</strong>：如果可以在某一領域緩衝健康訊息對整體自我完整性的威脅，使自我系統仍能維持足夠的完整性，那麼自我系統就不需要對挑戰性外部信息進行防禦性回應——而可以以更具適應性的方式回應。
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S3: 防禦性歷程 ─────── -->
+<section class="section" id="s3">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">
+      <h2>防禦性處理與心理抗拒</h2>
+      <div class="en-sub">Defensive Processing &amp; Reactance</div>
+    </div>
+  </div>
+
+  <p>從自我肯定理論的角度來看，本章開頭討論的那些反直覺反應（吸菸者與日曬者的逆火反應）完全合理：這些反應是個體試圖保護其「整體上是良好且稱職之人」的自我觀點的嘗試。</p>
+
+  <h3>健康訊息如何威脅自我 <span class="en">How Health Messages Threaten Self-Integrity</span></h3>
+
+  <!-- 流程圖 -->
+  <div class="flow-diagram">
+    <h4>&#128196; 圖 5.1：健康訊息的自我威脅與防禦性回應歷程</h4>
+    <div class="model-flow" style="gap:6px">
+      <div class="flow-node fn-blue">
+        <div class="fzh">步驟 1</div>
+        <div class="fzh">遭遇健康警語</div>
+        <div class="fen">Health Warning Encounter</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-node fn-red">
+        <div class="fzh">步驟 2</div>
+        <div class="fzh">自我完整性受到威脅</div>
+        <div class="fen">Self-Integrity Threatened</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-node fn-amber">
+        <div class="fzh">步驟 3</div>
+        <div class="fzh">防禦性反應</div>
+        <div class="fen">Defensive Response</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-node fn-gray">
+        <div class="fzh">結果</div>
+        <div class="fzh">健康訊息無效</div>
+        <div class="fen">Message Fails</div>
+      </div>
+    </div>
+    <div class="hl" style="margin:16px 0 0;text-align:left">
+      <strong>步驟 1 說明：</strong>健康警語提示「您一直在做某件明顯不明智的事情」（如持續吸菸儘管知道後果），這挑戰了「我是一個良好且稱職的人」的自我感知，類似於<span class="en">認知失調（cognitive dissonance）</span>（Steele &amp; Liu, 1983）。
+    </div>
+  </div>
+
+  <h3>常見防禦性反應策略 <span class="en">Defensive Response Strategies</span></h3>
+
+  <div class="dual">
+    <div class="proc def">
+      <h4>&#128683; 防禦性回應</h4>
+      <ul>
+        <li><div><strong>理性化威脅</strong><div class="zh">把健康威脅合理化為更常見或更不嚴重（Jemmott et al., 1988）</div></div></li>
+        <li><div><strong>質疑訊息來源</strong><div class="zh">質疑健康資訊的品質或來源（Kunda, 1990）</div></div></li>
+        <li><div><strong>否認訊息意涵</strong><div class="zh">直接否認健康訊息的意涵（van Koningsbruggen &amp; Das, 2009）</div></div></li>
+        <li><div><strong>訊息貶低</strong><div class="zh">懷疑訊息品質，認為訊息誇大（message derogation）</div></div></li>
+        <li><div><strong>注意迴避</strong><div class="zh">視覺上迴避威脅性訊息內容（attentional avoidance）</div></div></li>
+        <li><div><strong>增加風險行為</strong><div class="zh">在極端情況下，反而增加問題行為（逆火效果）</div></div></li>
+      </ul>
+    </div>
+    <div class="proc adp">
+      <h4>&#9989; 適應性回應（理想）</h4>
+      <ul>
+        <li><div><strong>真實的風險感知</strong><div class="zh">承認真實的個人健康風險</div></div></li>
+        <li><div><strong>接受訊息</strong><div class="zh">開放地處理健康訊息（message acceptance）</div></div></li>
+        <li><div><strong>形成改變意圖</strong><div class="zh">真正形成改變行為的意圖</div></div></li>
+        <li><div><strong>行動計畫</strong><div class="zh">制定具體的行為改變計畫</div></div></li>
+        <li><div><strong>實際行為改變</strong><div class="zh">長期健康行為的改善</div></div></li>
+        <li><div><strong>預期後悔感</strong><div class="zh">對不改變行為產生預期後悔（anticipated regret）</div></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl red">
+    <strong>&#9888; 關鍵悖論</strong>：防禦性反應的強度<strong>隨風險行為的程度而增加</strong>（Kessels et al., 2010）——也就是說，最需要改變的人，其自我系統受到的威脅最大，因此防禦也最強烈。這造成了健康促進的根本困境。
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S4: 自我肯定如何作用 ─────── -->
+<section class="section" id="s4">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">
+      <h2>自我肯定如何中斷防禦歷程</h2>
+      <div class="en-sub">How Self-Affirmation Reduces Defensive Processing</div>
+    </div>
+  </div>
+
+  <!-- 完整流程圖 -->
+  <div class="flow-diagram">
+    <h4>&#128161; 完整歷程：自我肯定如何介入並轉化防禦性歷程</h4>
+
+    <div style="margin-bottom:16px">
+      <div style="text-align:center;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-weight:600">沒有自我肯定的情況（防禦性路徑）</div>
+      <div class="model-flow">
+        <div class="flow-node fn-blue"><div class="fzh">遭遇健康訊息</div><div class="fen">Health Message</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-red"><div class="fzh">自我威脅</div><div class="fen">Self-Threat</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-amber"><div class="fzh">防禦性處理</div><div class="fen">Defensive Processing</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-gray"><div class="fzh">訊息無效 / 逆火</div><div class="fen">Failure / Backfire</div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:12px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-radius:var(--rs);margin:12px 0;font-size:.9rem;font-weight:700;color:#065f46">
+      &#10003; 加入自我肯定介入 → 緩衝威脅 → 防禦需求降低
+    </div>
+
+    <div style="margin-top:8px">
+      <div style="text-align:center;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-weight:600">有自我肯定的情況（適應性路徑）</div>
+      <div class="model-flow">
+        <div class="flow-node fn-green"><div class="fzh">自我肯定</div><div class="fen">Self-Affirmation</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-blue"><div class="fzh">遭遇健康訊息</div><div class="fen">Health Message</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-purple"><div class="fzh">威脅被緩衝</div><div class="fen">Threat Buffered</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-green"><div class="fzh">適應性處理</div><div class="fen">Adaptive Processing</div></div>
+        <div class="flow-arrow">&#8594;</div>
+        <div class="flow-node fn-green"><div class="fzh">行為改變</div><div class="fen">Behavior Change</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>自我肯定的核心機制 <span class="en">Core Mechanism</span></h3>
+  <p><span class="en">Self-affirmations</span>（自我肯定行為）是任何能展示或強化個人充足感的活動——基本上任何能支持自我系統整體完整感的行為。</p>
+
+  <div class="en-quote">"Self-affirmations are any activity that demonstrate or reinforce one's sense of adequacy—basically anything that supports the global sense of integrity in the self-system."</div>
+  <div class="zh-note">自我肯定是任何能展示或強化個人充足感的活動——基本上是任何能支持自我系統全局完整感的行為。</div>
+
+  <ul class="steps">
+    <li>
+      <div class="sc">
+        <strong>步驟 1（原有）：遭遇健康警語</strong>
+        <div class="zh">挑戰自我「是一個健康人」的感知</div>
+        <div class="en-label">Encountering a health warning that challenges one's perception</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>步驟 2（被阻斷）：整體自我系統的完整性受威脅</strong>
+        <div class="zh">自我肯定在「另一個領域」提前強化了整體自我完整性，使步驟 1 不再直接威脅步驟 2</div>
+        <div class="en-label">Self-affirmation in another domain prevents step 1 from leading to step 2</div>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>步驟 3（不再需要）：防禦性反應</strong>
+        <div class="zh">因為整體自我完整性已得到維護，對健康警語的防禦反應需求大幅降低</div>
+        <div class="en-label">The need for defensive response is reduced</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3>Critcher &amp; Dunning (2015) 的更廣自我觀點機制</h3>
+  <div class="card">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="background:#ede9fe;color:#7c3aed;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">&#128300;</div>
+      <div>
+        <strong>更廣泛的自我觀點（Broader Self-Views）</strong>
+        <p style="margin:8px 0 0;font-size:.9rem">Critcher &amp; Dunning 提出更直接的機制：自我肯定透過促進<span class="en">broader self-views（更廣泛的自我觀點）</span>來恢復自我價值感。對負面回饋有更大的視角，可以中介自我肯定對減少防禦性的效果。將威脅置於更廣泛的脈絡中，從而限制其對自我系統的不良影響。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S5: 操縱方法 ─────── -->
+<section class="section" id="s5">
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">
+      <h2>自我肯定的操縱方法</h2>
+      <div class="en-sub">Methods of Self-Affirmation Manipulation</div>
+    </div>
+  </div>
+
+  <p>實驗研究中最常用的自我肯定操縱方式（McQueen &amp; Klein, 2006）涉及肯定個人價值觀的某種形式。以下三種為主要類型：</p>
+
+  <div class="aff-cards">
+    <div class="aff-card ac1">
+      <div class="ac-icon">&#9997;</div>
+      <h4>價值觀作文法</h4>
+      <div class="ac-en">Values Essay / Values Writing (Most Common)</div>
+      <p>請參與者選擇一個對自己最重要的個人價值觀，並寫下這個價值觀為何對自己重要。寫作本身即構成自我肯定。</p>
+      <div class="example-box">例：「誠實對我而言最重要，因為……」（Cohen, Aronson, &amp; Steele, 2000）</div>
+    </div>
+    <div class="aff-card ac2">
+      <div class="ac-icon">&#128203;</div>
+      <h4>價值觀問卷法</h4>
+      <div class="ac-en">Values Questionnaire</div>
+      <p>請參與者完成一份問卷，填寫個人重要的價值觀並評分。問卷回填的過程本身即是自我肯定的操縱。</p>
+      <div class="example-box">例：Reed &amp; Aspinwall (1998) 早期研究中使用的方法</div>
+    </div>
+    <div class="aff-card ac3">
+      <div class="ac-icon">&#128100;</div>
+      <h4>正向特質確認法</h4>
+      <div class="ac-en">Positive Traits Checklist</div>
+      <p>請參與者用簡短的核對清單，指出八項一般正向特質（如思想開放、勤奮）是否適用於自己。</p>
+      <div class="example-box">例：Jessop et al. (2009) 日曬保護研究——嵌入健康宣導手冊中</div>
+    </div>
+  </div>
+
+  <h3>自我肯定陳述法（現場化應用）<span class="en">Pre-written Affirmations</span></h3>
+  <p>另一種應用方式是在健康警語旁附上簡短肯定語句，如「你是一個善良的人」或「你是一個誠實的人」（Dillard et al., 2005）。然而，此方法在研究中效果不如個性化的自我選擇更有效——因為<strong>特異性</strong>（<span class="en">idiosyncratic nature</span>）似乎是自我肯定有效的關鍵特徵。</p>
+
+  <div class="hl green">
+    <strong>&#128204; 關鍵原則</strong>：自我肯定必須在個人<em>遭遇威脅性訊息之前</em>進行（Critcher, Dunning, &amp; Armor, 2010）。如果個人已開始進行防禦性處理，自我肯定的效果將大幅降低。<br><strong>時機</strong>（<span class="en">timing</span>）是關鍵！
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S6: 健康行為效果 ─────── -->
+<section class="section" id="s6">
+  <div class="sec-header">
+    <div class="sec-num">6</div>
+    <div class="sec-title">
+      <h2>自我肯定對各類健康行為的效果</h2>
+      <div class="en-sub">Effects of Self-Affirmation on Health Behaviors</div>
+    </div>
+  </div>
+
+  <div class="hl">
+    <strong>元分析摘要</strong>：兩項系統性回顧（Epton et al., 2015; Sweeney &amp; Moyer, 2015）均發現：
+    <br>・自我肯定對健康行為有<strong>小至中等</strong>效果（d = .27 ~ .32）
+    <br>・對行為意圖有<strong>小效果</strong>（d = .14 ~ .26）
+    <br>・對訊息接受有小效果（Epton et al., 2015）
+  </div>
+
+  <h3>各類健康行為的效果摘要</h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>健康行為類別</th>
+          <th>代表研究</th>
+          <th>效果</th>
+          <th>備注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="td-zh">飲食 / 蔬果攝取</div>
+            <div class="td-en">Healthy Diet</div>
+          </td>
+          <td><span class="tag tg">Epton &amp; Harris, 2008</span><br><span class="tag tg">Harris et al., 2014</span><br><span class="tag tg">van Koningsbruggen et al., 2014</span></td>
+          <td><span class="ev-badge ev-pos">&#9989; 正向效果</span></td>
+          <td>自我肯定組蔬果攝取顯著多於控制組；搭配執行意圖可進一步提升（Harris et al., 2014）</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="td-zh">身體活動</div>
+            <div class="td-en">Physical Activity</div>
+          </td>
+          <td><span class="tag tg">Cooke et al., 2014</span><br><span class="tag tg">Falk et al., 2015</span><br><span class="tag tg">Jessop et al., 2014</span></td>
+          <td><span class="ev-badge ev-mix">&#9888; 混合效果</span></td>
+          <td>多數研究顯示正向效果；但搭配執行意圖的結果有時反而有害（Jessop et al., 2014）</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="td-zh">吸菸</div>
+            <div class="td-en">Smoking</div>
+          </td>
+          <td><span class="tag ta">Armitage et al., 2008</span><br><span class="tag ta">Memish et al., 2016</span></td>
+          <td><span class="ev-badge ev-mix">&#9888; 條件性效果</span></td>
+          <td>高菸量者（&gt;20支/天）若自我肯定後顯示顯著降低；效果主要見於高風險族群</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="td-zh">酒精消耗</div>
+            <div class="td-en">Alcohol Consumption</div>
+          </td>
+          <td><span class="tag ta">Armitage et al., 2011, 2014</span><br><span class="tag tr">Harris &amp; Napper, 2005</span></td>
+          <td><span class="ev-badge ev-mix">&#9888; 混合效果</span></td>
+          <td>效果受飲酒量調節：重度飲酒者獲益更多；輕度飲酒者無顯著效果</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="td-zh">防曬保護</div>
+            <div class="td-en">Sun Protection</div>
+          </td>
+          <td><span class="tag tg">Schüz et al., 2013</span><br><span class="tag tg">Jessop et al., 2009</span></td>
+          <td><span class="ev-badge ev-pos">&#9989; 正向效果</span></td>
+          <td>自我肯定阻止了 UV 照片引發的逆火效果；日光浴者更願意使用防曬品</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="td-zh">自我管理</div>
+            <div class="td-en">Self-Management</div>
+          </td>
+          <td><span class="tag tg">Wileman et al., 2014, 2015</span><br><span class="tag tg">Logel &amp; Cohen, 2012</span></td>
+          <td><span class="ev-badge ev-pos">&#9989; 顯著效果</span></td>
+          <td>血液透析患者磷酸鹽控制更佳；體重管理也顯示正向效果</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>健康促進 vs. 健康風險行為的效果差異</h3>
+  <div class="dual">
+    <div class="card" style="border-left:4px solid var(--green)">
+      <strong style="color:var(--green)">健康促進行為（Health-Promoting Behaviors）</strong>
+      <p style="font-size:.88rem;margin:8px 0 0">自我肯定效果通常<strong>更為顯著</strong>。例如增加蔬果攝取、增加身體活動。風險行為者通常認為「不夠頻繁執行」的促進行為——增加此類行為比減少根深蒂固的風險行為更容易。</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--amber)">
+      <strong style="color:var(--amber)">健康風險行為（Health-Risk Behaviors）</strong>
+      <p style="font-size:.88rem;margin:8px 0 0">自我肯定效果通常<strong>較為有限</strong>。例如減少吸菸、減少飲酒。風險行為往往被視為個人認同的核心部分（吸菸者認為吸菸是「自己的一部分」），且執行頻率更高，改變更難。</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S7: 調節因子 ─────── -->
+<section class="section" id="s7">
+  <div class="sec-header">
+    <div class="sec-num">7</div>
+    <div class="sec-title">
+      <h2>自我肯定效果的調節因子</h2>
+      <div class="en-sub">Moderators of Self-Affirmation Effects</div>
+    </div>
+  </div>
+
+  <p>自我肯定並非對所有人都有同等效果。多種個人、社會、行為與環境因素影響其作用機制，使其效果只在特定條件下或特定族群中才能顯現。</p>
+
+  <div class="mod-grid">
+
+    <div class="mod-card">
+      <span class="mc-icon">&#127926;</span>
+      <h4>風險程度</h4>
+      <div class="mc-en">Risk Level</div>
+      <p>研究最廣泛的調節因子。<strong>中等風險者</strong>獲益最大。高風險者確實獲益，但極高風險者有時顯示不一致結果。低風險者幾乎無明顯效果。</p>
+      <span class="effect-tag tag-ben">中等風險者最有效</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#129505;</span>
+      <h4>自尊</h4>
+      <div class="mc-en">Self-Esteem</div>
+      <p><strong>低自尊者</strong>受益更多：他們缺乏像高自尊者那樣多的威脅管理資源（正向自我感受），自我系統更容易受外部訊息威脅，因此自我肯定的緩衝效果更強。</p>
+      <span class="effect-tag tag-ben">低自尊者獲益更多</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#9201;</span>
+      <h4>時機</h4>
+      <div class="mc-en">Timing</div>
+      <p><strong>威脅之前</strong>進行自我肯定效果更好（Critcher et al., 2010）。若個人已開始進行防禦性處理，之後的自我肯定效果將顯著降低。</p>
+      <span class="effect-tag tag-ben">訊息前 &gt; 訊息後</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#129302;</span>
+      <h4>對操縱的意識</h4>
+      <div class="mc-en">Awareness of Manipulation</div>
+      <p>若個人<strong>未意識到</strong>自己正在進行自我肯定，效果比有意識地進行時更大（Sherman et al., 2009）。意識到操縱性會弱化效果。</p>
+      <span class="effect-tag tag-cau">無意識 &gt; 有意識</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#128195;</span>
+      <h4>論點品質</h4>
+      <div class="mc-en">Argument Quality</div>
+      <p>只有當健康訊息提供<strong>強力論點</strong>時，自我肯定的參與者才會以適應性方式處理訊息（Brinol et al., 2007; Klein et al., 2011）。弱論點無法觸發此效果。</p>
+      <span class="effect-tag tag-cau">需要強力論點</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#128100;</span>
+      <h4>族群身份</h4>
+      <div class="mc-en">Group Identity / Stereotyped Groups</div>
+      <p>對被<strong>負面刻板印象</strong>族群（如少數族裔學生、女性數學學生）特別有益（Shnabel et al., 2013）。這些族群本就面對更多自我完整性威脅。</p>
+      <span class="effect-tag tag-ben">弱勢群體更有效</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#128247;</span>
+      <h4>威脅近遠性</h4>
+      <div class="mc-en">Proximal vs. Distal Hazard</div>
+      <p>Epton et al. (2015) 元分析發現，<strong>近端威脅</strong>（proximal hazard）時，自我肯定對行為改變的效果更大。遠期的抽象威脅效果有限。</p>
+      <span class="effect-tag tag-cau">近端威脅效果更強</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#128591;</span>
+      <h4>習慣性防禦</h4>
+      <div class="mc-en">Trait Defensiveness</div>
+      <p>習慣上進行<strong>高度防禦性處理</strong>的個人，在自我肯定後顯示特別顯著的訊息接受提升（Griffin &amp; Harris, 2011）。</p>
+      <span class="effect-tag tag-ben">高防禦者效果顯著</span>
+    </div>
+
+    <div class="mod-card">
+      <span class="mc-icon">&#128516;</span>
+      <h4>情緒狀態</h4>
+      <div class="mc-en">Mood / Positive Affect</div>
+      <p>Ferrer et al. (2012) 發現，自我肯定只在個人在接觸健康訊息後<strong>呈現正向情緒</strong>時，才能促進執行意圖的形成。</p>
+      <span class="effect-tag tag-cau">需搭配正向情緒</span>
+    </div>
+  </div>
+
+  <div class="hl purple">
+    <strong>&#128202; 元分析摘要</strong>：Sweeney &amp; Moyer (2015) 未發現健康行為類型、行為測量時機、自我肯定操縱類型等的顯著調節效果。但 Epton et al. (2015) 發現：使用<strong>價值觀作文</strong>法時效果較大；白人參與者比例較低的樣本效果較大；威脅近端時效果更大。整體而言，調節效果的研究仍需更多累積。
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S8: 中介機制 ─────── -->
+<section class="section" id="s8">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">
+      <h2>自我肯定效果的中介機制</h2>
+      <div class="en-sub">Mediators of Self-Affirmation Effects</div>
+    </div>
+  </div>
+
+  <p>相較於調節效果，自我肯定<em>為何</em>奏效的機制研究仍較為稀少。目前已識別出幾個主要中介路徑：</p>
+
+  <h3>訊息處理路徑 <span class="en">Message Processing Pathway</span></h3>
+  <div class="med-chain">
+    <div class="med-node" style="border-color:#93c5fd">
+      <div class="mn-zh">自我肯定</div>
+      <div class="mn-en">Self-Affirmation</div>
+    </div>
+    <div class="med-arrow">&#8594;</div>
+    <div class="med-node" style="border-color:#6ee7b7">
+      <div class="mn-zh">減少訊息貶低</div>
+      <div class="mn-en">&#8595; Message Derogation</div>
+    </div>
+    <div class="med-arrow">&#8594;</div>
+    <div class="med-node" style="border-color:#6ee7b7">
+      <div class="mn-zh">提升訊息接受</div>
+      <div class="mn-en">&#8593; Message Acceptance</div>
+    </div>
+    <div class="med-arrow">&#8594;</div>
+    <div class="med-node" style="border-color:#fcd34d">
+      <div class="mn-zh">行為改變意圖</div>
+      <div class="mn-en">Behavioral Intention</div>
+    </div>
+    <div class="med-arrow">&#8594;</div>
+    <div class="med-node" style="border-color:#a7f3d0">
+      <div class="mn-zh">健康行為</div>
+      <div class="mn-en">Health Behavior</div>
+    </div>
+  </div>
+
+  <h3>預期後悔感路徑（串聯中介）<span class="en">Anticipated Regret Pathway — Serial Mediation</span></h3>
+
+  <div class="card" style="border-left:4px solid var(--purple)">
+    <strong style="color:var(--purple)">van Koningsbruggen et al. (2014)：</strong>
+    <div class="med-chain" style="margin-top:12px">
+      <div class="med-node" style="border-color:#c4b5fd">
+        <div class="mn-zh">自我肯定</div>
+        <div class="mn-en">Self-Affirmation</div>
+      </div>
+      <div class="med-arrow">&#8594;</div>
+      <div class="med-node" style="border-color:#c4b5fd">
+        <div class="mn-zh">更高預期後悔</div>
+        <div class="mn-en">&#8593; Anticipated Regret</div>
+      </div>
+      <div class="med-arrow">&#8594;</div>
+      <div class="med-node" style="border-color:#fcd34d">
+        <div class="mn-zh">更強行為意圖</div>
+        <div class="mn-en">&#8593; Intentions</div>
+      </div>
+      <div class="med-arrow">&#8594;</div>
+      <div class="med-node" style="border-color:#a7f3d0">
+        <div class="mn-zh">一週後更健康行為</div>
+        <div class="mn-en">Healthier Behavior</div>
+      </div>
+    </div>
+    <p style="font-size:.86rem;margin:8px 0 0;color:var(--muted)">自我肯定組的參與者在接觸健康訊息時體驗到更高的<span class="en">anticipated regret</span>（預期後悔感），這反映了防禦性降低。更高的預期後悔感進而導致更強的行為意圖，再導致一週後的實際健康行為改善（蔬果攝取）。</p>
+  </div>
+
+  <h3>各中介變項的證據摘要</h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>中介變項</th>
+          <th>英文術語</th>
+          <th>證據強度</th>
+          <th>代表研究</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="td-zh">訊息接受</div></td>
+          <td><div class="td-en">Message Acceptance</div></td>
+          <td><span class="ev-badge ev-pos">有支持</span></td>
+          <td>Armitage et al. (2008)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">訊息貶低</div></td>
+          <td><div class="td-en">Message Derogation</div></td>
+          <td><span class="ev-badge ev-pos">有支持</span></td>
+          <td>van Koningsbruggen &amp; Das (2009)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">行為意圖</div></td>
+          <td><div class="td-en">Behavioral Intentions</div></td>
+          <td><span class="ev-badge ev-mix">部分支持</span></td>
+          <td>van Koningsbruggen &amp; Das (2009); Scott et al. (2013)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">預期後悔</div></td>
+          <td><div class="td-en">Anticipated Regret</div></td>
+          <td><span class="ev-badge ev-pos">有支持（串聯）</span></td>
+          <td>van Koningsbruggen et al. (2014)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">回應效能</div></td>
+          <td><div class="td-en">Response Efficacy</div></td>
+          <td><span class="ev-badge ev-pos">有支持</span></td>
+          <td>Epton &amp; Harris (2008)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">自尊（直接效果）</div></td>
+          <td><div class="td-en">Self-Esteem</div></td>
+          <td><span class="ev-badge ev-mix">不一致</span></td>
+          <td>Armitage (2012)：自尊的來源領域改變，而非整體提升</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">脆弱感</div></td>
+          <td><div class="td-en">Feelings of Vulnerability</div></td>
+          <td><span class="ev-badge ev-pos">有支持</span></td>
+          <td>Klein et al. (2011)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">愛與連結感</div></td>
+          <td><div class="td-en">Love / Connectedness</div></td>
+          <td><span class="ev-badge ev-pos">有支持</span></td>
+          <td>Crocker, Niiya, &amp; Mischkowski (2008)</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">情緒 / 正向情感</div></td>
+          <td><div class="td-en">Mood / Positive Affect</div></td>
+          <td><span class="ev-badge ev-neg">證據甚少</span></td>
+          <td>Dillard et al. (2005); Napper et al. (2009)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ─────── S9: 介入應用 ─────── -->
+<section class="section" id="s9">
+  <div class="sec-header">
+    <div class="sec-num">9</div>
+    <div class="sec-title">
+      <h2>自我肯定在介入中的應用</h2>
+      <div class="en-sub">Self-Affirmation in Interventions to Change Health Behaviors</div>
+    </div>
+  </div>
+
+  <h3>自我肯定是動機性技術 <span class="en">Motivational Technique</span></h3>
+
+  <p>自我肯定被定性為一種<span class="en">motivational technique（動機性技術）</span>（Epton &amp; Harris, 2008），因為其大多數有記錄的效果集中在健康行為改變的理論性預測因素上——尤其是風險感知（<span class="en">risk perceptions</span>）及其前驅因素。</p>
+
+  <div class="hl amber">
+    <strong>&#9888; 重要認識：單靠動機技術是不夠的</strong>
+    <p>研究普遍發現，動機技術單獨使用不足以促進健康行為改變（Zhang &amp; Cooke, 2012）。動機只是第一步。</p>
+  </div>
+
+  <h3>動機 → 行為：從意圖到執行的四步驟</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-step">步驟 1 · 動機階段</div>
+      <h4>動機形成（自我肯定的主要作用點）</h4>
+      <p>自我肯定透過緩衝防禦性處理，使健康訊息得以真正被接受，進而激發改變的動機。<span class="en">Self-affirmation as motivational technique</span></p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-step">步驟 2 · 意圖形成</div>
+      <h4>正向行為意圖（Behavioral Intention）</h4>
+      <p>動機轉化為改變健康行為的正向目標意圖。然而，此階段存在<span class="en">intention-behavior gap（意圖-行為缺口）</span>（Sheeran, 2002）。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-step">步驟 3 · 意志性階段</div>
+      <h4>執行意圖（Implementation Intentions）</h4>
+      <p>目標設定技術（如 Gollwitzer, 1999 的<span class="en">implementation intentions</span>）幫助個人規劃「何時、何地、如何」執行行為，已被證明能促進行為改變。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-step">步驟 4 · 行為改變</div>
+      <h4>實際健康行為改變（Health Behavior Change）</h4>
+      <p>動機技術（如自我肯定）＋執行技術（如執行意圖）的組合在理論上應能最大化效果，但實際研究結果卻出乎意料地複雜。</p>
+    </div>
+  </div>
+
+  <h3>自我肯定 + 執行意圖的組合效果</h3>
+
+  <div class="hl red">
+    <strong>&#9888; 違反預期的發現：組合效果不一定更好</strong>
+    <p>Jessop et al. (2014) 在兩個研究中發現，自我肯定與執行意圖的組合對身體活動產生<strong>有害效果</strong>——同時完成兩種技術的參與者比只做自我肯定的參與者運動更少。</p>
+    <p>但在酒精領域，Armitage et al. (2011, 2014) 的研究顯示，組合可以有效減少飲酒量。</p>
+    <p>Harris et al. (2014) 的蔬果研究顯示，1 週後有效果，但 3 個月後效果消失。</p>
+  </div>
+
+  <h3>實際介入中的應用挑戰 <span class="en">Practical Challenges</span></h3>
+
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid var(--red)">
+      <strong style="color:var(--red)">主要挑戰</strong>
+      <ul style="margin-top:8px;padding-left:16px;font-size:.88rem;line-height:2">
+        <li>多數研究為<strong>實驗室研究</strong>，難以推廣至現實環境</li>
+        <li>需要在接觸健康訊息之前讓人自我肯定，情境要求高</li>
+        <li>如何讓人自然地、非刻意地進行自我肯定</li>
+        <li>預先設計的肯定語句效果遠不如個性化選擇</li>
+        <li>如何讓自我肯定嵌入健康訊息而不顯突兀</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid var(--green)">
+      <strong style="color:var(--green)">有希望的方向</strong>
+      <ul style="margin-top:8px;padding-left:16px;font-size:.88rem;line-height:2">
+        <li><strong>健康宣導手冊</strong>中嵌入正向特質清單（Jessop et al., 2009）</li>
+        <li><strong>網站橫幅</strong>中加入簡短價值肯定訊息（Arpan et al., 2016）</li>
+        <li>網路健康介入中整合個性化自我肯定（Epton et al., 2014）</li>
+        <li><strong>數位與行動應用</strong>更易整合自我肯定機制</li>
+        <li>小規模人際介入設置可能比大規模傳播更適合</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <strong>&#9989; 結論</strong>（Schüz et al., 2017）：儘管存在諸多待解的問題，自我肯定理論為提升健康訊息效果提供了真實可期的潛力。鼓勵人們專注於自我概念的正向面向，可使其較不傾向於拒絕健康訊息。在健康訊息高度普及的當代，這是一個值得深耕的特性。
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════ QUIZ ══════════════════ -->
+<section class="section" id="quiz">
+  <div id="quiz">
+    <div class="qhead">
+      <h2>&#9997; 隨堂測驗</h2>
+      <p>從題庫中隨機抽取 5 題，測試您對本章核心概念的理解。</p>
+    </div>
+    <div id="quiz-container"></div>
+    <div class="qactions">
+      <button class="btn btn-p" onclick="submitQuiz()">&#9989; 提交答案</button>
+      <button class="btn btn-o" onclick="resetQuiz()">&#128260; 重新作答</button>
+    </div>
+    <div class="scorebox" id="scorebox">
+      <div class="score-n" id="score-n"></div>
+      <div class="score-l">答對題數 / 總題數</div>
+      <div class="score-s" id="score-s"></div>
+      <div class="score-m" id="score-m"></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end .main -->
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <strong>版權所有 &copy; 葉欲禾（Gary Yu-Ho Yeh）</strong>
+  <p style="margin-top:10px;font-size:.85rem">本教材依據 Little, Sillence &amp; Joinson (2017) <em>Behavior Change Research and Theory</em> Chapter 5 編製，僅供教學使用。</p>
+  <p style="margin-top:6px;font-size:.8rem">B. Schüz, R. Cooke, N. Schüz, G.M. van Koningsbruggen &mdash; Self-Affirmation Interventions to Change Health Behaviors</p>
+</footer>
+
+<!-- ══════════════════ JS ══════════════════ -->
+<script>
+/* ── Active nav ── */
+const links = document.querySelectorAll('.toc-link');
+const secs  = document.querySelectorAll('.section');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const a = document.querySelector('.toc-link[href="#'+e.target.id+'"]');
+      if(a) a.classList.add('active');
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+secs.forEach(s=>io.observe(s));
+
+/* ── Quiz ── */
+const QBANK = [
+  {
+    q:"自我肯定理論（Self-Affirmation Theory）最初由哪位學者提出？",
+    opts:["Albert Bandura","Claude Steele","Martin Seligman","Aaron Beck"],
+    ans:1,
+    fb:"正確！自我肯定理論由 Claude Steele 於 1988 年在《社會心理學實驗進展》中提出。後經 Sherman &amp; Cohen (2006) 及 Cohen &amp; Sherman (2014) 進一步發展。"
+  },
+  {
+    q:"根據自我肯定理論，「自我完整性」（self-integrity）的定義是什麼？",
+    opts:[
+      "個人對自己道德品行完美無缺的判斷",
+      "對自己是整體上良好且稱職之人的全局感知",
+      "在所有領域中都表現優秀的自我評估",
+      "不受外部批評影響的自我信念"
+    ],
+    ans:1,
+    fb:"正確！自我完整性是「對自己是整體上良好且稱職之人的全局感知」（global sense of self-integrity），是自我系統的核心維護目標。重要的是：這並非追求優越，而是追求「足夠好」。"
+  },
+  {
+    q:"下列哪項是健康訊息引發防禦性處理（defensive processing）的典型例子？",
+    opts:[
+      "吸菸者閱讀警語後立即決定戒菸",
+      "吸菸者在接觸圖形健康警語後反而出現更多正面的吸菸認知",
+      "健康者閱讀運動建議後增加了身體活動",
+      "患者在醫生建議後遵從飲食限制"
+    ],
+    ans:1,
+    fb:"正確！Süssenbach et al. (2013) 的研究顯示，吸菸者在接觸圖形健康警語後，反而出現對吸菸更正面的認知——這是防禦性處理的典型例子。同樣，Schüz et al. (2013) 也發現日曬保護研究中的「逆火效應」。"
+  },
+  {
+    q:"「價值觀作文法」（values essay）在自我肯定研究中是什麼？",
+    opts:[
+      "讓參與者列出自己所有的優缺點",
+      "讓參與者書寫對他人最重要的價值觀",
+      "讓參與者選擇最重要的個人價值觀並書寫其重要性",
+      "讓參與者閱讀已撰寫好的個人價值宣言"
+    ],
+    ans:2,
+    fb:"正確！價值觀作文法（Cohen, Aronson, &amp; Steele, 2000）是最常見的自我肯定操縱：讓參與者選擇一個對自己最重要的個人價值觀，並書寫這個價值觀為何對自己重要。對照組通常寫他人可能認為重要的最不重要的價值觀。"
+  },
+  {
+    q:"澳洲菸品素面包裝研究（Schüz et al., 2016）的主要發現是什麼？",
+    opts:[
+      "每日吸菸者的戒菸意圖在反覆接觸健康警語後顯著提升",
+      "素面包裝完全消除了菸草品牌的視覺吸引力",
+      "每日吸菸者的風險感知和戒菸意圖均未因反覆接觸健康訊息而改變",
+      "素面包裝對輕度吸菸者有效，對重度吸菸者無效"
+    ],
+    ans:2,
+    fb:"正確！Schüz 等人讓每日吸菸者記錄每次遭遇素面包裝健康警語的想法與感受，結果發現：個人風險感知與戒菸意圖均未因重複接觸而改變——完全未達知識缺失模型預測的效果。"
+  },
+  {
+    q:"關於「風險程度」作為自我肯定效果的調節因子，以下哪個說法最準確？",
+    opts:[
+      "低風險者從自我肯定中獲益最多",
+      "高風險者從自我肯定中獲益最多，且效果完全一致",
+      "中等風險者往往從自我肯定中獲益最大；最高風險者的結果有時不一致",
+      "所有風險程度的人從自我肯定中獲益程度相同"
+    ],
+    ans:2,
+    fb:"正確！研究發現，自我肯定效果在中等風險個體中最強（例如 Klein &amp; Harris, 2009 發現中度飲酒者對訊息的注意力轉移最大）。最高風險者的結果有時不一致，甚至可能出現反向效果（Zhao et al., 2014）。低風險者幾乎無明顯效果。"
+  },
+  {
+    q:"自尊（self-esteem）如何調節自我肯定的效果？",
+    opts:[
+      "高自尊者從自我肯定中獲益最多",
+      "低自尊者從自我肯定中獲益更多，因其威脅管理資源較少",
+      "自尊高低對自我肯定效果沒有影響",
+      "只有中等自尊的人從自我肯定中獲益"
+    ],
+    ans:1,
+    fb:"正確！低自尊者對外部威脅訊息更脆弱，因為他們缺乏像高自尊者那樣多的威脅管理資源（正向自我感受）。Düring &amp; Jessop (2015) 發現，低自尊的自我肯定組在態度、意圖與訊息貶低上達到了與高自尊參與者相似的水準。"
+  },
+  {
+    q:"「預期後悔」（anticipated regret）作為自我肯定效果的中介變項，其運作邏輯是什麼？",
+    opts:[
+      "自我肯定降低預期後悔，使人更容易接受現狀",
+      "自我肯定提升預期後悔感（反映防禦性降低），進而促進更強的行為意圖與後續行為改變",
+      "預期後悔直接觸發自我肯定，並非其結果",
+      "預期後悔只在高自尊者中才作為中介變項"
+    ],
+    ans:1,
+    fb:"正確！van Koningsbruggen et al. (2014) 發現了串聯中介（serial mediation）：自我肯定 → 更高預期後悔感（防禦性降低的指標）→ 更強行為意圖 → 一週後更多蔬果攝取。預期後悔感的提升反映了個體對健康訊息開放處理。"
+  },
+  {
+    q:"關於自我肯定的時機（timing），研究的最主要發現是什麼？",
+    opts:[
+      "自我肯定在遭遇威脅之後進行效果最好",
+      "自我肯定的效果與時機無關",
+      "自我肯定必須在遭遇威脅訊息之前進行才有效果",
+      "自我肯定在已開始防禦性處理後效果最強"
+    ],
+    ans:2,
+    fb:"正確！Critcher, Dunning, &amp; Armor (2010) 的研究確認：自我肯定必須在遭遇潛在威脅訊息之前完成才有效——更精確地說，是在個人還未開始防禦性處理之前。時機是自我肯定有效性的關鍵調節因子。"
+  },
+  {
+    q:"Critcher &amp; Dunning (2015) 提出，自我肯定透過什麼機制恢復自我價值感？",
+    opts:[
+      "透過直接提升整體自尊水準",
+      "透過促進「更廣泛的自我觀點」，將威脅置於更大脈絡中",
+      "透過分散注意力，使人忘記健康訊息的內容",
+      "透過增加正向情緒，抵消威脅的負面影響"
+    ],
+    ans:1,
+    fb:"正確！Critcher &amp; Dunning (2015) 透過四個實驗提出：自我肯定透過促進「更廣泛的自我觀點」（broader self-views）恢復自我價值感。對負面回饋有更大的視角可以中介自我肯定對降低防禦性的效果。他們認為，自我肯定之所以有效，是因為它將威脅置於更廣泛的脈絡中，從而限制威脅對自我系統的不良影響。"
+  },
+  {
+    q:"自我肯定被歸類為哪種類型的健康行為改變技術？",
+    opts:[
+      "意志性技術（volitional technique）",
+      "動機性技術（motivational technique）",
+      "執行技術（implementation technique）",
+      "認知重構技術（cognitive restructuring technique）"
+    ],
+    ans:1,
+    fb:"正確！自我肯定被定性為「動機性技術」（Epton &amp; Harris, 2008），因為其大多數記錄效果集中在健康行為改變的動機性前驅因素上（如風險感知）。動機是行為改變的第一步，但僅有動機通常不足以帶來持久的行為改變——還需要意志性技術（如執行意圖）。"
+  },
+  {
+    q:"關於自我肯定與執行意圖（implementation intentions）的組合效果，研究的整體發現是什麼？",
+    opts:[
+      "組合總是比單獨使用任一技術效果更好",
+      "組合效果不一致：在某些情境有效，在另一些情境甚至產生有害效果",
+      "組合效果總是不如單獨使用任一技術",
+      "只有在身體活動領域，組合效果才優於單獨使用"
+    ],
+    ans:1,
+    fb:"正確！研究結果出乎意料地複雜：Jessop et al. (2014) 發現組合對身體活動有害效果；Harris et al. (2014) 在蔬果研究中發現短期有效但長期效果消失；而 Armitage et al. (2011, 2014) 在酒精減少上發現正向組合效果。整體而言，兩種技術的組合效果不一致，需要更多研究。"
+  }
+];
+
+let selected = [];
+let answers  = {};
+
+function pickRandom(arr, n){
+  const a = [...arr]; let res = [];
+  while(res.length < n && a.length){
+    const i = Math.floor(Math.random()*a.length);
+    res.push(a.splice(i,1)[0]);
+  }
+  return res;
+}
+
+function buildQuiz(){
+  selected = pickRandom(QBANK, 5);
+  answers  = {};
+  const c  = document.getElementById('quiz-container');
+  c.innerHTML = '';
+  document.getElementById('scorebox').classList.remove('show');
+
+  selected.forEach((q, qi)=>{
+    const opts = q.opts.map((o,oi)=>`
+      <li>
+        <input type="radio" name="q${qi}" id="q${qi}o${oi}" value="${oi}">
+        <label for="q${qi}o${oi}"><span class="olet">${String.fromCharCode(65+oi)}</span>${o}</label>
+      </li>`).join('');
+
+    c.innerHTML += `
+      <div class="qcard" id="qcard${qi}">
+        <div class="qnum">${qi+1}</div>
+        <div class="qtext">${q.q}</div>
+        <ul class="opts">${opts}</ul>
+        <div class="fb" id="fb${qi}"></div>
+      </div>`;
+  });
+
+  // radio change events
+  selected.forEach((_,qi)=>{
+    document.querySelectorAll(`input[name="q${qi}"]`).forEach(r=>{
+      r.addEventListener('change',()=>{ answers[qi]=parseInt(r.value); });
+    });
+  });
+}
+
+function submitQuiz(){
+  let correct = 0;
+  selected.forEach((q, qi)=>{
+    const card   = document.getElementById('qcard'+qi);
+    const fb     = document.getElementById('fb'+qi);
+    const chosen = answers[qi];
+
+    // mark labels
+    q.opts.forEach((_,oi)=>{
+      const lbl = document.querySelector(`label[for="q${qi}o${oi}"]`);
+      if(oi === q.ans){
+        lbl.classList.add('correct');
+        lbl.querySelector('.olet').style.background='var(--green)';
+        lbl.querySelector('.olet').style.color='#fff';
+      }
+      if(chosen !== undefined && oi === chosen && oi !== q.ans){
+        lbl.classList.add('wrong');
+        lbl.querySelector('.olet').style.background='var(--red)';
+        lbl.querySelector('.olet').style.color='#fff';
+      }
+    });
+
+    // disable radios
+    document.querySelectorAll(`input[name="q${qi}"]`).forEach(r=>r.disabled=true);
+
+    // feedback
+    const isCorrect = chosen === q.ans;
+    if(isCorrect) correct++;
+    fb.className = 'fb show '+(isCorrect?'correct':'wrong');
+    fb.innerHTML = (chosen===undefined ? '<strong>⚠ 未作答</strong> — ' : (isCorrect?'<strong>&#9989; 正確！</strong> — ':'<strong>&#10060; 答錯了。</strong> — ')) + q.fb;
+  });
+
+  // score
+  const pct  = Math.round(correct/selected.length*100);
+  const msgs = ['加油！多複習本章概念。','不錯！繼續努力！','表現良好！','很棒的成績！','完美！全部答對！'];
+  const idx  = Math.min(Math.floor(correct/(selected.length/msgs.length)), msgs.length-1);
+
+  const sb = document.getElementById('scorebox');
+  document.getElementById('score-n').textContent = correct + ' / ' + selected.length;
+  document.getElementById('score-s').textContent = pct + '%';
+  document.getElementById('score-m').textContent = msgs[correct];
+  sb.classList.add('show');
+  sb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function resetQuiz(){ buildQuiz(); }
+
+buildQuiz();
+</script>
+</body>
+</html>

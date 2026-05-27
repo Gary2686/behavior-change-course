@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四章：評估行動裝置行為改變支援系統</title>
+<style>
+:root {
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;--green:#059669;
+  --amber:#d97706;--red:#dc2626;--bg:#f8fafc;--card:#fff;
+  --text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+h1,h2,h3,h4{line-height:1.3;font-weight:700}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 55%,#7c3aed 100%);color:#fff;padding:64px 24px 48px;text-align:center}
+.hero .badge{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);border-radius:20px;padding:4px 16px;font-size:13px;margin-bottom:18px;letter-spacing:.5px}
+.hero h1{font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:10px;text-shadow:0 2px 8px rgba(0,0,0,0.25)}
+.hero .sub{font-size:clamp(0.95rem,2vw,1.15rem);opacity:0.88;margin-bottom:6px}
+.hero .authors{font-size:.88rem;opacity:0.72;margin-top:8px}
+.hero .source-tag{display:inline-block;background:rgba(255,255,255,0.13);border-radius:12px;padding:3px 12px;font-size:12px;margin-top:12px;opacity:.8}
+
+/* TOC */
+.toc-bar{position:sticky;top:0;z-index:100;background:#1e293b;display:flex;overflow-x:auto;padding:0 12px;scrollbar-width:none}
+.toc-bar::-webkit-scrollbar{display:none}
+.toc-bar a{color:#cbd5e1;white-space:nowrap;padding:12px 14px;font-size:13px;border-bottom:3px solid transparent;transition:all .2s}
+.toc-bar a:hover,.toc-bar a.active{color:#fff;border-bottom-color:var(--blue)}
+
+/* Layout */
+.container{max-width:960px;margin:0 auto;padding:40px 20px}
+.section{margin-bottom:60px}
+.section-title{font-size:1.45rem;color:var(--blue-d);border-left:5px solid var(--blue);padding-left:14px;margin-bottom:24px}
+.section-subtitle{font-size:1.1rem;color:var(--purple);margin:20px 0 10px;font-weight:700}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.card-accent{border-left:4px solid var(--blue)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+
+/* Inline English */
+.en{color:var(--blue);font-style:italic;font-size:.92em}
+.en-quote{border-left:4px solid var(--blue);background:#eff6ff;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.95em;color:#1e40af;line-height:1.7}
+.zh-note{border-left:4px solid #94a3b8;background:#f8fafc;padding:10px 16px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.9em;color:var(--muted)}
+
+/* Highlight & callout */
+.hl{background:#fef9c3;padding:1px 5px;border-radius:3px;font-weight:600}
+.callout{border-radius:10px;padding:18px 22px;margin:18px 0}
+.callout.blue{background:#eff6ff;border:1px solid #bfdbfe}
+.callout.amber{background:#fffbeb;border:1px solid #fde68a}
+.callout.green{background:#f0fdf4;border:1px solid #bbf7d0}
+.callout.purple{background:#faf5ff;border:1px solid #ddd6fe}
+.callout.red{background:#fef2f2;border:1px solid #fecaca}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:.95rem}
+
+/* Steps */
+.steps{counter-reset:step-counter;list-style:none;padding:0}
+.steps li{padding:12px 14px 12px 54px;position:relative;border-left:2px solid var(--border);margin-left:20px;margin-bottom:4px}
+.steps li::before{counter-increment:step-counter;content:counter(step-counter);position:absolute;left:-20px;top:10px;width:36px;height:36px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+
+/* PSD Framework Grid */
+.fw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+@media(min-width:700px){.fw-grid{grid-template-columns:repeat(4,1fr)}}
+.fw-card{border-radius:10px;padding:18px;text-align:center}
+.fw-card.c1{background:#eff6ff;border:2px solid #93c5fd}
+.fw-card.c2{background:#f0fdf4;border:2px solid #86efac}
+.fw-card.c3{background:#fffbeb;border:2px solid #fcd34d}
+.fw-card.c4{background:#faf5ff;border:2px solid #c4b5fd}
+.fw-card .fw-icon{font-size:2rem;margin-bottom:8px}
+.fw-card h4{font-size:.9rem;margin-bottom:6px}
+.fw-card p{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* O/C Matrix */
+.oc-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:.88rem}
+.oc-table th,.oc-table td{border:2px solid var(--border);padding:12px 10px;vertical-align:top}
+.oc-table thead th{background:#1e293b;color:#fff;text-align:center;font-size:.9rem;padding:14px 10px}
+.oc-table tbody td:first-child{background:#374151;color:#fff;font-weight:700;text-align:center;writing-mode:horizontal-tb;width:90px}
+.oc-table td.f-row{background:#eff6ff}
+.oc-table td.a-row{background:#fff7ed}
+.oc-table td.r-row{background:#f0fdf4}
+.oc-app{display:inline-block;background:var(--blue);color:#fff;border-radius:6px;padding:2px 8px;font-size:.8rem;font-weight:700;margin-bottom:4px}
+.oc-app.amber{background:var(--amber)}
+.oc-app.green{background:var(--green)}
+.oc-desc{font-size:.82rem;color:var(--muted);margin-top:4px;line-height:1.5}
+.change-header{text-align:center}
+.change-header .change-type{display:inline-block;border-radius:6px;padding:2px 8px;font-size:.82rem;font-weight:700;margin-top:4px}
+.ch-c{background:#fce7f3;color:#9d174d}
+.ch-b{background:#dcfce7;color:#166534}
+.ch-a{background:#dbeafe;color:#1e40af}
+
+/* App grid */
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:16px}
+.app-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:transform .2s,box-shadow .2s}
+.app-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
+.app-abbr{display:inline-block;background:var(--blue);color:#fff;border-radius:6px;padding:2px 8px;font-size:.78rem;font-weight:700;margin-bottom:6px}
+.app-name{font-size:.82rem;font-weight:600;margin-bottom:4px}
+.app-focus{font-size:.75rem;color:var(--muted)}
+
+/* Postulates */
+.postulate-list{list-style:none;padding:0}
+.postulate-list li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.postulate-list li:last-child{border-bottom:none}
+.postulate-num{flex-shrink:0;width:32px;height:32px;background:var(--purple);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem}
+.postulate-text{flex:1;font-size:.92rem;padding-top:5px}
+
+/* Feature tables */
+.feat-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.85rem}
+.feat-table th{background:#f1f5f9;padding:10px 12px;text-align:left;border:1px solid var(--border);font-weight:700}
+.feat-table td{padding:10px 12px;border:1px solid var(--border);vertical-align:top}
+.feat-table tr:nth-child(even) td{background:#fafafa}
+.feat-name{font-weight:700;color:var(--blue-d)}
+.feat-count{font-size:.78rem;color:var(--muted);font-weight:normal}
+
+/* App check grid */
+.check-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:12px;overflow-x:auto;display:block}
+.check-table th,.check-table td{border:1px solid var(--border);padding:7px 6px;text-align:center;white-space:nowrap}
+.check-table thead tr:first-child th{background:#1e293b;color:#fff}
+.check-table thead tr:last-child th{background:#334155;color:#e2e8f0;font-size:.75rem}
+.check-table tbody td:first-child{text-align:left;background:#f8fafc;font-weight:600;min-width:140px;white-space:normal}
+.check-table .section-row td{background:#e2e8f0;font-weight:700;text-align:left;color:#374151}
+.check-table .yes{color:var(--green);font-size:1.1rem}
+.check-table .no{color:#cbd5e1;font-size:.9rem}
+
+/* Findings summary */
+.finding-bar{display:flex;align-items:center;gap:10px;margin:8px 0}
+.finding-bar .bar-label{min-width:160px;font-size:.85rem}
+.finding-bar .bar-track{flex:1;background:#e2e8f0;border-radius:20px;height:14px;overflow:hidden}
+.finding-bar .bar-fill{height:100%;border-radius:20px;transition:width 1s ease}
+.bar-blue{background:var(--blue)}
+.bar-green{background:var(--green)}
+.bar-amber{background:var(--amber)}
+.bar-purple{background:var(--purple)}
+.finding-bar .bar-num{min-width:48px;font-size:.85rem;font-weight:700;color:var(--muted)}
+
+/* Quiz */
+.quiz-section{background:#1e293b;color:#e2e8f0;border-radius:16px;padding:36px;margin-top:50px}
+.quiz-section h2{color:#fff;margin-bottom:6px;font-size:1.4rem}
+.quiz-desc{font-size:.9rem;color:#94a3b8;margin-bottom:24px}
+.quiz-card{background:#0f172a;border-radius:10px;padding:22px;margin-bottom:18px}
+.quiz-card .q-num{font-size:.8rem;color:#64748b;margin-bottom:6px}
+.quiz-card .q-text{font-size:1rem;color:#e2e8f0;margin-bottom:14px;font-weight:600}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-option{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:.9rem;color:#cbd5e1;transition:all .2s;text-align:left}
+.quiz-option:hover{background:#334155;border-color:#4f6272}
+.quiz-option.correct{background:#064e3b;border-color:#10b981;color:#6ee7b7}
+.quiz-option.wrong{background:#450a0a;border-color:#dc2626;color:#fca5a5}
+.quiz-option.reveal-correct{background:#064e3b;border-color:#10b981;color:#6ee7b7;opacity:.7}
+.quiz-feedback{margin-top:10px;font-size:.88rem;padding:8px 12px;border-radius:6px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#064e3b;color:#6ee7b7}
+.quiz-feedback.wrong-fb{background:#450a0a;color:#fca5a5}
+.quiz-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:.95rem;cursor:pointer;margin-top:16px;font-weight:600;transition:background .2s}
+.quiz-btn:hover{background:var(--blue-d)}
+.quiz-score{text-align:center;font-size:1.2rem;color:#fff;margin-top:20px;display:none}
+
+/* Footer */
+footer{background:#1e293b;color:#94a3b8;text-align:center;padding:28px;font-size:.88rem}
+footer strong{color:#e2e8f0}
+
+/* Responsive */
+@media(max-width:600px){
+  .fw-grid{grid-template-columns:repeat(2,1fr)}
+  .app-grid{grid-template-columns:repeat(2,1fr)}
+  .oc-table{font-size:.78rem}
+  .oc-table th,.oc-table td{padding:8px 6px}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badge">第四章 · Chapter 4</div>
+  <h1>評估行動裝置健康行為改變支援系統<br><span style="font-size:.72em;opacity:.88">Evaluating Mobile-Based Behavior Change Support Systems for Health and Well-Being</span></h1>
+  <p class="sub">S. Langrial, P. Karppinen, T. Lehto, M. Harjumaa, H. Oinas-Kukkonen</p>
+  <p class="authors">University of Oulu, Finland &amp; VTT Technical Research Center of Finland</p>
+  <span class="source-tag">出自 Little, Sillence &amp; Joinson (2017) · Behavior Change Research and Theory</span>
+</div>
+
+<!-- TOC -->
+<nav class="toc-bar" id="tocBar">
+  <a href="#s1">背景</a>
+  <a href="#s2">PSD模型</a>
+  <a href="#s3">O/C矩陣</a>
+  <a href="#s4">研究方法</a>
+  <a href="#s5">12個應用程式</a>
+  <a href="#s6">說服脈絡</a>
+  <a href="#s7">研究發現</a>
+  <a href="#s8">自我效能</a>
+  <a href="#s9">結論建議</a>
+  <a href="#quiz">測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- ===== S1 背景 ===== -->
+<section class="section" id="s1">
+  <h2 class="section-title">&#9312; 背景 <span class="en">(Background)</span></h2>
+  <p>行動運算裝置為行為改變科技帶來了全新的面向（Oinas-Kukkonen, 2010）。無所不在的資訊系統正持續發展，涵蓋學習、預防保健與社群網絡等多種用途。</p>
+
+  <div class="grid-2" style="margin-top:20px">
+    <div class="card card-accent">
+      <h3 style="font-size:1rem;color:var(--blue-d);margin-bottom:10px">&#128214; 說服性科技 <span class="en">(Persuasive Technology, PT)</span></h3>
+      <p style="font-size:.9rem">Fogg（2002）率先提出「說服性科技」一詞，開創了結合<span class="hl">心理學、說服理論與運算技術</span>的新研究領域，開拓了透過電腦進行說服的研究視野。</p>
+    </div>
+    <div class="card card-accent" style="border-left-color:var(--purple)">
+      <h3 style="font-size:1rem;color:var(--purple);margin-bottom:10px">&#128196; BCSSs 的定義</h3>
+      <p style="font-size:.9rem">Oinas-Kukkonen（2013）在 Fogg 基礎上進一步提出 BCSSs 的概念：</p>
+      <div class="en-quote" style="margin-top:10px">
+        "a socio-technical IS with psychological and behavioral outcomes designed to form, alter or reinforce attitudes, behaviors or an act of compliance without using coercion or deception"
+      </div>
+      <div class="zh-note">一種具有心理與行為結果的社會技術資訊系統，旨在<strong>形塑、改變或強化</strong>態度、行為或合規行為，且不使用強制或欺騙手段。</div>
+    </div>
+  </div>
+
+  <div class="callout blue" style="margin-top:20px">
+    <div class="callout-title">&#128161; BCSSs 與傳統說服資訊系統的差異</div>
+    <p style="font-size:.92rem">BCSSs 需被增強為具備以下特性的軟體：<span class="hl">持續可及性</span>（continuous accessibility）、增強的人機互動、易用性，以及在不造成干擾的情況下提供社會支持（Oinas-Kukkonen, 2013）。所有 BCSSs 本質上都具有說服性，並運用<strong>電腦–人類</strong>及<strong>電腦媒介說服</strong>兩種管道。</p>
+  </div>
+
+  <div class="callout amber" style="margin-top:14px">
+    <div class="callout-title">&#9888; 研究缺口</div>
+    <p style="font-size:.92rem">現有評估研究多聚焦於<span class="hl">可用性（Usability）</span>，尚未充分評估行動 BCSSs 中的說服性設計特徵。本章旨在填補此研究缺口。</p>
+  </div>
+</section>
+
+<!-- ===== S2 PSD模型 ===== -->
+<section class="section" id="s2">
+  <h2 class="section-title">&#9313; PSD 模型 <span class="en">(Persuasive Systems Design Model)</span></h2>
+  <p>PSD 模型（Oinas-Kukkonen &amp; Harjumaa, 2009）提供了一套系統化分析說服脈絡的框架，包含三個核心分析維度：</p>
+
+  <div class="grid-3" style="margin-top:16px">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <h4 style="color:var(--blue);margin-bottom:6px">&#127919; 意圖 <span class="en">(Intent)</span></h4>
+      <p style="font-size:.85rem">設計者希望改變使用者的哪些行為或態度？</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <h4 style="color:var(--green);margin-bottom:6px">&#127981; 事件 <span class="en">(Event)</span></h4>
+      <p style="font-size:.85rem">設計者對使用脈絡與使用者的互動情境是否有清晰理解？</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <h4 style="color:var(--purple);margin-bottom:6px">&#128200; 說服策略 <span class="en">(Persuasion Strategy)</span></h4>
+      <p style="font-size:.85rem">謹慎構建說服訊息，並選擇傳遞訊息的路徑（直接/間接/混合）。</p>
+    </div>
+  </div>
+
+  <h3 class="section-subtitle">七大公設 <span class="en">(Seven Postulates)</span></h3>
+  <ul class="postulate-list">
+    <li>
+      <div class="postulate-num">1</div>
+      <div class="postulate-text"><strong>資訊科技從不中立</strong>（IT is never neutral）<br><span style="color:var(--muted);font-size:.88rem">IT 的設計方式幾乎總是會影響使用者的行為或態度。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">2</div>
+      <div class="postulate-text"><strong>人類追求一致性</strong>（People strive for consistency）<br><span style="color:var(--muted);font-size:.88rem">人們內在驅使自己在態度與行動上保持前後一致。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">3</div>
+      <div class="postulate-text"><strong>說服是漸進過程</strong>（Persuasion is incremental）<br><span style="color:var(--muted);font-size:.88rem">行為或態度的改變不是一蹴可幾，而是循序漸進的歷程。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">4</div>
+      <div class="postulate-text"><strong>直接與間接路徑</strong>（Direct and indirect routes）<br><span style="color:var(--muted);font-size:.88rem">說服訊息可透過直接（邏輯論述）或間接（提示線索）或混合路徑傳遞。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">5</div>
+      <div class="postulate-text"><strong>互動應輕鬆容易</strong>（Easy interaction）<br><span style="color:var(--muted);font-size:.88rem">BCSSs 應設計為易於互動，降低使用門檻。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">6</div>
+      <div class="postulate-text"><strong>不應造成干擾</strong>（Non-obtrusive）<br><span style="color:var(--muted);font-size:.88rem">BCSSs 不應打擾或侵入使用者的日常生活。</span></div>
+    </li>
+    <li>
+      <div class="postulate-num">7</div>
+      <div class="postulate-text"><strong>無操縱或欺騙</strong>（No manipulation or deception）<br><span style="color:var(--muted);font-size:.88rem">設計者的意圖應不包含任何形式的操縱或欺騙。</span></div>
+    </li>
+  </ul>
+
+  <h3 class="section-subtitle">四大設計類別 <span class="en">(Four Categories of Persuasive Design)</span></h3>
+  <div class="fw-grid">
+    <div class="fw-card c1">
+      <div class="fw-icon">&#127919;</div>
+      <h4>主要任務支援<br><span class="en" style="font-size:.78rem">Primary Task Support</span></h4>
+      <p>幫助使用者達成目標的軟體功能，如自我監控、個人化、隧道引導等。</p>
+    </div>
+    <div class="fw-card c2">
+      <div class="fw-icon">&#128172;</div>
+      <h4>人機對話支援<br><span class="en" style="font-size:.78rem">Dialogue Support</span></h4>
+      <p>激勵使用者延長互動的功能，如提醒、讚美、建議、獎勵等。</p>
+    </div>
+    <div class="fw-card c3">
+      <div class="fw-icon">&#9733;</div>
+      <h4>系統可信度<br><span class="en" style="font-size:.78rem">System Credibility</span></h4>
+      <p>使 BCSS 值得信賴的特性，如真實感、專業性、可查驗性等。</p>
+    </div>
+    <div class="fw-card c4">
+      <div class="fw-icon">&#128101;</div>
+      <h4>社會支持<br><span class="en" style="font-size:.78rem">Social Support</span></h4>
+      <p>促進使用者之間社交互動的功能，如社會比較、合作、規範影響等。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== S3 O/C 矩陣 ===== -->
+<section class="section" id="s3">
+  <h2 class="section-title">&#9314; O/C 設計矩陣 <span class="en">(Outcome/Change Design Matrix)</span></h2>
+  <p>O/C 設計矩陣（Oinas-Kukkonen, 2010）補充了 PSD 模型，透過<strong>結果類型 × 改變類型</strong>的 3×3 交叉分類，協助設計者明確定義其 BCSS 的設計意圖。</p>
+
+  <div class="grid-3" style="margin-top:16px">
+    <div class="callout blue">
+      <div class="callout-title">A-change（態度改變）</div>
+      <p style="font-size:.88rem">改變使用者對某事物的<strong>信念或評價</strong>。態度影響實際行動，卻常被設計者忽視！</p>
+    </div>
+    <div class="callout green">
+      <div class="callout-title">B-change（行為改變）</div>
+      <p style="font-size:.88rem">改變使用者實際的<strong>行為模式</strong>，如戒菸、增加運動等。</p>
+    </div>
+    <div class="callout purple">
+      <div class="callout-title">C-change（合規改變）</div>
+      <p style="font-size:.88rem">使用者<strong>遵從</strong>新行為或態度，維持已採納的改變。</p>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:24px">
+  <table class="oc-table">
+    <thead>
+      <tr>
+        <th style="background:#374151">結果 \ 改變<br><span style="font-size:.8rem;opacity:.7">Outcome \ Change</span></th>
+        <th class="change-header">
+          C-change<br>
+          <span class="change-type ch-c">合規改變 Compliance</span>
+        </th>
+        <th class="change-header">
+          B-change<br>
+          <span class="change-type ch-b">行為改變 Behavior</span>
+        </th>
+        <th class="change-header">
+          A-change<br>
+          <span class="change-type ch-a">態度改變 Attitude</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background:#374151;color:#fff;font-weight:700;text-align:center">
+          F-Outcome<br><span style="font-size:.8rem;opacity:.8">形塑 Forming</span>
+        </td>
+        <td class="f-row">
+          <span class="oc-app">F/C</span><br>
+          <strong>QuitPal</strong>
+          <div class="oc-desc">幫助使用者戒菸並<em>遵從</em>不吸菸的新慣例，提供提醒、里程碑提示及個人化影片。</div>
+        </td>
+        <td class="f-row">
+          <span class="oc-app green">F/B</span><br>
+          <strong>HealthyHabits</strong>
+          <div class="oc-desc">協助使用者<em>建立</em>良好習慣，如記錄健康飲食行為。</div>
+        </td>
+        <td class="f-row">
+          <span class="oc-app" style="background:var(--purple)">F/A</span><br>
+          <strong>LiveHappy</strong>
+          <div class="oc-desc">鼓勵使用者<em>形成</em>正面態度，記錄情緒模式，透過虛擬教練改善心情。</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#374151;color:#fff;font-weight:700;text-align:center">
+          A-Outcome<br><span style="font-size:.8rem;opacity:.8">改變 Altering</span>
+        </td>
+        <td class="a-row">
+          <span class="oc-app amber">A/C</span><br>
+          <strong>AngerCoach</strong>
+          <div class="oc-desc">透過專家影片引導使用者<em>克服</em>憤怒行為，建立改變過程所需技能。</div>
+        </td>
+        <td class="a-row">
+          <span class="oc-app amber">A/B</span><br>
+          <strong>NHS Quit Smoking</strong>
+          <div class="oc-desc">支援吸菸者逐步<em>戒除</em>吸菸習慣，引導改變行為。</div>
+        </td>
+        <td class="a-row">
+          <span class="oc-app amber">A/A</span><br>
+          <strong>T2 Mood Tracker</strong>
+          <div class="oc-desc">幫助使用者監控情緒體驗（如壓力、焦慮），<em>改變</em>既有態度。</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#374151;color:#fff;font-weight:700;text-align:center">
+          R-Outcome<br><span style="font-size:.8rem;opacity:.8">強化 Reinforcing</span>
+        </td>
+        <td class="r-row">
+          <span class="oc-app" style="background:var(--green)">R/C</span><br>
+          <strong>Waterworks</strong>
+          <div class="oc-desc">透過視覺圖表激勵使用者<em>維持</em>適量飲水的良好行為合規性。</div>
+        </td>
+        <td class="r-row">
+          <span class="oc-app" style="background:var(--green)">R/B</span><br>
+          <strong>MoodKit</strong>
+          <div class="oc-desc">透過個人化內容與專業出版物，幫助使用者<em>強化</em>正面情緒行為。</div>
+        </td>
+        <td class="r-row">
+          <span class="oc-app" style="background:var(--green)">R/A</span><br>
+          <strong>AwarenessLite</strong>
+          <div class="oc-desc">根據使用者當下感受提供勵志語錄，<em>強化</em>正面態度。</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="zh-note" style="margin-top:12px">
+    注：QuitPal 與 Waterworks 並非本研究評估的12個應用程式，僅用於示範 O/C 矩陣的實際應用。
+  </div>
+
+  <div class="callout red" style="margin-top:20px">
+    <div class="callout-title">&#9888; 研究趨勢警示：A-change 常被忽視！</div>
+    <p style="font-size:.92rem">目前行為改變研究特別聚焦於 <span class="hl">C-change（合規）</span>與 <span class="hl">B-change（行為）</span>，卻忽略了 <strong>A-change（態度改變）</strong>的影響力。然而，態度指引著人們在現實生活中的行動方式（Oinas-Kukkonen, 2013），因此設計 BCSSs 時必須重視態度改變。</p>
+  </div>
+</section>
+
+<!-- ===== S4 研究方法 ===== -->
+<section class="section" id="s4">
+  <h2 class="section-title">&#9315; 研究目標與方法 <span class="en">(Objectives &amp; Methodology)</span></h2>
+  <p>本研究旨在<strong>辨識並分類</strong>行動 BCSSs 中所採用的說服設計策略，並運用 PSD 模型與 O/C 設計矩陣作為評估工具。</p>
+
+  <h3 class="section-subtitle">專家評估法 <span class="en">(Expert Evaluation)</span></h3>
+  <div class="grid-2" style="margin-top:12px">
+    <div class="card">
+      <h4 style="margin-bottom:10px;color:var(--blue-d)">&#128270; 啟發式評估 <span class="en">(Heuristic Evaluation)</span></h4>
+      <ul style="font-size:.88rem;padding-left:18px;line-height:2">
+        <li>評估者<strong>獨立</strong>審查系統</li>
+        <li>對照設計原則清單（PSD 模型）</li>
+        <li>個別完成後相互溝通</li>
+        <li>多次討論後形成最終綜合結論</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="margin-bottom:10px;color:var(--green)">&#128100; 認知演練 <span class="en">(Cognitive Walkthrough)</span></h4>
+      <ul style="font-size:.88rem;padding-left:18px;line-height:2">
+        <li>模擬真實使用者逐步操作應用程式</li>
+        <li>執行日常任務</li>
+        <li>記錄個人操作體驗與反思</li>
+        <li>使用 Excel 試算表記錄發現</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="section-subtitle">四位評估者 <span class="en">(Four Evaluators)</span></h3>
+  <div class="grid-2" style="margin-top:12px">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <p style="font-size:.88rem"><strong>主研究者</strong>：具備<span class="hl">實證心理學與數位介入</span>之深厚背景。</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <p style="font-size:.88rem"><strong>共同研究者 1</strong>：專長為<span class="hl">使用者體驗（UX）</span>。</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber)">
+      <p style="font-size:.88rem"><strong>共同研究者 2</strong>：專長為<span class="hl">健康行為改變知識密集服務</span>。</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <p style="font-size:.88rem"><strong>共同研究者 3</strong>：專長為<span class="hl">消費者健康資訊學</span>。</p>
+    </div>
+  </div>
+
+  <div class="callout blue" style="margin-top:20px">
+    <div class="callout-title">&#128221; 評估程序重點</div>
+    <ul style="font-size:.9rem;padding-left:18px;line-height:2">
+      <li>應用程式安裝於 iPhone，系統性地執行日常任務</li>
+      <li>各評估者獨立進行，並逐項功能分析（feature-by-feature analyses）</li>
+      <li>主要參考開發者網站上的應用程式描述</li>
+      <li>只有<strong>至少 3 位評估者認可</strong>的說服特徵才列入最終結果</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== S5 12個應用程式 ===== -->
+<section class="section" id="s5">
+  <h2 class="section-title">&#9316; 12 個評估應用程式 <span class="en">(Evaluated Applications)</span></h2>
+  <p>所有應用程式均為英語版，設計目的均在支援使用者改變健康與健康行為。</p>
+
+  <div class="app-grid" style="margin-top:20px">
+    <div class="app-card">
+      <div class="app-abbr">ANG</div>
+      <div class="app-name">AngerCoach</div>
+      <div class="app-focus">&#128161; 情緒管理／憤怒</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:var(--green)">AWA</div>
+      <div class="app-name">Awareness Lite</div>
+      <div class="app-focus">&#127811; 正念／平靜生活</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:var(--amber)">HEA</div>
+      <div class="app-name">Healthy Habits</div>
+      <div class="app-focus">&#127823; 習慣養成</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:var(--purple)">LIV</div>
+      <div class="app-name">Live Happy</div>
+      <div class="app-focus">&#128515; 正面態度</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#0891b2">MIM</div>
+      <div class="app-name">MiMood</div>
+      <div class="app-focus">&#128200; 情緒追蹤</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:var(--red)">MOK</div>
+      <div class="app-name">MoodKit</div>
+      <div class="app-focus">&#129504; 情緒調節</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#7c3aed">MOM</div>
+      <div class="app-name">Mood Meter Lite</div>
+      <div class="app-focus">&#128248; 情緒測量</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#065f46">MOR</div>
+      <div class="app-name">Mood Runner</div>
+      <div class="app-focus">&#127939; 跑步情緒</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#9d174d">MYB</div>
+      <div class="app-name">MyBalance</div>
+      <div class="app-focus">&#9878; 健康均衡</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#1e40af">MYC</div>
+      <div class="app-name">MyCalmBeat</div>
+      <div class="app-focus">&#127926; 呼吸減壓</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#b45309">SEE</div>
+      <div class="app-name">SeeMyCity</div>
+      <div class="app-focus">&#127758; 城市社交</div>
+    </div>
+    <div class="app-card">
+      <div class="app-abbr" style="background:#374151">T2M</div>
+      <div class="app-name">T2 Mood Tracker</div>
+      <div class="app-focus">&#128203; 心情追蹤</div>
+    </div>
+  </div>
+
+  <div class="callout amber" style="margin-top:20px">
+    <div class="callout-title">&#128161; 目標族群分析</div>
+    <p style="font-size:.88rem;line-height:2">
+      <strong>MIM、MOR、MOK、MOM、T2M、LIV、SEE</strong>：設計給希望追蹤心情的人 &#8231;
+      <strong>HEA</strong>：採納新行為或戒除舊習慣 &#8231;
+      <strong>MYB</strong>：透過監控飲食、運動與生活方式改善健康 &#8231;
+      <strong>ANG</strong>：需要情緒管理協助的人 &#8231;
+      <strong>AWA</strong>：追求更平靜生活的人 &#8231;
+      <strong>MYC</strong>：透過呼吸練習減壓的人
+    </p>
+  </div>
+</section>
+
+<!-- ===== S6 說服脈絡 ===== -->
+<section class="section" id="s6">
+  <h2 class="section-title">&#9317; 說服脈絡分析 <span class="en">(Persuasion Context Analysis)</span></h2>
+  <p>根據 Oinas-Kukkonen &amp; Harjumaa（2009），說服脈絡由<strong>意圖、事件、說服策略</strong>三個參數構成。</p>
+
+  <div class="grid-3" style="margin-top:16px">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <h4 style="color:var(--blue-d);margin-bottom:8px">意圖 <span class="en">(Intent)</span></h4>
+      <p style="font-size:.85rem">多數應用程式的開發意圖描述模糊。ANG、LIV、MYC 疑似以商業目的為主（如 MYC 鼓勵付費會員）；其餘 9 個應用程式明顯支援使用者日常生活。</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <h4 style="color:var(--green);margin-bottom:8px">事件 <span class="en">(Event)</span></h4>
+      <p style="font-size:.85rem">理解目標受眾、使用技術與使用情境。各應用程式針對不同族群，如情緒追蹤者、習慣養成者、減壓需求者等。</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <h4 style="color:var(--purple);margin-bottom:8px">策略 <span class="en">(Strategy)</span></h4>
+      <p style="font-size:.85rem">評估結果顯示多數應用程式的說服訊息呈現方式<span class="hl">較為緊湊</span>，路徑選擇（直接/間接）的使用適中。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== S7 研究發現 ===== -->
+<section class="section" id="s7">
+  <h2 class="section-title">&#9318; 研究發現 <span class="en">(Findings)</span></h2>
+
+  <!-- Feature tables -->
+  <h3 class="section-subtitle">&#127919; 主要任務支援特徵 <span class="en">(Primary Task Support)</span></h3>
+  <p style="font-size:.9rem;margin-bottom:10px">幾乎所有評估的行動 BCSSs 均具備合理程度的主要任務支援功能。<span class="hl">值得注意</span>：所有評估應用程式均未發現「量身訂製（Tailoring）」與「模擬（Simulation）」功能。</p>
+  <table class="feat-table">
+    <thead>
+      <tr>
+        <th>功能名稱</th>
+        <th>說明</th>
+        <th>應用範例</th>
+        <th>應用數</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="feat-name">自我監控 <span class="en">(Self-monitoring)</span></span></td>
+        <td style="font-size:.84rem">提供使用者追蹤自身行為、表現或狀態的工具</td>
+        <td style="font-size:.84rem">圖表呈現過去行為（MOM）；圓餅圖、時間軸（MYC）</td>
+        <td style="text-align:center;font-weight:700;color:var(--green)">12/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">簡化 <span class="en">(Reduction)</span></span></td>
+        <td style="font-size:.84rem">降低使用者執行目標行為所需的努力</td>
+        <td style="font-size:.84rem">預設習慣庫（HEA）；輕鬆設定目標（MOK）</td>
+        <td style="text-align:center;font-weight:700;color:var(--blue)">11/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">個人化 <span class="en">(Personalization)</span></span></td>
+        <td style="font-size:.84rem">根據使用者輸入推薦個人化內容與服務</td>
+        <td style="font-size:.84rem">依用戶輸入與人口統計個人化（HEA, MOK）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">4/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">演練 <span class="en">(Rehearsal)</span></span></td>
+        <td style="font-size:.84rem">提供練習目標行為的機會</td>
+        <td style="font-size:.84rem">應用程式支援呼吸練習（MYC）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">3/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">隧道引導 <span class="en">(Tunneling)</span></span></td>
+        <td style="font-size:.84rem">引導使用者採取使其更接近目標行為的步驟</td>
+        <td style="font-size:.84rem">完成問卷後呈現適當工具組（ANG）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">3/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name" style="color:var(--muted)">量身訂製 / 模擬</span></td>
+        <td style="font-size:.84rem;color:var(--muted)">Tailoring / Simulation</td>
+        <td style="font-size:.84rem;color:var(--red)">所有評估應用程式均未發現</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">0/12</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-subtitle" style="margin-top:28px">&#128172; 對話支援特徵 <span class="en">(Dialogue Support)</span></h3>
+  <p style="font-size:.9rem;margin-bottom:10px">對話支援功能<span class="hl">使用不足</span>，僅有 2 個 BCSSs 具備讚美（praise）與虛擬獎勵功能，「提醒」是最常見的功能。</p>
+  <table class="feat-table">
+    <thead>
+      <tr><th>功能</th><th>說明</th><th>範例</th><th>應用數</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="feat-name">提醒 <span class="en">(Reminders)</span></span></td>
+        <td style="font-size:.84rem">提示使用者執行目標行為</td>
+        <td style="font-size:.84rem">自動化提醒；可自訂 Email/SMS/螢幕提示</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">5/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">讚美 <span class="en">(Praise)</span></span></td>
+        <td style="font-size:.84rem">以文字、圖像、符號或聲音讚美使用者</td>
+        <td style="font-size:.84rem">達成目標時自動讚美提示</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">2/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">建議 <span class="en">(Suggestion)</span></span></td>
+        <td style="font-size:.84rem">提示使用者在互動過程中執行行為</td>
+        <td style="font-size:.84rem">健康飲食應用提供輔導訊息選項</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">2/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">獎勵 <span class="en">(Rewards)</span></span></td>
+        <td style="font-size:.84rem">因執行所需行動而獲得獎勵</td>
+        <td style="font-size:.84rem">成功完成任務後提供徽章、圖示等</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">1/12</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-subtitle" style="margin-top:28px">&#9733; 系統可信度特徵 <span class="en">(Credibility Support)</span></h3>
+  <p style="font-size:.9rem;margin-bottom:10px">多數應用程式具備適度的可信度。初始可信度評估甚至可在使用者與系統互動之前形成，例如閱讀描述或同儕評論時。</p>
+  <table class="feat-table">
+    <thead>
+      <tr><th>功能</th><th>說明</th><th>範例</th><th>應用數</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="feat-name">可信任性 <span class="en">(Trustworthiness)</span></span></td>
+        <td style="font-size:.84rem">提供真實、公正的資訊；不濫用使用者私人資料</td>
+        <td style="font-size:.84rem">清楚說明隱私政策；使用者可控制安全設定</td>
+        <td style="text-align:center;font-weight:700;color:var(--green)">8/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">真實感 <span class="en">(Real-world feel)</span></span></td>
+        <td style="font-size:.84rem">提供組織與真實人員相關資訊</td>
+        <td style="font-size:.84rem">應用程式列出開發者聯絡資料（HEA, T2M, AWA）</td>
+        <td style="text-align:center;font-weight:700;color:var(--green)">7/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">專業性 <span class="en">(Expertise)</span></span></td>
+        <td style="font-size:.84rem">展現知識、經驗與專業能力</td>
+        <td style="font-size:.84rem">專家影片（ANG）；可向專家提問（T2M）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">4/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">可查驗性 <span class="en">(Verifiability)</span></span></td>
+        <td style="font-size:.84rem">提供驗證內容準確性的途徑</td>
+        <td style="font-size:.84rem">連結外部資源與科學文獻（ANG, LIV, MOK）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">3/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">權威性 <span class="en">(Authority)</span></span></td>
+        <td style="font-size:.84rem">引用具權威地位的人物或機構</td>
+        <td style="font-size:.84rem">引用政府衛生機構聲明（ANG, T2M）</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">2/12</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-subtitle" style="margin-top:28px">&#128101; 社會影響特徵 <span class="en">(Social Influence)</span></h3>
+  <p style="font-size:.9rem;margin-bottom:10px">評估的 BCSSs 並未充分運用社會支援特徵，例如允許使用者競爭、或公開表揚達成目標的使用者。社交分享（Email/Facebook）存在但不夠深入。</p>
+  <table class="feat-table">
+    <thead>
+      <tr><th>功能</th><th>說明</th><th>範例</th><th>應用數</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="feat-name">社會比較/分享 <span class="en">(Social Comparison)</span></span></td>
+        <td style="font-size:.84rem">提供與其他使用者比較表現的技術</td>
+        <td style="font-size:.84rem">透過社群網路分享與比較健康行為資訊（HEA, MOK）</td>
+        <td style="text-align:center;font-weight:700;color:var(--amber)">7/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">合作 <span class="en">(Cooperation)</span></span></td>
+        <td style="font-size:.84rem">提供與其他使用者合作的工具</td>
+        <td style="font-size:.84rem">使用者可標記並分享地點（SEE）</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">1/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">規範影響 <span class="en">(Normative Influence)</span></span></td>
+        <td style="font-size:.84rem">匯聚具有相同目標的人</td>
+        <td style="font-size:.84rem">使用者可分享資訊並查看相似使用者（SEE）</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">1/12</td>
+      </tr>
+      <tr>
+        <td><span class="feat-name">社會促進 <span class="en">(Social Facilitation)</span></span></td>
+        <td style="font-size:.84rem">辨識其他執行相似行為的使用者</td>
+        <td style="font-size:.84rem">辨識在同一地點的其他使用者（SEE）</td>
+        <td style="text-align:center;font-weight:700;color:var(--red)">1/12</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Visual Summary -->
+  <h3 class="section-subtitle" style="margin-top:28px">整體發現摘要 <span class="en">(Summary of Findings)</span></h3>
+  <div class="card" style="padding:24px">
+    <p style="font-size:.88rem;margin-bottom:16px;color:var(--muted)">各類別說服功能在12個應用程式中的整體運用程度</p>
+    <div class="finding-bar">
+      <div class="bar-label">&#127919; 主要任務支援</div>
+      <div class="bar-track"><div class="bar-fill bar-blue" style="width:75%"></div></div>
+      <div class="bar-num">佳</div>
+    </div>
+    <div class="finding-bar">
+      <div class="bar-label">&#9733; 系統可信度</div>
+      <div class="bar-track"><div class="bar-fill bar-amber" style="width:58%"></div></div>
+      <div class="bar-num">中</div>
+    </div>
+    <div class="finding-bar">
+      <div class="bar-label">&#128101; 社會支援</div>
+      <div class="bar-track"><div class="bar-fill bar-purple" style="width:35%"></div></div>
+      <div class="bar-num">不足</div>
+    </div>
+    <div class="finding-bar">
+      <div class="bar-label">&#128172; 對話支援</div>
+      <div class="bar-track"><div class="bar-fill bar-green" style="width:20%"></div></div>
+      <div class="bar-num">嚴重不足</div>
+    </div>
+    <div class="callout red" style="margin-top:16px">
+      <div class="callout-title">&#10060; 最大設計缺口</div>
+      <p style="font-size:.88rem">所有評估應用程式均<strong>未使用「量身訂製（Tailoring）」</strong>功能，此為嚴重限制。反饋形式的讚美與獎勵嚴重不足——而這對增強人機互動至關重要。</p>
+    </div>
+  </div>
+
+  <!-- App feature matrix (condensed) -->
+  <h3 class="section-subtitle" style="margin-top:28px">應用程式說服功能對照表 <span class="en">(Persuasive Features per App)</span></h3>
+  <div style="overflow-x:auto">
+  <table class="check-table">
+    <thead>
+      <tr>
+        <th colspan="13">各應用程式說服功能觀察結果（✓ = 具備該功能）</th>
+      </tr>
+      <tr>
+        <th>功能 / Feature</th>
+        <th>ANG</th><th>AWA</th><th>HEA</th><th>LIV</th>
+        <th>MIM</th><th>MOM</th><th>MOK</th><th>MOR</th>
+        <th>MYB</th><th>MYC</th><th>SEE</th><th>T2M</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="section-row" colspan="13">&#127919; 主要任務支援 (Primary Task Support)</td></tr>
+      <tr>
+        <td>自我監控 Self-monitoring</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>簡化 Reduction</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>個人化 Personalization</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>演練 Rehearsal</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>隧道引導 Tunneling</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr><td class="section-row" colspan="13">&#128172; 對話支援 (Dialogue Support)</td></tr>
+      <tr>
+        <td>提醒 Reminders</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>讚美 Praise</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>建議 Suggestion</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>獎勵 Rewards</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr><td class="section-row" colspan="13">&#9733; 可信度支援 (Credibility Support)</td></tr>
+      <tr>
+        <td>可信任性 Trustworthiness</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>真實感 Real-world feel</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>專業性 Expertise</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr>
+        <td>可查驗性 Verifiability</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>權威性 Authority</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+      </tr>
+      <tr><td class="section-row" colspan="13">&#128101; 社會影響 (Social Influence)</td></tr>
+      <tr>
+        <td>社會比較 Social Comparison</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+        <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>合作 Cooperation</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>規範影響 Normative Influence</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+      </tr>
+      <tr>
+        <td>社會促進 Social Facilitation</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td>
+        <td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ===== S8 自我效能 ===== -->
+<section class="section" id="s8">
+  <h2 class="section-title">&#9319; 自我效能與態度改變 <span class="en">(Self-Efficacy &amp; Attitude Change)</span></h2>
+
+  <div class="grid-2">
+    <div class="card card-accent" style="border-left-color:var(--purple)">
+      <h3 style="font-size:1rem;color:var(--purple);margin-bottom:10px">&#129504; Bandura（1977）自我效能理論</h3>
+      <p style="font-size:.9rem">自我效能（<span class="en">self-efficacy</span>）確定了人們是否真正被驅動去努力實現行為改變，而<span class="hl">自信心</span>是克服改變過程中挑戰的關鍵。</p>
+      <div class="callout purple" style="margin-top:12px">
+        <p style="font-size:.88rem">行為改變的最終目標是在整個改變過程中給予使用者支持，特別聚焦於 <strong>A-change（態度改變）</strong>，這可導向<strong>自信心的提升</strong>。</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:1rem;color:var(--blue-d);margin-bottom:10px">&#128260; 態度改變 → 行為改變的路徑</h3>
+      <ol style="font-size:.88rem;padding-left:18px;line-height:2.2">
+        <li>BCSS 支援使用者進行態度改變（A-change）</li>
+        <li>態度改變提升自我效能感與自信心</li>
+        <li>增強的自信心驅動實際行為改變</li>
+        <li>行為改變後需要支援合規性（C-change）</li>
+        <li>長期維持改變，形成穩定的新行為模式</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="callout amber" style="margin-top:20px">
+    <div class="callout-title">&#128161; 核心論點：態度先行</div>
+    <p style="font-size:.92rem">Oinas-Kukkonen（2013）指出，<span class="hl">態度指引著人們在現實生活中的行動方式</span>。因此，在設計健康行為改變 BCSSs 時，必須特別關注 A-change。目前研究趨勢過度聚焦於行為結果，而忽略了態度改變作為<strong>行為改變先決條件</strong>的重要性。</p>
+  </div>
+</section>
+
+<!-- ===== S9 結論建議 ===== -->
+<section class="section" id="s9">
+  <h2 class="section-title">&#9320; 結論與設計建議 <span class="en">(Conclusions &amp; Recommendations)</span></h2>
+
+  <div class="callout blue" style="margin-bottom:24px">
+    <div class="callout-title">&#128196; 核心結論</div>
+    <p style="font-size:.92rem">研究顯示，行動 BCSSs 在說服設計上缺乏系統性方法。設計者對說服脈絡缺乏清晰理解，且不確定其系統是否以行為改變、態度改變或合規支援為目標。PSD 模型與 O/C 設計矩陣可協助克服這些設計弱點。</p>
+  </div>
+
+  <h3 class="section-subtitle">具體設計建議</h3>
+  <ol class="steps">
+    <li><strong>重視 A-change（態度改變）</strong>：在設計行動 BCSSs 時，應明確納入支援態度改變的功能，以奠定持久行為改變的基礎。</li>
+    <li><strong>加強對話支援</strong>：讚美、建議與獎勵等回饋功能嚴重不足，增強人機互動可提升任務堅持度與完成率。</li>
+    <li><strong>導入量身訂製功能</strong>：目前所有評估應用程式均未使用 Tailoring 功能，此為最重大的設計缺口。</li>
+    <li><strong>提升社會支援</strong>：允許使用者競爭、分享成功故事、公開表揚，可強化社會動機。</li>
+    <li><strong>明確說明設計意圖</strong>：開發者應清楚界定其 BCSS 針對哪種改變類型（A/B/C-change）與結果類型（F/A/R-outcome）。</li>
+    <li><strong>重視倫理與隱私</strong>：軟體設計師與醫療保健研究者應密切關注倫理、隱私、可信度與道德價值等敏感議題。</li>
+    <li><strong>結合 PSD 模型與 O/C 矩陣</strong>：兩者相輔相成——PSD 提供說服軟體功能框架，O/C 矩陣使設計者聚焦於計劃中的改變類型。</li>
+  </ol>
+
+  <div class="callout green" style="margin-top:24px">
+    <div class="callout-title">&#128200; 研究貢獻</div>
+    <p style="font-size:.92rem">本研究展示了 PSD 模型與 O/C 設計矩陣在行動 BCSSs 評估中的<strong>實際應用價值</strong>。雖然評估的應用程式數量有限，但所辨識的弱點與優勢提供了說服性設計特徵在設計過程中重要性的清晰概念。漸進式創新將為行動 BCSSs 這個引人入勝的研究領域帶來重大效益。</p>
+  </div>
+
+  <h3 class="section-subtitle" style="margin-top:28px">研究限制 <span class="en">(Limitations)</span></h3>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid var(--red)">
+      <ul style="font-size:.88rem;padding-left:18px;line-height:2">
+        <li>專家評估本質上具有潛在偏差</li>
+        <li>所選應用程式數量（12個）有限，不具代表性</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber)">
+      <ul style="font-size:.88rem;padding-left:18px;line-height:2">
+        <li>主要依賴開發者網站的描述，難以掌握設計者真實意圖</li>
+        <li>可信度評估具有主觀性</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section id="quiz">
+<div class="quiz-section">
+  <h2>&#128221; 章節測驗</h2>
+  <p class="quiz-desc">系統隨機從12題中抽取5題。每題作答後立即顯示結果。</p>
+  <div id="quizContainer"></div>
+  <button class="quiz-btn" id="quizStartBtn" onclick="startQuiz()">開始測驗</button>
+  <div class="quiz-score" id="quizScore"></div>
+</div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <p><strong>版權所有 © 葉欲禾（Gary Yu-Ho Yeh）</strong></p>
+  <p style="margin-top:6px">出自 Little, Sillence &amp; Joinson (2017). <em>Behavior Change Research and Theory.</em> Elsevier. | 第四章：評估行動裝置行為改變支援系統</p>
+</footer>
+
+<script>
+// ===== TOC HIGHLIGHT =====
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-bar a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  tocLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// ===== QUIZ =====
+const allQuestions = [
+  {
+    q: "BCSSs（行為改變支援系統）的定義，其核心特性是？",
+    opts: [
+      "一種提供資訊的資料庫系統",
+      "一種具有說服性本質的社會技術資訊系統，旨在形塑、改變或強化態度、行為或合規，且不使用強制或欺騙",
+      "一種純粹用於醫療診斷的人工智慧系統",
+      "一種只能在桌機上運行的企業軟體"
+    ],
+    ans: 1,
+    explain: "Oinas-Kukkonen（2013）定義 BCSSs 為「a socio-technical IS with psychological and behavioral outcomes designed to form, alter or reinforce attitudes, behaviors or an act of compliance without using coercion or deception」。"
+  },
+  {
+    q: "PSD 模型的第一個公設（Postulate 1）是？",
+    opts: [
+      "說服是一個漸進的過程",
+      "人類天生追求態度與行動的一致性",
+      "資訊科技從不中立，幾乎總是影響使用者",
+      "BCSSs 不應造成使用者的干擾"
+    ],
+    ans: 2,
+    explain: "第一個公設：「Information Technology is never neutral」——資訊科技從不中立，其設計方式幾乎總是會影響使用者的行為或態度。"
+  },
+  {
+    q: "PSD 模型共有幾個說服設計類別（Categories）？",
+    opts: ["3 個", "4 個", "5 個", "7 個"],
+    ans: 1,
+    explain: "PSD 模型有 4 個類別：(1) Primary Task Support、(2) Human-Computer Dialogue Support、(3) System Credibility、(4) Social Support。（7 個是公設的數量。）"
+  },
+  {
+    q: "「Primary Task Support（主要任務支援）」的主要意義是？",
+    opts: [
+      "使系統具有高度可信度",
+      "促進使用者之間的社交互動",
+      "幫助使用者達成其核心目標的軟體功能，如自我監控、個人化等",
+      "提醒使用者執行目標行為"
+    ],
+    ans: 2,
+    explain: "Primary Task Support 是幫助使用者達成目標的軟體功能，包括自我監控、簡化、個人化、演練、隧道引導等。提醒屬於 Dialogue Support，可信度屬於 Credibility Support。"
+  },
+  {
+    q: "「System Credibility（系統可信度）」的核心意義是？",
+    opts: [
+      "系統能夠追蹤使用者的所有行為",
+      "BCSS 應值得信賴，具備可信任性、真實感、專業性、可查驗性等特性",
+      "系統必須提供社交比較功能",
+      "系統必須免費提供所有功能"
+    ],
+    ans: 1,
+    explain: "System Credibility 意指 BCSS 應是值得信賴的，包含可信任性、真實感、專業性、可查驗性、權威性等特徵，讓使用者願意使用並持續使用系統。"
+  },
+  {
+    q: "在 O/C 設計矩陣中，「A-change」代表什麼？",
+    opts: [
+      "Alteration change（替代改變）",
+      "Attitude change（態度改變）",
+      "Automated change（自動改變）",
+      "Adherence change（堅持改變）"
+    ],
+    ans: 1,
+    explain: "O/C 矩陣中 A-change = Attitude change（態度改變），指改變使用者對某事物的信念或評估。研究發現這常被設計者忽視，但態度指引行動，非常重要。"
+  },
+  {
+    q: "在 O/C 設計矩陣中，「C-change」代表什麼？",
+    opts: [
+      "Cognitive change（認知改變）",
+      "Content change（內容改變）",
+      "Compliance change（合規改變）——使用者遵從新行為或態度",
+      "Chronic change（慢性改變）"
+    ],
+    ans: 2,
+    explain: "C-change = Compliance change（合規改變），指使用者遵從已採納的新行為或態度，如戒菸後持續不抽菸的合規性。"
+  },
+  {
+    q: "本研究採用的「啟發式評估（Heuristic Evaluation）」其主要特色是？",
+    opts: [
+      "由真實使用者在自然情境下長期使用系統",
+      "評估者獨立對照設計原則清單審查系統，完成後相互溝通整合發現",
+      "透過隨機對照試驗（RCT）測試說服效果",
+      "只由一位評估者進行，避免偏差"
+    ],
+    ans: 1,
+    explain: "啟發式評估（Holzinger, 2005）：評估者各自獨立（independent of each other）審查系統，對照設計原則清單。完成後相互溝通，多次討論後形成最終綜合結論。"
+  },
+  {
+    q: "本研究共評估了幾個 iPhone 應用程式？",
+    opts: ["6 個", "9 個", "12 個", "15 個"],
+    ans: 2,
+    explain: "共 12 個 iPhone 應用程式：AngerCoach (ANG), Awareness Lite (AWA), Healthy Habits (HEA), Live Happy (LIV), MiMood (MIM), MoodKit (MOK), Mood Meter Lite (MOM), Mood Runner (MOR), MyBalance (MYB), MyCalmBeat (MYC), SeeMyCity (SEE), T2 Mood Tracker (T2M)。"
+  },
+  {
+    q: "根據 Bandura（1977），自我效能（self-efficacy）與行為改變的關係是？",
+    opts: [
+      "自我效能與行為改變無直接關係",
+      "只有高自我效能的人才能開始行為改變，低自我效能者無法改變",
+      "自我效能決定人們是否被驅動去努力實現行為改變，自信心是克服改變挑戰的關鍵",
+      "自我效能來自基因遺傳，無法透過系統設計提升"
+    ],
+    ans: 2,
+    explain: "Bandura（1977）：自我效能（self-efficacy）確立了人們是否真正被驅動去努力實現行為改變。自信心（self-confidence）是人們克服改變過程挑戰的關鍵。A-change 支援可提升自我效能感。"
+  },
+  {
+    q: "T2 Mood Tracker 在 O/C 設計矩陣中對應哪個類型？",
+    opts: [
+      "F/B（Forming Behavior）——形塑行為",
+      "R/A（Reinforcing Attitude）——強化態度",
+      "A/C（Altering Compliance）——改變合規",
+      "A/A（Altering Attitude）——改變態度"
+    ],
+    ans: 3,
+    explain: "T2 Mood Tracker 幫助使用者監控情緒體驗（如壓力、焦慮），屬於 A/A（Altering Attitude）——旨在幫助使用者改變現有態度。"
+  },
+  {
+    q: "研究發現，什麼常被行動 BCSS 系統設計師所忽視？",
+    opts: [
+      "社會支援功能（Social Support）",
+      "A-change（態度改變）的重要性",
+      "自我監控功能（Self-monitoring）",
+      "應用程式的使用者介面設計"
+    ],
+    ans: 1,
+    explain: "研究明確指出：目前趨勢聚焦於 C-change 和 B-change，「oddly, system designers and researchers have somehow overlooked the influence of A-change (Attitude change)」。態度改變因此被本研究特別強調。"
+  }
+];
+
+let quizQuestions = [];
+let quizAnswered = [];
+let quizScore = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizQuestions = shuffle(allQuestions).slice(0, 5);
+  quizAnswered = new Array(5).fill(false);
+  quizScore = 0;
+  document.getElementById('quizStartBtn').textContent = '重新開始';
+  document.getElementById('quizScore').style.display = 'none';
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = quizQuestions.map((q, qi) => `
+    <div class="quiz-card" id="qcard-${qi}">
+      <div class="q-num">第 ${qi + 1} 題 / 共 5 題</div>
+      <div class="q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt, oi) => `
+          <button class="quiz-option" id="opt-${qi}-${oi}" onclick="answer(${qi}, ${oi})">
+            ${String.fromCharCode(65 + oi)}. ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb-${qi}"></div>
+    </div>
+  `).join('');
+}
+
+function answer(qi, oi) {
+  if (quizAnswered[qi]) return;
+  quizAnswered[qi] = true;
+  const q = quizQuestions[qi];
+  const correct = q.ans;
+  const fb = document.getElementById(`fb-${qi}`);
+
+  for (let i = 0; i < q.opts.length; i++) {
+    const btn = document.getElementById(`opt-${qi}-${i}`);
+    btn.disabled = true;
+    if (i === correct) btn.classList.add('reveal-correct');
+    if (i === oi && oi !== correct) btn.classList.add('wrong');
+  }
+
+  if (oi === correct) {
+    document.getElementById(`opt-${qi}-${oi}`).classList.remove('reveal-correct');
+    document.getElementById(`opt-${qi}-${oi}`).classList.add('correct');
+    fb.textContent = '✓ 正確！' + q.explain;
+    fb.className = 'quiz-feedback show correct-fb';
+    quizScore++;
+  } else {
+    fb.textContent = '✗ 不正確。' + q.explain;
+    fb.className = 'quiz-feedback show wrong-fb';
+  }
+
+  if (quizAnswered.every(Boolean)) {
+    const scoreEl = document.getElementById('quizScore');
+    scoreEl.innerHTML = `&#127942; 測驗完成！得分：<strong>${quizScore} / 5</strong>（${Math.round(quizScore / 5 * 100)}%）${quizScore === 5 ? '  全對！太棒了！' : quizScore >= 3 ? '  不錯喔！' : '  繼續加油！'}`;
+    scoreEl.style.display = 'block';
+  }
+}
+
+// Auto-start on load
+window.addEventListener('DOMContentLoaded', startQuiz);
+</script>
+</body>
+</html>

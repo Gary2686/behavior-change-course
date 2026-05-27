@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8: Intervening Online — Evaluating Methods｜線上介入評估</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#0f2d5c,#1d4ed8 45%,#4f46e5);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:6px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:12px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+.hero-meta span{background:rgba(255,255,255,.12);padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2)}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-num.g{background:var(--green)}.sec-num.p{background:var(--purple)}.sec-num.a{background:var(--amber)}.sec-num.r{background:var(--red)}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
+
+/* ── Bilingual text ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+
+/* ── Highlight boxes ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl.red{border-color:var(--red);background:#fef2f2}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+
+/* ── Callout ── */
+.callout{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
+.steps.green li::before{background:var(--green)}
+.steps.green li .sc strong{color:#065f46}
+
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:14px 18px;text-align:left;font-size:.92rem;font-weight:700}
+th.green-th{background:linear-gradient(135deg,var(--green),#047857)}
+td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top;line-height:1.6}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:3px}
+.td-step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--blue);color:#fff;border-radius:50%;font-size:.75rem;font-weight:700;margin-right:8px;flex-shrink:0}
+.td-step-num.gr{background:var(--green)}
+
+/* ── Comparison table special ── */
+.compare-table th:first-child{background:linear-gradient(135deg,#1d4ed8,#1e3a5f)}
+.compare-table th:last-child{background:linear-gradient(135deg,#065f46,#047857)}
+.compare-table .cell-out{background:#eff6ff}
+.compare-table .cell-proc{background:#f0fdf4}
+
+/* ── Horizontal Timeline ── */
+.h-timeline{margin:28px 0;overflow-x:auto}
+.h-tl-track{display:flex;align-items:flex-start;gap:0;min-width:600px;padding:8px 0 16px}
+.h-tl-node{flex:1;text-align:center;position:relative}
+.h-tl-node::before{content:'';position:absolute;top:22px;left:50%;right:-50%;height:3px;background:linear-gradient(to right,var(--blue),var(--purple))}
+.h-tl-node:last-child::before{display:none}
+.h-tl-dot{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;margin:0 auto 10px;color:#fff;position:relative;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.dot-b{background:var(--blue)}
+.dot-i{background:var(--purple)}
+.dot-p{background:var(--green)}
+.dot-f1{background:var(--amber)}
+.dot-f2{background:var(--red)}
+.h-tl-label .zh{font-size:.85rem;font-weight:700;display:block;color:var(--text)}
+.h-tl-label .en{font-size:.73rem;color:var(--muted);font-style:italic;display:block;margin-top:2px}
+.h-tl-label .note{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+/* ── Case study card ── */
+.case-card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
+.case-header{padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:background .2s;border-bottom:1px solid var(--border)}
+.case-header:hover{background:#f8fafc}
+.case-badge{width:54px;height:54px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.cb1{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
+.cb2{background:linear-gradient(135deg,#d1fae5,#a7f3d0)}
+.case-header-text h3{font-size:1.05rem;font-weight:700;margin-bottom:2px;color:var(--text)}
+.case-header-text .cs-en{font-size:.82rem;color:var(--muted);font-style:italic}
+.case-header-text .cs-tags{margin-top:6px}
+.case-toggle{margin-left:auto;font-size:1.2rem;color:var(--muted);transition:transform .3s}
+.case-toggle.open{transform:rotate(90deg)}
+.case-body{padding:0 24px;max-height:0;overflow:hidden;transition:max-height .5s ease,padding .3s}
+.case-body.open{max-height:4000px;padding:24px}
+.case-section-title{font-size:.95rem;font-weight:700;color:var(--blue-d);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px;font-size:.82rem}
+.case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:14px 0}
+.case-item{background:#f8fafc;border-radius:var(--rs);padding:14px;border:1px solid var(--border)}
+.case-item .ci-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.case-item .ci-val{font-size:.88rem;font-weight:600;color:var(--text)}
+.case-item .ci-en{font-size:.78rem;color:var(--muted);font-style:italic}
+.finding-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px solid #c7d2fe;border-radius:var(--rs);padding:16px 18px;margin:12px 0}
+.finding-box .fb-title{font-size:.8rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.finding-box p{margin:0;font-size:.88rem;line-height:1.6}
+
+/* ── Advantage grid ── */
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:22px 0}
+.adv-card{background:#fff;border-radius:var(--r);padding:22px 18px;text-align:center;border:1px solid var(--border);box-shadow:var(--sh);transition:transform .2s,box-shadow .2s}
+.adv-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.adv-icon{font-size:2.2rem;margin-bottom:12px;display:block}
+.adv-card h4{font-size:.97rem;font-weight:700;margin-bottom:4px;color:var(--blue-d)}
+.adv-card .av-en{font-size:.77rem;color:var(--muted);font-style:italic;margin-bottom:10px}
+.adv-card p{font-size:.84rem;color:var(--text);margin:0;line-height:1.55}
+
+/* ── Future directions icon grid ── */
+.future-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:22px 0}
+.future-card{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:1px solid #d8b4fe;border-radius:var(--r);padding:20px 16px;text-align:center;transition:transform .2s,box-shadow .2s}
+.future-card:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.future-card .fc-icon{font-size:2rem;margin-bottom:10px;display:block}
+.future-card h4{font-size:.93rem;font-weight:700;color:var(--purple);margin-bottom:4px}
+.future-card .fc-en{font-size:.75rem;color:#7c3aed;font-style:italic;margin-bottom:8px;opacity:.8}
+.future-card p{font-size:.82rem;color:var(--text);margin:0;line-height:1.5}
+
+/* ── Bias alert ── */
+.bias-alert{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:2px solid #fca5a5;border-radius:var(--r);padding:18px 22px;margin:18px 0}
+.bias-alert h4{font-size:.97rem;font-weight:700;color:#991b1b;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.bias-alert p{margin:0;font-size:.88rem;line-height:1.6}
+
+/* ── Stat concept boxes ── */
+.stat-concepts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:18px 0}
+.sc-box{border-radius:var(--r);padding:20px;border:2px solid;transition:transform .2s}
+.sc-box:hover{transform:translateY(-3px)}
+.sc1{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.sc2{background:linear-gradient(135deg,#faf5ff,#ede9fe);border-color:#c4b5fd}
+.sc3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#6ee7b7}
+.sc4{background:linear-gradient(135deg,#fffbeb,#fde68a);border-color:#fbbf24}
+.sc-box .sb-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.sc1 .sb-label{color:#1d4ed8}.sc2 .sb-label{color:#7c3aed}.sc3 .sb-label{color:#059669}.sc4 .sb-label{color:#d97706}
+.sc-box h4{font-size:.97rem;font-weight:700;margin-bottom:3px;color:var(--text)}
+.sc-box .sb-en{font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px}
+.sc-box p{font-size:.84rem;margin:0;line-height:1.55}
+.sc-box .ref-note{font-size:.75rem;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* ── Data collection types ── */
+.data-row{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#fff;border-radius:var(--rs);border:1px solid var(--border);margin-bottom:10px;transition:box-shadow .2s}
+.data-row:hover{box-shadow:var(--sh)}
+.data-row .dr-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.data-row .dr-content strong{display:block;font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.data-row .dr-content .en{font-size:.8rem}
+.data-row .dr-content p{font-size:.86rem;margin:4px 0 0;color:var(--text)}
+
+/* ── Model box ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}.mnode.r{background:var(--red)}.mnode.a{background:var(--amber)}
+.marrow{font-size:1.3rem;color:var(--muted)}
+
+/* ── Quiz ── */
+.quiz-section{background:linear-gradient(135deg,#1e3a5f,#1d4ed8 50%,#4f46e5);border-radius:var(--r);padding:36px;margin-top:32px}
+.quiz-section h2{color:#fff;font-size:1.4rem;font-weight:800;margin-bottom:6px;text-align:center}
+.quiz-section .q-sub{color:rgba(255,255,255,.75);font-size:.9rem;text-align:center;margin-bottom:24px}
+.q-card{background:#fff;border-radius:var(--rs);padding:22px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.q-num{font-size:.75rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.q-text{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.5}
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:2px solid var(--border);background:#f8fafc;cursor:pointer;transition:all .18s;font-size:.9rem;line-height:1.4}
+.q-opt:hover{border-color:var(--blue);background:#eff6ff}
+.q-opt.correct{border-color:var(--green)!important;background:#f0fdf4!important}
+.q-opt.wrong{border-color:var(--red)!important;background:#fef2f2!important}
+.q-opt.reveal-correct{border-color:var(--green)!important;background:#f0fdf4!important}
+.q-opt .opt-letter{min-width:24px;height:24px;background:var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;transition:all .18s;margin-top:1px}
+.q-opt.correct .opt-letter{background:var(--green);color:#fff}
+.q-opt.wrong .opt-letter{background:var(--red);color:#fff}
+.q-opt.reveal-correct .opt-letter{background:var(--green);color:#fff}
+.q-feedback{font-size:.85rem;padding:10px 14px;border-radius:var(--rs);margin-top:10px;display:none;line-height:1.5}
+.q-feedback.show{display:block}
+.q-feedback.fb-ok{background:#f0fdf4;color:#065f46;border:1px solid #6ee7b7}
+.q-feedback.fb-err{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.quiz-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.btn{padding:11px 26px;border-radius:var(--rs);font-size:.92rem;font-weight:600;cursor:pointer;border:none;transition:all .18s}
+.btn-primary{background:#fff;color:var(--blue)}
+.btn-primary:hover{background:#eff6ff}
+.btn-secondary{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-secondary:hover{background:rgba(255,255,255,.25)}
+.quiz-score{text-align:center;padding:18px;background:rgba(255,255,255,.12);border-radius:var(--rs);color:#fff;font-size:1rem;margin-top:16px;display:none}
+.quiz-score.show{display:block}
+.quiz-score strong{font-size:1.6rem;display:block;margin-top:6px}
+
+/* ── Footer ── */
+footer{background:#1e293b;color:rgba(255,255,255,.65);text-align:center;padding:28px 24px;font-size:.85rem;margin-top:32px}
+footer strong{color:rgba(255,255,255,.9)}
+
+/* ── Media ── */
+@media(max-width:640px){
+  .h-timeline{overflow-x:scroll}
+  .quiz-section{padding:22px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="hero-tag">Chapter 8 · Behavior Change Research and Theory</div>
+  <h1>線上介入評估：方法、成效與未來方向
+    <small>Intervening Online: Evaluating Methods, Assessing Outcomes, and Signposting Future Directions</small>
+  </h1>
+  <p class="hero-sub">E. Sillence &amp; L. Little（Northumbria University）；A. Fielden（Newcastle University）</p>
+  <div class="hero-meta">
+    <span>Little, Sillence &amp; Joinson (2017)</span>
+    <span>PDF pp. 167–183</span>
+    <span>成效評估 · 歷程評估 · 未來技術</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TOC BAR ═══════════════════════ -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#s0">導論</a>
+    <a class="toc-link" href="#s1">成效評估</a>
+    <a class="toc-link" href="#s2">歷程評估</a>
+    <a class="toc-link" href="#s3">數據收集</a>
+    <a class="toc-link" href="#s4">個案一</a>
+    <a class="toc-link" href="#s5">個案二</a>
+    <a class="toc-link" href="#s6">線上優勢</a>
+    <a class="toc-link" href="#s7">未來方向</a>
+    <a class="toc-link" href="#quiz">測驗</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ═══════════════ SECTION 0 — 導論 ═══════════════ -->
+<section class="section" id="s0">
+  <div class="sec-header">
+    <div class="sec-num">0</div>
+    <div class="sec-title">
+      <h2>導論</h2>
+      <div class="en-sub">Introduction — Why Evaluation Matters</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>本章核心命題</h4>
+    <p>成功的行為改變介入是良好規劃、謹慎執行與深思熟慮評估三者的集成，並以相關理論與證據為基礎。本章旨在引發研究者對評估核心議題的思考，並展望以科技評估行為改變介入的新方向。</p>
+    <div class="en-quote-w">"Successful behavior change interventions can be seen as the culmination of a process of good planning, careful implementation, and thoughtful appropriate evaluation all underpinned by relevant theory and evidence based behavior change techniques." — Sillence et al.</div>
+  </div>
+
+  <div class="model-box">
+    <h4>評估的三大組成 · Three Components of Evaluation</h4>
+    <div class="model-flow">
+      <div class="mnode">成效評估<br><small style="font-size:.72rem;opacity:.8">Outcome Evaluation</small></div>
+      <div class="marrow">+</div>
+      <div class="mnode g">歷程評估<br><small style="font-size:.72rem;opacity:.8">Process Evaluation</small></div>
+      <div class="marrow">+</div>
+      <div class="mnode p">未來評估<br><small style="font-size:.72rem;opacity:.8">Future Evaluation</small></div>
+    </div>
+  </div>
+
+  <p>許多與評估相關的工作，實際上在研究的<strong>設計與規劃階段</strong>就已完成。此時研究者需討論目標族群與目標行為，並確定：<span class="en">what to measure</span>（測量什麼）、<span class="en">how to measure</span>（如何測量）、以及<span class="en">for how long</span>（測量多久）。</p>
+
+  <div class="grid-3">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div style="font-size:1.8rem;margin-bottom:10px">📊</div>
+      <h3 style="margin:0 0 8px;font-size:1rem;color:var(--blue-d)">成效評估</h3>
+      <p style="font-size:.86rem;margin:0">介入是否「有效」？目標行為是否增加或減少？效果大小為何？</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div style="font-size:1.8rem;margin-bottom:10px">🔬</div>
+      <h3 style="margin:0 0 8px;font-size:1rem;color:#065f46">歷程評估</h3>
+      <p style="font-size:.86rem;margin:0">介入如何運作？機制為何？哪些因素調節了效果？</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <div style="font-size:1.8rem;margin-bottom:10px">🚀</div>
+      <h3 style="margin:0 0 8px;font-size:1rem;color:var(--purple)">未來方向</h3>
+      <p style="font-size:.86rem;margin:0">感測器、穿戴裝置、EMA、微隨機試驗如何形塑未來評估？</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 1 — 成效評估 ═══════════════ -->
+<section class="section" id="s1">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">
+      <h2>成效評估 <span class="en" style="font-size:.8em;font-weight:600">Outcome Evaluation</span></h2>
+      <div class="en-sub">Was the intervention effective? What counts as meaningful change?</div>
+    </div>
+  </div>
+
+  <p>成效評估主要聚焦於介入是否「有效」（<span class="en">whether the intervention worked</span>）。研究者觀察目標行為在介入前後是否有所改變——例如洗手頻率是否增加、吸煙量是否減少。若觀察到行為改變，則需進一步說明介入的<strong>療效</strong>（<span class="en">efficacy</span>）。</p>
+
+  <h3>決定目標行為 <span class="en">Deciding on the Target Behavior</span></h3>
+  <p>研究者首先需明確目標行為的方向與性質：</p>
+  <div class="grid-4">
+    <div class="card" style="text-align:center;border-top:3px solid var(--blue)">
+      <div style="font-size:1.6rem;margin-bottom:6px">⬆️</div>
+      <strong style="font-size:.9rem">增加</strong>
+      <p style="font-size:.8rem;margin:4px 0 0;color:var(--muted)">Increase</p>
+      <p style="font-size:.82rem;margin-top:6px">如蔬果攝取、運動頻率</p>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--red)">
+      <div style="font-size:1.6rem;margin-bottom:6px">⬇️</div>
+      <strong style="font-size:.9rem">減少</strong>
+      <p style="font-size:.8rem;margin:4px 0 0;color:var(--muted)">Reduction</p>
+      <p style="font-size:.82rem;margin-top:6px">如吸菸量、能源消耗</p>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--green)">
+      <div style="font-size:1.6rem;margin-bottom:6px">✅</div>
+      <strong style="font-size:.9rem">採納</strong>
+      <p style="font-size:.8rem;margin:4px 0 0;color:var(--muted)">Uptake</p>
+      <p style="font-size:.82rem;margin-top:6px">如開始使用防曬或安全帶</p>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--amber)">
+      <div style="font-size:1.6rem;margin-bottom:6px">🚫</div>
+      <strong style="font-size:.9rem">戒除</strong>
+      <p style="font-size:.8rem;margin:4px 0 0;color:var(--muted)">Cessation</p>
+      <p style="font-size:.82rem;margin:4px 0 0;margin-top:6px">如戒菸、戒酒</p>
+    </div>
+  </div>
+
+  <h3>統計顯著性與效果量 <span class="en">Statistical Significance &amp; Effect Size</span></h3>
+  <p>傳統心理學研究比較介入前後兩組數據的差異，採用<span class="en">null hypothesis significance testing</span>（虛無假說顯著性檢定），並搭配<strong>效果量</strong>（<span class="en">effect size</span>）估計，說明差異的實際大小。</p>
+
+  <div class="stat-concepts">
+    <div class="sc-box sc1">
+      <div class="sb-label">方法 1 · Method A</div>
+      <h4>統計顯著差異</h4>
+      <div class="sb-en">Statistical Significance (p-value)</div>
+      <p>比較前後測分數，拒絕虛無假說（p &lt; .05）。但統計顯著不等於實際重要。</p>
+    </div>
+    <div class="sc-box sc2">
+      <div class="sb-label">方法 2 · Method B</div>
+      <h4>最小重要效果推論</h4>
+      <div class="sb-en">Minimum Magnitude Based Inference</div>
+      <p>預先設定研究者希望觀察到的「最小重要效果」，再以此進行分析。常見於運動科學研究中（Barnes et al., 2015）。</p>
+      <div class="ref-note">Barnes, Hopkins, McGuigan &amp; Kilding (2015)</div>
+    </div>
+    <div class="sc-box sc3">
+      <div class="sb-label">方法 3 · Method C</div>
+      <h4>臨床意義</h4>
+      <div class="sb-en">Clinical Significance</div>
+      <p>在健康行為改變研究中，臨床意義（Jacobson &amp; Truax, 1991）可能比統計顯著更具意義——改變是否達到對個案真正有益的程度？</p>
+      <div class="ref-note">Jacobson &amp; Truax (1991)</div>
+    </div>
+    <div class="sc-box sc4">
+      <div class="sb-label">方法 4 · Method D</div>
+      <h4>效果量估計</h4>
+      <div class="sb-en">Effect Size Estimation</div>
+      <p>常用 Cohen's d、Hedges' g、η² 等指標，量化差異的「實質大小」，避免僅依賴 p 值的誤導。</p>
+    </div>
+  </div>
+
+  <h3>追蹤測量時間線 <span class="en">Timeline for Measurement</span></h3>
+  <p>研究者需在規劃階段決定測量時間點，包含是否進行追蹤測量（<span class="en">follow-ups</span>）及其頻率。目前研究通常在介入後立即測量，並於一至兩週後再次測量；部分研究（如戒菸研究）則主張更長的追蹤時間。</p>
+
+  <div class="h-timeline">
+    <div class="h-tl-track">
+      <div class="h-tl-node">
+        <div class="h-tl-dot dot-b">基</div>
+        <div class="h-tl-label">
+          <span class="zh">基線測量</span>
+          <span class="en">Baseline</span>
+          <div class="note">介入前的行為基準</div>
+        </div>
+      </div>
+      <div class="h-tl-node">
+        <div class="h-tl-dot dot-i">介</div>
+        <div class="h-tl-label">
+          <span class="zh">介入階段</span>
+          <span class="en">Intervention</span>
+          <div class="note">行為改變技術實施</div>
+        </div>
+      </div>
+      <div class="h-tl-node">
+        <div class="h-tl-dot dot-p">後</div>
+        <div class="h-tl-label">
+          <span class="zh">後測</span>
+          <span class="en">Post-intervention</span>
+          <div class="note">立即效果評估</div>
+        </div>
+      </div>
+      <div class="h-tl-node">
+        <div class="h-tl-dot dot-f1">追1</div>
+        <div class="h-tl-label">
+          <span class="zh">短期追蹤</span>
+          <span class="en">Short Follow-up</span>
+          <div class="note">1週 / 1個月後</div>
+        </div>
+      </div>
+      <div class="h-tl-node">
+        <div class="h-tl-dot dot-f2">追2</div>
+        <div class="h-tl-label">
+          <span class="zh">長期追蹤</span>
+          <span class="en">Long Follow-up</span>
+          <div class="note">3–6個月後（建議）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p><strong>追蹤測量的挑戰：</strong>即使使用自動化提醒訊息（<span class="en">automated prompts</span>），也無法保證參與者繼續回應。文獻顯示，單點介入的長期追蹤往往呈現令人失望的結果，行為維持（<span class="en">behavior maintenance</span>）是一大挑戰。</p>
+  </div>
+
+  <!-- TABLE 8.1 -->
+  <h3>表 8.1 — 評估步驟比較 <span class="en">Table 8.1: Measuring Outcomes vs. Process</span></h3>
+  <div class="tw">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>成效測量 <small style="font-weight:400;opacity:.85">Measuring Outcomes</small></th>
+          <th class="green-th">歷程測量 <small style="font-weight:400;opacity:.85">Measuring Process</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cell-out">
+            <div class="td-zh"><span class="td-step-num">1</span>決定目標行為</div>
+            <div class="td-en">Decide on target behavior</div>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">1</span>回顧研究計畫</div>
+            <div class="td-en">Refer back to study plan</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cell-out">
+            <div class="td-zh"><span class="td-step-num">2</span>考量期望的行為改變方向</div>
+            <div class="td-en">Consider desired behavior change direction (increase / reduction / uptake / cessation)</div>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">2</span>確認相關變數</div>
+            <div class="td-en">Identify variables of interest</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cell-out">
+            <div class="td-zh"><span class="td-step-num">3</span>決定何謂「效果」</div>
+            <div class="td-en">Decide on what constitutes an effect: use statistical significance + effect size, or minimum magnitude based inference</div>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">3</span>評估行為改變技術的執行與測量</div>
+            <div class="td-en">Evaluate how the behavior change technique was implemented and measured</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cell-out">
+            <div class="td-zh"><span class="td-step-num">4</span>決定測量時間線</div>
+            <div class="td-en">Decide on timeline: baseline + post-intervention + follow-ups (1 week / 1 month / 6 months)</div>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">4</span>結合質性數據收集</div>
+            <div class="td-en">Use qualitative data alongside outcome measurement to understand user experience and how the resource was used</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cell-out" style="background:#eff6ff">
+            <em style="font-size:.82rem;color:var(--muted)">（成效測量至步驟 4）</em>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">5</span>考量調節變數</div>
+            <div class="td-en">Consider moderating variables: gender, age, SES, technology experience</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cell-out" style="background:#eff6ff">
+            <em style="font-size:.82rem;color:var(--muted)">——</em>
+          </td>
+          <td class="cell-proc">
+            <div class="td-zh"><span class="td-step-num gr">6</span>考量數據收集方式</div>
+            <div class="td-en">Consider data collection: is self-report acceptable? Are there alternatives? How can technology automate collection?</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 2 — 歷程評估 ═══════════════ -->
+<section class="section" id="s2">
+  <div class="sec-header">
+    <div class="sec-num g">2</div>
+    <div class="sec-title">
+      <h2>歷程評估 <span class="en" style="font-size:.8em;font-weight:600">Process Evaluation</span></h2>
+      <div class="en-sub">How and why did the intervention work? Mechanisms and moderators.</div>
+    </div>
+  </div>
+
+  <p>歷程評估聚焦於<strong>介入本身的機制</strong>（<span class="en">mechanisms of the intervention</span>）。研究者需在規劃階段就確定行為改變介入的各項組成（<span class="en">specifying components</span>，Michie et al., 2009），以便後續評估介入如何及為何有效。</p>
+
+  <h3>介入組成分析 <span class="en">Specifying Components of the Intervention</span></h3>
+
+  <div class="hl purple">
+    <p><strong>回顧規劃階段（Michie et al., 2009）：</strong>歷程評估首先應回顧研究計畫，檢視理論與行為改變機制如何對應到特定情境中的行為。研究者應反思：哪些變數受到操弄？哪些變數受到控制？對照組是否足夠適切？</p>
+  </div>
+
+  <h3>實驗設計類型 <span class="en">RCT vs. Experimental Designs</span></h3>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <span class="tag tb">RCT</span>
+      <h3 style="margin:12px 0 8px;font-size:1rem">隨機對照試驗</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:8px">Randomized Controlled Trial</p>
+      <ul style="list-style:none;padding:0;font-size:.87rem">
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">• 通常包含多種潛在因果因素</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">• 獨立的對照組並非絕對必要</li>
+        <li style="padding:5px 0">• 黃金標準，但執行複雜度高</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <span class="tag tg">實驗設計</span>
+      <h3 style="margin:12px 0 8px;font-size:1rem">實驗設計</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:8px">Experimental Design</p>
+      <ul style="list-style:none;padding:0;font-size:.87rem">
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">• 需要適當的對照組（<span class="en">control group</span>）</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">• 能更精確分離各行為改變技術的效果</li>
+        <li style="padding:5px 0">• 在更自然的情境中難以完全控制干擾</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>質性元素 <span class="en">Qualitative Component in Process Evaluation</span></h3>
+  <p>在 RCT 與實驗設計中，加入<strong>質性評估</strong>（<span class="en">qualitative element</span>，Campbell et al., 2007）能幫助研究者更清楚地理解歷程本身——例如：教師如何使用所提供的資源？目標族群是否覺得參與具意義？</p>
+
+  <div class="en-quote">"In both RCT style interventions, experimental designs and those conducted within more naturally occurring settings … including a qualitative element to the evaluation would help researchers assess the process itself more clearly." — Sillence et al.</div>
+  <div class="zh-note">在隨機對照試驗與實驗設計中（包括更自然情境的研究），加入質性評估有助於更清楚地評估歷程本身。</div>
+
+  <h3>調節變數 <span class="en">Moderating Variables</span></h3>
+  <p>歷程評估也需考量：介入對目標族群中的所有人是否有相同效果？若非，此差異是否可預測，或是否反映數據收集方式、招募策略（Smit et al., 2012）或研究情境的問題？</p>
+
+  <div class="adv-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+    <div class="adv-card">
+      <span class="adv-icon">⚧</span>
+      <h4>性別</h4>
+      <div class="av-en">Gender</div>
+      <p>不同性別對介入的反應可能存在差異</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">👶</span>
+      <h4>年齡</h4>
+      <div class="av-en">Age</div>
+      <p>不同年齡群體的行為改變動機與能力各異</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">💰</span>
+      <h4>社經地位</h4>
+      <div class="av-en">SES</div>
+      <p>低社經地位族群常面臨更多結構性障礙</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">💻</span>
+      <h4>科技使用經驗</h4>
+      <div class="av-en">Technology Experience</div>
+      <p>數位素養影響線上介入的參與度與理解度</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 3 — 數據收集 ═══════════════ -->
+<section class="section" id="s3">
+  <div class="sec-header">
+    <div class="sec-num a">3</div>
+    <div class="sec-title">
+      <h2>數據收集 <span class="en" style="font-size:.8em;font-weight:600">Data Collection</span></h2>
+      <div class="en-sub">Self-report, accuracy, social desirability, and technology solutions</div>
+    </div>
+  </div>
+
+  <p>數據收集方式直接影響歷程本身。行為改變介入通常依賴<strong>自我報告測量</strong>（<span class="en">self-report measures</span>），例如請參與者報告吸菸數量、蔬果攝取量、網路安全行為或電器關閉情形。</p>
+
+  <h3>常見自我報告測量類型 <span class="en">Types of Self-Report Measures</span></h3>
+
+  <div class="data-row">
+    <div class="dr-icon">🚬</div>
+    <div class="dr-content">
+      <strong>吸菸行為 <span class="en" style="font-size:.82rem">Cigarette Consumption</span></strong>
+      <p>與客觀數據（血清中尼古丁代謝物 cotinine）相比，自我報告吸菸量已被證明具有合理準確性（McDonald, Perkins &amp; Walker, 2005）。</p>
+    </div>
+  </div>
+  <div class="data-row">
+    <div class="dr-icon">🥦</div>
+    <div class="dr-content">
+      <strong>蔬果攝取量 <span class="en" style="font-size:.82rem">Fruit &amp; Vegetable Consumption</span></strong>
+      <p>「一份」蔬果的定義模糊，參與者對份量的理解差異大，導致自我報告可能不準確。</p>
+    </div>
+  </div>
+  <div class="data-row">
+    <div class="dr-icon">🔒</div>
+    <div class="dr-content">
+      <strong>網路安全行為 <span class="en" style="font-size:.82rem">Security Practices</span></strong>
+      <p>涉及私密行為，社會期許偏誤（<span class="en">social desirability bias</span>）風險較高，受試者傾向回報符合社會規範的答案。</p>
+    </div>
+  </div>
+  <div class="data-row">
+    <div class="dr-icon">⏱️</div>
+    <div class="dr-content">
+      <strong>線上時間 <span class="en" style="font-size:.82rem">Time Spent Online</span></strong>
+      <p>人們往往難以準確估計自己花了多少時間在線上，或如何定義「線上時間」，導致測量誤差。</p>
+    </div>
+  </div>
+
+  <h3>準確性問題 <span class="en">Accuracy of Self-Reports</span></h3>
+  <div class="hl">
+    <p><strong>重要提醒：</strong>自我報告的偏誤同時存在於介入前與介入後的測量，也同時出現於實驗組與對照組，因此<strong>不妨礙</strong>偵測行為改變（即前後差異仍可被識別），但會影響絕對數值的詮釋。</p>
+  </div>
+
+  <div class="bias-alert">
+    <h4>⚠️ 社會期許偏誤 <span class="en" style="font-size:.85rem;font-weight:600">Social Desirability Bias</span></h4>
+    <p>當參與者在教室等社交情境中完成研究時（如青少年節能研究），可能因<strong>匿名感降低</strong>而更傾向回報「社會期待的」行為，而非真實行為。這種偏誤在未成年人研究中尤為明顯——此時需取得家長同意，在學校進行也不可避免。</p>
+  </div>
+
+  <h3>科技自動化數據收集 <span class="en">Technology-Automated Data Collection</span></h3>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid var(--green)">
+      <h3 style="font-size:1rem;margin-bottom:12px;color:#065f46">客觀數據來源</h3>
+      <ul style="list-style:none;padding:0;font-size:.87rem">
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">智慧電表 → 自動記錄用電量（<span class="en">smart thermostats</span>）</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">穿戴裝置 → 即時記錄身體活動與心率</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">感測器 → 外部環境監測（如能源監測裝置）</li>
+        <li style="padding:5px 0">飲食照片分析 → 客觀記錄蔬果攝取量</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <h3 style="font-size:1rem;margin-bottom:12px;color:var(--blue-d)">線上工具優勢</h3>
+      <ul style="list-style:none;padding:0;font-size:.87rem">
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">自動化提醒（電子郵件 / 簡訊）提高完成率</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">即時同步數據，減少轉錄錯誤</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">線上日記可即時記錄，降低回憶偏誤</li>
+        <li style="padding:5px 0">可針對個人背景自動分配客製化材料</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 4 — 個案一 ═══════════════ -->
+<section class="section" id="s4">
+  <div class="sec-header">
+    <div class="sec-num r">4</div>
+    <div class="sec-title">
+      <h2>個案研究一 <span class="en" style="font-size:.8em;font-weight:600">Case Study 1</span></h2>
+      <div class="en-sub">Implementation Intentions and Saving Energy — Adolescent Online Intervention</div>
+    </div>
+  </div>
+
+  <div class="case-card" id="case1">
+    <div class="case-header" onclick="toggleCase('case1')">
+      <div class="case-badge cb1">⚡</div>
+      <div class="case-header-text">
+        <h3>執行意圖與青少年節能行為</h3>
+        <div class="cs-en">Implementation Intentions and Saving Energy in Adolescents</div>
+        <div class="cs-tags">
+          <span class="tag tb">線上介入</span>
+          <span class="tag ta">青少年（13–15歲）</span>
+          <span class="tag tg">n = 180</span>
+        </div>
+      </div>
+      <div class="case-toggle" id="case1-toggle">&#9654;</div>
+    </div>
+    <div class="case-body" id="case1-body">
+      <div class="case-section-title">研究背景 Background</div>
+      <p>本研究（Bell, Toth, Little &amp; Smith, 2015；Toth et al., 2014）針對<strong>青少年</strong>設計線上節能介入，以<span class="en">implementation intentions</span>（執行意圖）作為行為改變技術。執行意圖是一種精確的行為計畫，採用「如果…那麼…」（<span class="en">if–then plan</span>）的形式，連結特定情境與行為反應。</p>
+      <div class="case-grid">
+        <div class="case-item">
+          <div class="ci-label">目標族群</div>
+          <div class="ci-val">13–15 歲青少年</div>
+          <div class="ci-en">Adolescents</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">樣本量</div>
+          <div class="ci-val">n = 180</div>
+          <div class="ci-en">Intervention + Control</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">行為改變技術</div>
+          <div class="ci-val">執行意圖</div>
+          <div class="ci-en">Implementation Intentions (Gollwitzer, 1999)</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">執行平台</div>
+          <div class="ci-val">全程線上</div>
+          <div class="ci-en">Fully Online</div>
+        </div>
+      </div>
+
+      <div class="case-section-title">介入設計 Intervention Design</div>
+      <p>介入組參與者閱讀 4 個「如果」情境（如：「如果我離開房間……」），並完成「那麼」部分（選擇預設選項或自行撰寫），形成如：「如果我離開房間，我會關燈」的計畫。</p>
+      <div class="en-quote">"If I leave a room … then I will turn off the light." — Example implementation intention</div>
+
+      <div class="case-section-title">評估方法 Evaluation</div>
+      <p>參與者在三個時間點以 5 點 Likert 量表（1=從不，5=總是）自我報告節能行為：</p>
+      <ul style="list-style:none;padding:0;font-size:.88rem;margin:10px 0">
+        <li style="padding:6px 0;border-bottom:1px solid var(--border)">• <strong>T1</strong>：介入後立即</li>
+        <li style="padding:6px 0;border-bottom:1px solid var(--border)">• <strong>T2</strong>：5 天後</li>
+        <li style="padding:6px 0">• <strong>T3</strong>：6 週後</li>
+      </ul>
+
+      <div class="case-section-title">主要發現 Key Findings</div>
+      <div class="finding-box">
+        <div class="fb-title">成效結果</div>
+        <p>介入組報告節能行為顯著增加（由 2.73 → 3.05，再回到 3.00）。雖然統計顯著，但分數仍對應量表中的「有時」（3），臨床意義有限。</p>
+      </div>
+
+      <div class="case-section-title">評估討論 Evaluation Discussion</div>
+      <div class="grid-2">
+        <div class="hl green">
+          <p><strong>調節效果：</strong>已有節能習慣的青少年（<span class="en">readiness to change</span> 較高）從介入中獲益更多；尚未節能者則未見顯著改變。介入對<strong>已在實踐目標行為者</strong>效果最佳。</p>
+        </div>
+        <div class="hl amber">
+          <p><strong>方法論反思：</strong>在教室情境中進行研究可能<strong>提升社會期許偏誤</strong>，降低匿名感。未成年研究需取得家長同意，教室設定是必要的妥協。</p>
+        </div>
+      </div>
+      <div class="hl purple">
+        <p><strong>科技角色：</strong>線上平台提供了高效益且快速的介入傳遞方式。未來可考慮連結智慧能源監測器，以取得客觀的用電量數據，取代自我報告。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 5 — 個案二 ═══════════════ -->
+<section class="section" id="s5">
+  <div class="sec-header">
+    <div class="sec-num p">5</div>
+    <div class="sec-title">
+      <h2>個案研究二 <span class="en" style="font-size:.8em;font-weight:600">Case Study 2</span></h2>
+      <div class="en-sub">Self-Affirmation and Increased Fruit &amp; Vegetable Consumption</div>
+    </div>
+  </div>
+
+  <div class="case-card" id="case2">
+    <div class="case-header" onclick="toggleCase('case2')">
+      <div class="case-badge cb2">🥗</div>
+      <div class="case-header-text">
+        <h3>自我肯定與增加蔬果攝取</h3>
+        <div class="cs-en">Self-Affirmation to Increase Fruit &amp; Vegetable Consumption</div>
+        <div class="cs-tags">
+          <span class="tag tg">線上介入</span>
+          <span class="tag tp">高風險族群</span>
+          <span class="tag tb">n = 85</span>
+        </div>
+      </div>
+      <div class="case-toggle" id="case2-toggle">&#9654;</div>
+    </div>
+    <div class="case-body" id="case2-body">
+      <div class="case-section-title">研究背景 Background</div>
+      <p>本研究（Fielden, Sillence, Little &amp; Harris, 2016）針對蔬果攝取不足的<strong>高風險族群</strong>——大學生與低社經地位（<span class="en">low SES</span>）母親——設計線上自我肯定介入，以增加蔬果攝取量。</p>
+      <div class="case-grid">
+        <div class="case-item">
+          <div class="ci-label">目標族群</div>
+          <div class="ci-val">大學生 + 低SES母親</div>
+          <div class="ci-en">Students &amp; Low-SES Mothers</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">樣本量</div>
+          <div class="ci-val">n = 85（含26位母親）</div>
+          <div class="ci-en">85 total, 26 low-SES mothers</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">行為改變技術</div>
+          <div class="ci-val">自我肯定</div>
+          <div class="ci-en">Self-Affirmation (McQueen &amp; Klein, 2006)</div>
+        </div>
+        <div class="case-item">
+          <div class="ci-label">評估期間</div>
+          <div class="ci-val">7天線上日記</div>
+          <div class="ci-en">7-day Online Diary</div>
+        </div>
+      </div>
+
+      <div class="case-section-title">介入設計 Intervention Design</div>
+      <p>自我肯定通常通過請參與者完成量表或撰寫關於珍視價值觀（如善良）的文章來達成（McQueen &amp; Klein, 2006）。隨後所有參與者閱讀針對其所屬群體量身訂製的線上健康資訊（母親組 vs. 學生組）。</p>
+
+      <div class="case-section-title">主要發現 Key Findings</div>
+      <div class="finding-box">
+        <div class="fb-title">成效結果</div>
+        <p>自我肯定組在一週內比對照組多攝取了<strong>8份蔬果</strong>（相當於每日多一份以上）。雖然仍未達「每日五份」目標，但研究顯示每日增加一份蔬果可降低4%冠心病風險與6%中風風險（Joshipura et al., 2001）——此為<strong>具臨床意義的改變</strong>。</p>
+      </div>
+
+      <div class="case-section-title">評估討論 Evaluation Discussion</div>
+      <div class="grid-2">
+        <div class="hl green">
+          <p><strong>調節效果：</strong>自我肯定對<strong>基線蔬果攝取量最低</strong>的參與者效果最大，與文獻吻合——自我肯定對高至中等風險者最有效（Armitage et al., 2008）。</p>
+        </div>
+        <div class="hl red">
+          <p><strong>退出率：</strong>脫落率（<span class="en">dropout rate</span>）略高於類似的線下研究（Epton &amp; Harris, 2008），部分原因可能與補償方式不同有關。</p>
+        </div>
+      </div>
+      <div class="hl amber">
+        <p><strong>追蹤局限：</strong>介入效果僅評估 7 天，難以判斷是否具有<strong>持久效果</strong>。未來研究需延長追蹤時間。</p>
+      </div>
+      <div class="hl purple">
+        <p><strong>科技角色：</strong>線上每日日記搭配自動化電子郵件提醒提高了數據準確性。量身訂製的健康資訊（於參與式工作坊中開發）被參與者評為具有可信度。未來可考慮飲食攝取的照片分析以取代文字自我報告。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 6 — 線上優勢 ═══════════════ -->
+<section class="section" id="s6">
+  <div class="sec-header">
+    <div class="sec-num g">6</div>
+    <div class="sec-title">
+      <h2>線上評估的優勢 <span class="en" style="font-size:.8em;font-weight:600">Online Evaluation Advantages</span></h2>
+      <div class="en-sub">What does the internet uniquely enable for evaluating behavior change?</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>核心主張</h4>
+    <p>科技在行為改變介入的評估中扮演三大角色：改善數據記錄與收集、強化介入的個人化，以及維持長期參與度。</p>
+  </div>
+
+  <h3>改善數據記錄與收集 <span class="en">Improving Data Recording &amp; Collection</span></h3>
+
+  <div class="adv-grid">
+    <div class="adv-card">
+      <span class="adv-icon">📧</span>
+      <h4>自動化提醒</h4>
+      <div class="av-en">Automated Reminders</div>
+      <p>電子郵件與簡訊提醒可提高參與者的後測完成率（Webb et al., 2010；Sillence et al., 2015）</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">👥</span>
+      <h4>更大樣本</h4>
+      <div class="av-en">Larger Samples</div>
+      <p>線上招募可觸及更廣泛且多元的族群，提升統計效能</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">⚙️</span>
+      <h4>自動化數據收集</h4>
+      <div class="av-en">Automated Data Collection</div>
+      <p>即時同步數據至研究者端，降低轉錄錯誤，加速數據管理分析</p>
+    </div>
+    <div class="adv-card">
+      <span class="adv-icon">💸</span>
+      <h4>節省成本</h4>
+      <div class="av-en">Cost-Effective Delivery</div>
+      <p>線上傳遞介入材料的邊際成本低，可規模化至大量參與者</p>
+    </div>
+  </div>
+
+  <h3>強化介入個人化 <span class="en">Technology to Improve Tailoring</span></h3>
+  <p>科技可依據參與者的<strong>改變準備度</strong>（<span class="en">stage of readiness to change</span>，Spittaels et al., 2007）自動分配量身訂製的內容。研究也顯示，訊息來源的性別（Flanagin &amp; Metzger, 2003）、偏好匹配（Sillence et al., 2015）等因素都會影響健康訊息的接受度。</p>
+
+  <div class="hl green">
+    <p><strong>位置感知服務（LBS）：</strong><span class="en">Location Based Services</span> 可在適當時機傳遞介入材料——例如：在參與者途經健身房時發送「記得今天運動」的提醒。</p>
+  </div>
+
+  <h3>維持長期參與度 <span class="en">Maintaining Long-Term Engagement</span></h3>
+  <p>高脫落率（<span class="en">attrition rate</span>）是評估介入的重大挑戰。科技解決方案主要聚焦於兩方面：</p>
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid var(--blue)">
+      <h3 style="font-size:.97rem;margin-bottom:8px;color:var(--blue-d)">1. 提醒機制</h3>
+      <p style="font-size:.87rem">電子郵件與簡訊提醒已廣泛應用於線上介入研究中（Webb et al., 2010），已被證明可改善參與者的持續參與。</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--purple)">
+      <h3 style="font-size:.97rem;margin-bottom:8px;color:var(--purple)">2. 同質性網絡</h3>
+      <p style="font-size:.87rem"><span class="en">Homophily</span>（同質性）——與自己相似的人互動——能提高資訊來源可信度（Phua, 2014），進而促進說服訊息的接受度（Hovland &amp; Weiss, 1951）。</p>
+    </div>
+  </div>
+
+  <div class="bias-alert">
+    <h4>⚠️ 倫理注意 Ethical Considerations</h4>
+    <p>必須謹慎考量在未告知情況下決定參與者所接收訊息類型（如社群網路中的訊息操弄）的倫理意涵。此類實踐屬於<span class="en">social marketing</span>與<span class="en">behavioral nudging</span>的範疇，已因可能降低個人自主性（<span class="en">reduced individual autonomy</span>）而受到挑戰（Yeung, 2012）。</p>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 7 — 未來方向 ═══════════════ -->
+<section class="section" id="s7">
+  <div class="sec-header">
+    <div class="sec-num p">7</div>
+    <div class="sec-title">
+      <h2>未來方向 <span class="en" style="font-size:.8em;font-weight:600">Future Directions</span></h2>
+      <div class="en-sub">Sensors, EMA, wearables, N-of-1, and micro-randomized trials</div>
+    </div>
+  </div>
+
+  <p>科技的快速發展正在為行為改變介入的評估開闢全新可能，包括更精準的<strong>被動式數據收集</strong>（<span class="en">passive data collection</span>）、<strong>生態瞬時評估</strong>（<span class="en">Ecological Momentary Assessment, EMA</span>）與個人化設計。</p>
+
+  <div class="future-grid">
+    <div class="future-card">
+      <span class="fc-icon">📡</span>
+      <h4>感測器數據</h4>
+      <div class="fc-en">Sensor Data</div>
+      <p>環境感測器可客觀記錄能源使用、室內活動等，取代不準確的自我報告</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">🔇</span>
+      <h4>被動數據收集</h4>
+      <div class="fc-en">Passive Data Collection</div>
+      <p>在不打擾參與者的情況下持續收集行為數據，降低反應性偏誤</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">📲</span>
+      <h4>生態瞬時評估</h4>
+      <div class="fc-en">Ecological Momentary Assessment (EMA)</div>
+      <p>在自然情境中即時評估當下的行為與心理狀態，捕捉脈絡因素</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">🎯</span>
+      <h4>經驗取樣法</h4>
+      <div class="fc-en">Experience Sampling Method (ESM)</div>
+      <p>隨機時機提示參與者報告當下狀態，反映日常生活的真實變異性</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">⌚</span>
+      <h4>穿戴裝置</h4>
+      <div class="fc-en">Wearable Technologies</div>
+      <p>自動收集身體活動、心率、睡眠品質等生理指標，提升客觀性</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">1️⃣</span>
+      <h4>N-of-1 研究</h4>
+      <div class="fc-en">N-of-1 Studies</div>
+      <p>以個人為中心的縱貫設計，評估介入對個人的效果，補充群體平均的局限</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">🎲</span>
+      <h4>微隨機試驗</h4>
+      <div class="fc-en">Micro-Randomized Trials</div>
+      <p>在個人的多個時間點進行隨機化，在情境最相關時評估介入效果</p>
+    </div>
+    <div class="future-card">
+      <span class="fc-icon">🤖</span>
+      <h4>即時個人化</h4>
+      <div class="fc-en">Real-Time Tailoring</div>
+      <p>結合使用者背景（年齡、性別、偏好）即時分配最適合的介入版本</p>
+    </div>
+  </div>
+
+  <h3>EMA 與 ESM 的意義 <span class="en">Significance of EMA and ESM</span></h3>
+  <div class="callout" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">
+    <h4>從「實驗室」到「日常生活」</h4>
+    <p>傳統研究在受控環境中評估行為，而 EMA 與 ESM 使研究者得以在<strong>自然情境</strong>（<span class="en">naturalistic settings</span>）中、在行為<strong>發生當下</strong>進行評估，大幅減少回憶偏誤（<span class="en">recall bias</span>），並捕捉到脈絡因素對行為的即時影響。</p>
+    <div class="en-quote-w">"Assessing participant experience in their natural environments at the moment of behavior is the key advantage of EMA/ESM approaches." — EMA Principle</div>
+  </div>
+
+  <h3>穿戴裝置的角色 <span class="en">Role of Wearables</span></h3>
+  <p>穿戴科技（如 Fitbit、Apple Watch）與行動應用程式可讓使用者自動收集身體活動、心率、卡路里消耗等數據（參見第7章），並與研究者即時同步。此類客觀數據可與自我報告數據並行分析，彌補自我報告的不足。</p>
+
+  <div class="hl amber">
+    <p><strong>智慧電表案例：</strong>在節能研究中，未來可設想將客觀節能行為連結至線上記錄服務——例如透過即時能源監測器——以取代頻繁失準的自我報告量表。</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ QUIZ ═══════════════════════ -->
+<section class="section" id="quiz">
+  <div class="quiz-section">
+    <h2>知識測驗</h2>
+    <p class="q-sub">以下從 12 道題目中隨機抽取 5 題，測試您對本章重點的理解</p>
+    <div id="quiz-container"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" onclick="checkAll()">提交答案</button>
+      <button class="btn btn-secondary" onclick="loadQuiz()">重新出題</button>
+    </div>
+    <div class="quiz-score" id="quiz-score"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>版權所有 © 葉欲禾（Gary Yu-Ho Yeh）</strong><br>
+  <span style="margin-top:6px;display:block">教材改編自 Little, Sillence &amp; Joinson (2017). <em>Behavior Change Research and Theory</em>. Elsevier. 本頁面僅供教學用途。</span>
+</footer>
+
+<script>
+const ALL_QUESTIONS = [
+  {
+    zh: "1. 成效評估（Outcome Evaluation）主要回答什麼問題？",
+    en: "What does Outcome Evaluation primarily ask?",
+    opts: [
+      "介入如何運作？其機制為何？",
+      "介入是否有效？目標行為是否改變？",
+      "研究者的理論框架是否正確？",
+      "招募策略是否觸及足夠多的參與者？"
+    ],
+    correct: 1,
+    feedback: "成效評估聚焦於介入是否「有效」（whether the intervention worked），觀察目標行為是否在介入前後有所改變。"
+  },
+  {
+    zh: "2. 「效果量」（effect size）在成效評估中的主要用途是？",
+    en: "What is the main purpose of reporting an effect size?",
+    opts: [
+      "取代統計顯著性檢定（p 值）",
+      "量化差異的實際大小，避免僅依賴 p 值",
+      "確認參與者的回答是否誠實",
+      "決定是否需要進行追蹤測量"
+    ],
+    correct: 1,
+    feedback: "效果量（如 Cohen's d）量化前後差異的實際規模，補充 p 值的不足——統計顯著不等於實際重要。"
+  },
+  {
+    zh: "3. 「最小重要效果推論」（minimum magnitude based inference）的特點是？",
+    en: "What characterizes minimum magnitude based inference?",
+    opts: [
+      "由評審委員會設定最低效果門檻",
+      "研究者預先設定希望觀察到的最小重要效果值，再進行分析",
+      "使用最小樣本量進行統計推論",
+      "僅適用於臨床心理學研究"
+    ],
+    correct: 1,
+    feedback: "研究者事先決定介入前後分數間「最小重要效果」，再以此值作為分析基準（Barnes et al., 2015），常見於運動科學。"
+  },
+  {
+    zh: "4. 「臨床意義」（clinical significance，Jacobson &amp; Truax, 1991）在健康行為研究中代表什麼？",
+    en: "What does clinical significance mean in health behavior research?",
+    opts: [
+      "達到統計顯著 p < .001 的效果",
+      "改變幅度對個案真正有益，達到實際健康改善的程度",
+      "介入在臨床環境中（醫院）進行測試",
+      "行為改變效果在6個月後仍持續"
+    ],
+    correct: 1,
+    feedback: "臨床意義關注改變是否對個人真正有益，例如每日多吃一份蔬果可降低冠心病與中風風險，即使數量看似微小。"
+  },
+  {
+    zh: "5. 歷程評估（Process Evaluation）的主要目的是？",
+    en: "What is the main goal of process evaluation?",
+    opts: [
+      "確認介入是否達到統計顯著差異",
+      "了解介入的機制：如何及為何有效",
+      "計算研究的成本效益比",
+      "決定樣本量大小"
+    ],
+    correct: 1,
+    feedback: "歷程評估聚焦於介入的機制（mechanisms），探討介入如何（how）及為何（why）有效，包含分析理論的對應性、操弄的精確性與調節變數。"
+  },
+  {
+    zh: "6. 隨機對照試驗（RCT）在評估設計中有何特點？",
+    en: "What is a key feature of Randomized Controlled Trials in evaluation?",
+    opts: [
+      "必須有完全相同的實驗組與對照組",
+      "通常包含多種潛在因果因素，不一定需要獨立的對照組",
+      "只適用於藥物試驗",
+      "要求全程線上執行"
+    ],
+    correct: 1,
+    feedback: "RCT 通常納入多種潛在因果因素，對於獨立對照組的要求較實驗設計低；實驗設計則需要適當的對照組來控制干擾變數。"
+  },
+  {
+    zh: "7. 「社會期許偏誤」（social desirability bias）的定義是？",
+    en: "What is social desirability bias?",
+    opts: [
+      "研究者傾向發表正向結果的偏誤",
+      "參與者傾向回報符合社會規範的答案，而非真實行為",
+      "線上調查使用者傾向選擇第一個選項",
+      "跨文化研究中的測量不等值問題"
+    ],
+    correct: 1,
+    feedback: "社會期許偏誤指參與者傾向回報社會期待的行為，在教室情境（如青少年節能研究）或敏感行為測量中尤為明顯。"
+  },
+  {
+    zh: "8. 線上介入評估相較於傳統方法最主要的優勢是？",
+    en: "What is the primary advantage of online intervention evaluation?",
+    opts: [
+      "能夠完全消除自我報告偏誤",
+      "自動化數據收集、提醒機制，以及觸及更大更多元的樣本",
+      "不需要設立對照組",
+      "可保證所有參與者完成所有測量時間點"
+    ],
+    correct: 1,
+    feedback: "線上評估的核心優勢包含：自動化數據收集與管理、自動提醒機制提高完成率、可觸及更大且多元的樣本，以及節省成本。"
+  },
+  {
+    zh: "9. 自我報告測量中，下列哪項敘述最為準確？",
+    en: "Which statement about self-report measures is most accurate?",
+    opts: [
+      "自我報告完全不可靠，應避免使用",
+      "吸菸量等自我報告與客觀數據的相關性已被驗證，但蔬果份量等仍存在估計困難",
+      "線上自我報告比紙本更準確",
+      "自我報告偏誤只存在於實驗組，不影響對照組"
+    ],
+    correct: 1,
+    feedback: "McDonald et al. (2005) 顯示吸菸量自我報告具合理準確性；但蔬果份量（如「一份」的定義）或線上時間等則存在估計困難，自我報告偏誤同時存在於實驗組與對照組。"
+  },
+  {
+    zh: "10. 追蹤測量（follow-up measurement）在成效評估中的重要性為何？",
+    en: "Why is follow-up measurement important in outcome evaluation?",
+    opts: [
+      "用於計算研究的統計效能",
+      "評估介入效果的持久性（longevity of intervention effect）",
+      "驗證基線測量的可靠性",
+      "確保脫落率低於10%"
+    ],
+    correct: 1,
+    feedback: "追蹤測量評估介入效果是否隨時間維持（行為維持，behavior maintenance）。文獻顯示許多介入的長期追蹤結果令人失望，行為難以長期維持。"
+  },
+  {
+    zh: "11. 「生態瞬時評估」（EMA, Ecological Momentary Assessment）相較於傳統測量的優勢為何？",
+    en: "What is the key advantage of Ecological Momentary Assessment?",
+    opts: [
+      "在實驗室中進行，控制力更強",
+      "在自然情境中即時評估當下行為狀態，降低回憶偏誤",
+      "每次只需評估一個變數，效率更高",
+      "可完全取代隨機對照試驗"
+    ],
+    correct: 1,
+    feedback: "EMA/ESM 在自然情境（naturalistic settings）中、行為發生當下（in the moment）進行評估，大幅降低回憶偏誤（recall bias），並捕捉脈絡因素的即時影響。"
+  },
+  {
+    zh: "12. 調節變數（moderating variables）在歷程評估中的角色為何？",
+    en: "What role do moderating variables play in process evaluation?",
+    opts: [
+      "解釋介入為何在統計上顯著",
+      "探討介入是否對所有人有效、效果是否相同，以及影響效果的個體差異",
+      "控制實驗中的干擾因素",
+      "確定介入的最佳持續時間"
+    ],
+    correct: 1,
+    feedback: "調節變數評估介入效果是否因個體特徵（如性別、年齡、SES、科技使用經驗）而有所不同。例如青少年節能研究中，改變準備度是調節介入效果的關鍵變數。"
+  }
+];
+
+let currentQuestions = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadQuiz() {
+  currentQuestions = shuffle(ALL_QUESTIONS).slice(0, 5);
+  const container = document.getElementById('quiz-container');
+  const scoreEl = document.getElementById('quiz-score');
+  scoreEl.classList.remove('show');
+  scoreEl.textContent = '';
+
+  container.innerHTML = currentQuestions.map((q, qi) => `
+    <div class="q-card" id="qc-${qi}">
+      <div class="q-num">第 ${qi + 1} 題 / 共 5 題</div>
+      <div class="q-text">${q.zh}<br><small style="font-size:.78rem;color:var(--muted);font-style:italic;font-weight:400">${q.en}</small></div>
+      <div class="q-options">
+        ${q.opts.map((opt, oi) => `
+          <div class="q-opt" id="opt-${qi}-${oi}" onclick="selectOpt(${qi},${oi})">
+            <div class="opt-letter">${String.fromCharCode(65+oi)}</div>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="q-feedback" id="fb-${qi}"></div>
+    </div>
+  `).join('');
+}
+
+function selectOpt(qi, oi) {
+  const q = currentQuestions[qi];
+  const card = document.getElementById('qc-' + qi);
+  if (card.dataset.answered) return;
+  card.dataset.answered = 'true';
+  card.dataset.chosen = oi;
+  const opts = card.querySelectorAll('.q-opt');
+  opts[oi].classList.add(oi === q.correct ? 'correct' : 'wrong');
+  if (oi !== q.correct) opts[q.correct].classList.add('reveal-correct');
+  const fb = document.getElementById('fb-' + qi);
+  fb.textContent = q.feedback;
+  fb.className = 'q-feedback show ' + (oi === q.correct ? 'fb-ok' : 'fb-err');
+}
+
+function checkAll() {
+  let answered = 0, correct = 0;
+  currentQuestions.forEach((q, qi) => {
+    const card = document.getElementById('qc-' + qi);
+    if (!card.dataset.answered) {
+      const fb = document.getElementById('fb-' + qi);
+      fb.textContent = '請選擇一個答案後再提交。';
+      fb.className = 'q-feedback show fb-err';
+      return;
+    }
+    answered++;
+    if (parseInt(card.dataset.chosen) === q.correct) correct++;
+  });
+  if (answered < currentQuestions.length) return;
+  const scoreEl = document.getElementById('quiz-score');
+  const pct = Math.round(correct / currentQuestions.length * 100);
+  scoreEl.innerHTML = `本次得分：<strong>${correct} / ${currentQuestions.length}（${pct}%）</strong>${pct === 100 ? '　太棒了，全部答對！' : pct >= 60 ? '　不錯！繼續加油。' : '　建議再複習本章重點。'}`;
+  scoreEl.classList.add('show');
+}
+
+function toggleCase(id) {
+  const body = document.getElementById(id + '-body');
+  const toggle = document.getElementById(id + '-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+// Sticky nav highlight
+const sectionIds = ['s0','s1','s2','s3','s4','s5','s6','s7','quiz'];
+const tocLinks = document.querySelectorAll('.toc-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sectionIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+loadQuiz();
+</script>
+</body>
+</html>
