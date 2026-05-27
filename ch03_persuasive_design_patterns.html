@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: Software Design Patterns for Persuasive Computer–Human Dialogue｜說服性電腦—人機對話軟體設計模式</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#1e3a5f,#2563eb 50%,#7c3aed);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
+
+/* ── Bilingual para ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+
+/* ── Concept callout ── */
+.callout{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Framework grid ── */
+.fw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0}
+.fw-item{border-radius:var(--rs);padding:18px 12px;text-align:center;transition:transform .2s;cursor:default}
+.fw-item:hover{transform:translateY(-4px)}
+.fw-item .letter{font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:6px}
+.fw-item .word-en{font-size:.9rem;font-weight:700;margin-bottom:3px}
+.fw-item .word-zh{font-size:.82rem;font-weight:600;opacity:.8;margin-bottom:6px}
+.fw-item .desc{font-size:.76rem;line-height:1.45;opacity:.82}
+
+/* ── Dual process ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+.proc{border-radius:var(--r);padding:22px;border:2px solid}
+.proc.ref{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.proc.imp{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.proc h4{font-size:1rem;font-weight:700;margin-bottom:12px;text-align:center}
+.proc.ref h4{color:#1d4ed8}.proc.imp h4{color:#7c3aed}
+.proc ul{list-style:none;padding:0}
+.proc ul li{padding:5px 0;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px}
+.proc ul li:last-child{border:none}
+.proc ul li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:1px}
+.proc.ref ul li::before{color:#2563eb}.proc.imp ul li::before{color:#7c3aed}
+.proc ul li .zh{display:block;font-size:.82rem;color:var(--muted)}
+
+/* ── Model flow ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}
+.marrow{font-size:1.3rem;color:var(--muted)}
+
+/* ── Numbered steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
+
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:12px 16px;text-align:left;font-size:.88rem;font-weight:600}
+td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:2px}
+
+/* ── Pattern card ── */
+.pat-card{border-radius:var(--r);padding:28px;margin-bottom:24px;border:2px solid;position:relative;overflow:hidden}
+.pat-card::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;border-radius:50%;opacity:.06;transform:translate(30px,-30px)}
+.pat-card.pat1{background:linear-gradient(135deg,#eff6ff,#e0f2fe);border-color:#93c5fd}
+.pat-card.pat1::before{background:var(--blue)}
+.pat-card.pat2{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.pat-card.pat2::before{background:var(--purple)}
+.pat-card.pat3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#a7f3d0}
+.pat-card.pat3::before{background:var(--green)}
+.pat-card h3{margin-top:0;margin-bottom:16px;font-size:1.18rem}
+.pat-card.pat1 h3{color:#1d4ed8}
+.pat-card.pat2 h3{color:#7c3aed}
+.pat-card.pat3 h3{color:#059669}
+.pat-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pat-section{margin-bottom:12px}
+.pat-section label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:4px}
+.pat-section p{font-size:.9rem;margin:0}
+
+/* ── Component flow ── */
+.comp-flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:10px 0}
+.comp{padding:7px 14px;border-radius:6px;font-size:.83rem;font-weight:600;color:#fff}
+.c-blue{background:var(--blue)}.c-purple{background:var(--purple)}.c-green{background:var(--green)}.c-amber{background:var(--amber)}
+.carr{color:var(--muted);font-size:1.1rem}
+
+/* ── IMB ── */
+.imb{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.imbc{border-radius:var(--r);padding:22px 18px;text-align:center}
+.imbc.i1{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #bfdbfe}
+.imbc.i2{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border:2px solid #ddd6fe}
+.imbc.i3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #a7f3d0}
+.imbc .icon{font-size:2.2rem;margin-bottom:8px}
+.imbc h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.imbc .en-name{font-size:.8rem;font-style:italic;margin-bottom:10px;opacity:.7}
+.imbc.i1 h4{color:#1d4ed8}.imbc.i2 h4{color:#7c3aed}.imbc.i3 h4{color:#059669}
+.imbc p{font-size:.86rem;color:var(--text);margin:0;line-height:1.55}
+
+/* ── PSD four categories ── */
+.psd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.psd-item{border-radius:var(--r);padding:20px 16px;text-align:center;border:2px solid;transition:transform .2s}
+.psd-item:hover{transform:translateY(-4px)}
+.psd-item .psd-icon{font-size:2rem;margin-bottom:8px}
+.psd-item h4{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.psd-item .psd-en{font-size:.78rem;font-style:italic;margin-bottom:8px;opacity:.75}
+.psd-item p{font-size:.82rem;margin:0;line-height:1.5}
+.psd-item.psd-a{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd;color:#1d4ed8}
+.psd-item.psd-a p{color:#1e3a5f}
+.psd-item.psd-b{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe;color:#7c3aed}
+.psd-item.psd-b p{color:#3b0764}
+.psd-item.psd-c{background:linear-gradient(135deg,#fff7ed,#fed7aa);border-color:#fdba74;color:#c2410c}
+.psd-item.psd-c p{color:#7c2d12}
+.psd-item.psd-d{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#a7f3d0;color:#059669}
+.psd-item.psd-d p{color:#064e3b}
+
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
+
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.opts input:checked+label .olet{background:var(--blue);color:#fff}
+.opts label.correct .olet{background:var(--green);color:#fff}
+.opts label.wrong .olet{background:var(--red);color:#fff}
+.fb{margin-top:14px;padding:13px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.fb.show{display:block}
+.fb.correct{background:#f0fdf4;color:#065f46;border:1px solid #a7f3d0}
+.fb.wrong{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.qactions{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.btn{padding:13px 28px;border:none;border-radius:8px;font-size:.97rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.btn-o{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-o:hover{background:#eff6ff}
+.scorebox{display:none;text-align:center;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:32px;margin-top:28px}
+.scorebox.show{display:block}
+.score-n{font-size:3.6rem;font-weight:900;line-height:1;margin-bottom:6px}
+.score-l{font-size:1rem;opacity:.9;margin-bottom:6px}
+.score-s{font-size:1.8rem;margin-bottom:10px}
+.score-m{font-size:.95rem;opacity:.85}
+
+/* ── Footer ── */
+footer{background:#1e293b;color:#94a3b8;text-align:center;padding:38px 24px}
+footer strong{color:#f1f5f9;font-size:1.02rem}
+footer .ref{font-size:.8rem;margin-top:10px;opacity:.55}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .dual{grid-template-columns:1fr}
+  .imb{grid-template-columns:1fr}
+  #quiz{padding:26px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Behavior Change Research &amp; Theory · Chapter 3</div>
+  <h1>說服性電腦—人機對話的軟體設計模式
+    <small>Software Design Patterns for Persuasive Computer–Human Dialogue</small>
+  </h1>
+  <p class="hero-sub">即時回饋 · 提醒 · 獎勵 · PSD 對話支援 · BCSSs<br>
+  <em style="font-size:.92em;opacity:.8">Instant Feedback · Reminder · Reward · PSD Dialogue Support · BCSSs</em></p>
+  <div class="hero-meta">
+    <span>📚 Oduor, Alahäivälä &amp; Oinas-Kukkonen</span>
+    <span>🎓 University of Oulu, Finland</span>
+    <span>⏱ 約 25 分鐘</span>
+    <span>✅ 五題隨機測驗</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#intro">導論</a>
+    <a class="toc-link" href="#psd">PSD 模型</a>
+    <a class="toc-link" href="#patterns">軟體設計模式</a>
+    <a class="toc-link" href="#pat1">即時回饋</a>
+    <a class="toc-link" href="#pat2">提醒</a>
+    <a class="toc-link" href="#pat3">獎勵</a>
+    <a class="toc-link" href="#prototype">原型實作</a>
+    <a class="toc-link" href="#discussion">討論與結論</a>
+    <a class="toc-link" href="#quiz">📝 測驗</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══ 1. INTRO ══ -->
+<section class="section" id="intro">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">
+      <h2>導論：數位行為改變支援系統</h2>
+      <div class="en-sub">Introduction: Digital Behavior Change Support Systems</div>
+    </div>
+  </div>
+
+  <p class="zh-block">數位健康介入正在深刻地改變醫療照護的面貌。隨著智慧型裝置與網路的普及，<span class="en">Behavior Change Support Systems (BCSSs)</span>——行為改變支援系統——成為健康促進與說服性技術研究的核心議題。</p>
+
+  <div class="callout">
+    <h4>BCSSs 核心定義 <span style="font-weight:400;font-size:.88rem;opacity:.8">Oinas-Kukkonen, 2013</span></h4>
+    <p>行為改變支援系統是一種社會—技術資訊系統，具有心理與行為層面的預期結果，旨在形成、改變或強化使用者的態度、行為或遵從行為，且不涉及強制或欺騙。</p>
+    <div class="en-quote-w">"a socio-technical information system with psychological and behavioral outcomes designed to form, alter or reinforce attitudes, behaviors or an act of compliance without using coercion or deception." — Oinas-Kukkonen (2013)</div>
+  </div>
+
+  <p class="zh-block">BCSSs 的興起源於電腦在說服方面相較於人類具有的獨特優勢。Fogg（2002）指出，電腦在說服上的優勢來自以下六項特性：</p>
+
+  <div class="fw-grid">
+    <div class="fw-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="letter" style="font-size:1.6rem">💪</div>
+      <div class="word-en">Persistence</div><div class="word-zh">持久性</div>
+      <div class="desc">系統不會疲倦，能持續不斷地傳遞說服訊息</div>
+    </div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#065f46">
+      <div class="letter" style="font-size:1.6rem">🎭</div>
+      <div class="word-en">Anonymity</div><div class="word-zh">匿名性</div>
+      <div class="desc">使用者可在匿名情境下揭露敏感行為資訊</div>
+    </div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
+      <div class="letter" style="font-size:1.6rem">📊</div>
+      <div class="word-en">Data Management</div><div class="word-zh">資料管理</div>
+      <div class="desc">能處理及分析人類無法比擬的龐大資料量</div>
+    </div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="letter" style="font-size:1.6rem">🎨</div>
+      <div class="word-en">Modality</div><div class="word-zh">多模態性</div>
+      <div class="desc">整合文字、圖像、聲音、影片等多種呈現形式</div>
+    </div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
+      <div class="letter" style="font-size:1.6rem">📈</div>
+      <div class="word-en">Scalability</div><div class="word-zh">可擴展性</div>
+      <div class="desc">可同時觸及數以百萬計的使用者</div>
+    </div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);color:#075985">
+      <div class="letter" style="font-size:1.6rem">🌐</div>
+      <div class="word-en">Ubiquity</div><div class="word-zh">無所不在性</div>
+      <div class="desc">隨時隨地，透過行動裝置提供即時支援</div>
+    </div>
+  </div>
+
+  <h3>兩種說服模式 <span class="en">Two Modes of Persuasion</span></h3>
+  <div class="dual">
+    <div class="proc ref">
+      <h4>電腦—人類說服<br><em style="font-size:.82rem;font-weight:500">Computer-Human Persuasion</em></h4>
+      <ul>
+        <li>系統直接與使用者互動<span class="zh">System directly interacts with user</span></li>
+        <li>系統本身作為說服者<span class="zh">The system itself acts as a persuader</span></li>
+        <li>個人化回饋、提醒與獎勵機制<span class="zh">Personalized feedback, reminders, rewards</span></li>
+        <li>本章三個設計模式的核心場域<span class="zh">Core focus of the three patterns in this chapter</span></li>
+      </ul>
+    </div>
+    <div class="proc imp">
+      <h4>電腦媒介說服<br><em style="font-size:.82rem;font-weight:500">Computer-Mediated Persuasion</em></h4>
+      <ul>
+        <li>人透過科技影響他人<span class="zh">People use technology to influence others</span></li>
+        <li>電子郵件、即時通訊、社群網站<span class="zh">Emails, instant messaging, social networks</span></li>
+        <li>系統作為人際說服的媒介<span class="zh">System as medium for interpersonal persuasion</span></li>
+        <li>社會影響力機制<span class="zh">Social influence mechanisms</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p>⚠️ <strong>「黑箱問題」<span class="en">Black-Box Approach</span>：</strong>現有許多 BCSSs 研究只描述系統的外在表現，而不解釋其內部運作機制。這種黑箱式研究取向使得研究結果難以跨系統、跨脈絡加以類化（<span class="en">generalize</span>）。本章提出具體的軟體設計模式，旨在解決這一問題，提升 BCSSs 開發的透明度與標準化程度。</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 2. PSD MODEL ══ -->
+<section class="section" id="psd">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">
+      <h2>理論背景：說服性系統設計模型中的對話支援</h2>
+      <div class="en-sub">Theoretical Background: Dialogue Support in the PSD Model</div>
+    </div>
+  </div>
+
+  <p class="zh-block"><span class="en">PSD Model (Persuasive Systems Design Model)</span>——說服性系統設計模型（Oinas-Kukkonen &amp; Harjumaa, 2009）——是目前最廣泛使用的 BCSSs 設計理論框架。模型將設計原則分為四大類別：</p>
+
+  <div class="psd-grid">
+    <div class="psd-item psd-a">
+      <div class="psd-icon">🎯</div>
+      <h4>主要任務支援</h4>
+      <div class="psd-en">Primary Task Support</div>
+      <p>支援使用者完成其主要任務或目標的功能設計</p>
+    </div>
+    <div class="psd-item psd-b">
+      <div class="psd-icon">💬</div>
+      <h4>對話支援</h4>
+      <div class="psd-en">Dialogue Support</div>
+      <p>改善使用者與系統之間的溝通，維持使用者的參與動機</p>
+    </div>
+    <div class="psd-item psd-c">
+      <div class="psd-icon">🏛️</div>
+      <h4>系統可信度支援</h4>
+      <div class="psd-en">System Credibility Support</div>
+      <p>讓系統顯得值得信任且具有可信度</p>
+    </div>
+    <div class="psd-item psd-d">
+      <div class="psd-icon">👥</div>
+      <h4>社會支援</h4>
+      <div class="psd-en">Social Support</div>
+      <p>運用社會影響力機制促進目標行為</p>
+    </div>
+  </div>
+
+  <h3>對話支援的七項功能 <span class="en">Seven Dialogue Support Features</span></h3>
+  <p class="zh-block">本章聚焦於 PSD 模型中的<span class="en">dialogue support（對話支援）</span>類別，此類別共包含七項功能，旨在維持使用者對系統的持續投入：</p>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>功能</th><th>英文名稱</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="td-zh">稱讚</div></td>
+          <td><div class="td-en">Praise</div></td>
+          <td>透過文字、圖像或符號給予使用者正面的表現回饋</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">獎勵</div></td>
+          <td><div class="td-en">Rewards</div></td>
+          <td>提供虛擬成就獎勵（<span class="en">virtual achievements</span>）或遊戲化元素（<span class="en">gamification</span>）激勵持續參與</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">提醒</div></td>
+          <td><div class="td-en">Reminders</div></td>
+          <td>透過電子郵件、簡訊等方式，自動或個人化地提醒使用者回訪系統</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">建議</div></td>
+          <td><div class="td-en">Suggestions</div></td>
+          <td>在適當時機提供符合使用者目標行為的個人化建議</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">相似性</div></td>
+          <td><div class="td-en">Similarity</div></td>
+          <td>系統以與使用者相似的方式呈現，增強認同感</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">喜好性</div></td>
+          <td><div class="td-en">Liking</div></td>
+          <td>設計令使用者感到愉悅的互動體驗</td>
+        </tr>
+        <tr>
+          <td><div class="td-zh">社會角色</div></td>
+          <td><div class="td-en">Social Role</div></td>
+          <td>系統作為社會行動者（<span class="en">social actor</span>）與使用者互動</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>說服的三重脈絡 <span class="en">Three Contexts of Persuasion</span></h3>
+  <p class="zh-block">PSD 模型強調，有效的說服性系統設計必須考量三種相互影響的脈絡：</p>
+
+  <div class="imb">
+    <div class="imbc i1">
+      <div class="icon">🔍</div>
+      <h4>使用脈絡</h4>
+      <div class="en-name">Use Context</div>
+      <p>問題領域的性質（如健康、環保、教育），決定系統應達成哪種行為改變目標</p>
+    </div>
+    <div class="imbc i2">
+      <div class="icon">👤</div>
+      <h4>使用者脈絡</h4>
+      <div class="en-name">User Context</div>
+      <p>個體差異（人格特質、過往經驗、動機水準），決定哪種說服策略對特定使用者最有效</p>
+    </div>
+    <div class="imbc i3">
+      <div class="icon">⚙️</div>
+      <h4>科技脈絡</h4>
+      <div class="en-name">Technology Context</div>
+      <p>系統的技術規格與能力（如行動裝置感測器、網路連接），決定何種說服功能在技術上可行</p>
+    </div>
+  </div>
+
+  <div class="en-quote">"The PSD model has been used to conceptualize BCSSs, create design knowledge for these systems, and assist in their evaluation." — Oduor, Alahäivälä &amp; Oinas-Kukkonen (2017)</div>
+  <div class="zh-note">PSD 模型已被廣泛運用於概念化 BCSSs、建立這些系統的設計知識，以及協助評估其效果。</div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 3. SOFTWARE DESIGN PATTERNS ══ -->
+<section class="section" id="patterns">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">
+      <h2>軟體設計模式：概念基礎</h2>
+      <div class="en-sub">Software Design Patterns: Conceptual Foundation</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>設計模式定義 <span style="font-weight:400;font-size:.88rem;opacity:.8">Gamma et al., 1994 — "Gang of Four"</span></h4>
+    <p>設計模式（<span class="en" style="color:#93c5fd">design patterns</span>）是針對軟體設計中常見問題的可重複使用解決方案。它們不是可直接執行的程式碼，而是解決問題的模板（<span class="en" style="color:#93c5fd">templates</span>）或最佳實踐的文件化描述。</p>
+    <div class="en-quote-w">"reusable solutions to commonly occurring problems in software design; not programming code but templates." — Gamma et al. (1994)</div>
+  </div>
+
+  <h3>設計模式的四項本質特徵 <span class="en">Four Essential Characteristics of a Pattern</span></h3>
+  <ol class="steps">
+    <li>
+      <div class="sc">
+        <strong>模式名稱 <em class="en-label">Pattern Name</em></strong>
+        <span class="zh">提供一個高層次抽象的共通術語，讓開發者可以在更高的抽象層次上進行溝通，不必每次都從零解釋設計思路。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>問題 <em class="en-label">Problem</em></strong>
+        <span class="zh">描述何時應套用此模式及其適用脈絡。清楚界定問題是有效選用模式的前提——不同的問題可能需要不同的模式。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>解決方案 <em class="en-label">Solution</em></strong>
+        <span class="zh">對元素（類別、物件）排列方式的抽象描述，說明如何組裝這些元素來解決問題。解決方案是模板，而非特定的程式碼實作。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>後果 <em class="en-label">Consequences</em></strong>
+        <span class="zh">套用該模式的結果與取捨（<span class="en">tradeoffs</span>）。了解後果有助於開發者判斷模式是否適合其特定情境，並預期可能遇到的限制。</span>
+      </div>
+    </li>
+  </ol>
+
+  <h3>BCSSs 的架構基礎：MVC 與 REST <span class="en">MVC &amp; REST Architecture</span></h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--blue-d)">MVC 架構
+        <span class="en" style="font-size:.82rem;font-weight:400">Model-View-Controller</span>
+      </h3>
+      <p style="font-size:.9rem">MVC 將軟體系統分為三個相互分離的層次，使程式碼更易於維護與擴展：</p>
+      <div class="comp-flow" style="margin-bottom:8px">
+        <span class="comp c-blue">Model（模型）</span>
+        <span class="carr">·</span>
+        <span class="comp c-purple">View（視圖）</span>
+        <span class="carr">·</span>
+        <span class="comp c-green">Controller（控制器）</span>
+      </div>
+      <ul style="list-style:none;padding:0;font-size:.88rem">
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">📦 <strong>Model</strong>：資料層，管理應用程式的資料與商業邏輯</li>
+        <li style="padding:4px 0;border-bottom:1px solid var(--border)">🖥️ <strong>View</strong>：視圖層，使用者介面（UI）的呈現</li>
+        <li style="padding:4px 0">⚙️ <strong>Controller</strong>：控制層，處理使用者輸入並協調 Model 與 View</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--purple)">REST 架構
+        <span class="en" style="font-size:.82rem;font-weight:400">Representational State Transfer</span>
+      </h3>
+      <p style="font-size:.9rem">REST 以 URL 識別應用程式的各個資源，並透過四種標準操作處理資源：</p>
+      <div class="comp-flow" style="flex-wrap:wrap;gap:6px;margin-bottom:8px">
+        <span class="comp c-green">Create</span>
+        <span class="comp c-blue">Read</span>
+        <span class="comp c-amber">Update</span>
+        <span class="comp c-purple" style="background:#dc2626">Delete</span>
+      </div>
+      <p style="font-size:.85rem;margin-bottom:8px"><strong>CRUD 操作</strong>（建立、讀取、更新、刪除）對應 HTTP 的 POST、GET、PUT/PATCH、DELETE 方法。</p>
+      <div class="hl" style="margin:0;padding:10px 14px">
+        <p style="margin:0;font-size:.84rem">🔑 任何 BCSS 的<strong>基礎資源</strong>：<br>① <span class="en">User 資源</span>——使用者個人資料、行為資料<br>② <span class="en">Entry 資源</span>——行為紀錄（如體重數據、運動記錄）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p>💡 <strong>為何設計模式對 BCSSs 開發至關重要？</strong>透過記錄與分享已驗證的解決方案，設計模式有助於實現「不重複發明輪子」（<span class="en">don't reinvent the wheel</span>）的工程原則，同時在<strong>行為科學意圖</strong>與<strong>軟體工程實作</strong>之間架起橋樑。這有助於提升 BCSSs 開發的標準化程度，使不同系統的研究結果更具可比性。</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 4. INSTANT FEEDBACK ══ -->
+<section class="section" id="pat1">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">
+      <h2>設計模式一：即時回饋</h2>
+      <div class="en-sub">Design Pattern 1: Instant Feedback</div>
+    </div>
+  </div>
+
+  <div class="pat-card pat1">
+    <h3>即時回饋模式 <span style="font-size:.85rem;font-weight:500">Instant Feedback Pattern</span></h3>
+    <div class="pat-meta">
+      <span class="tag tb">對話支援</span>
+      <span class="tag tb">稱讚</span>
+      <span class="tag tb">建議</span>
+      <span class="tag tb">PSD Dialogue Support</span>
+    </div>
+
+    <div class="pat-section">
+      <label>問題 Problem</label>
+      <p>系統應在使用者提交行為紀錄時，立即給予關於其表現的即時評語（<span class="en">real-time comments on user performance</span>），使使用者能夠即時了解自身行為是否符合目標，並獲得適當的正向強化或修正建議。</p>
+    </div>
+
+    <div class="pat-section">
+      <label>涉及元件 Components</label>
+      <div class="comp-flow">
+        <span class="comp c-blue">User（使用者）</span>
+        <span class="carr">+</span>
+        <span class="comp c-purple">Entry Controller（紀錄控制器）</span>
+      </div>
+    </div>
+
+    <div class="pat-section">
+      <label>解決方案 Solution</label>
+      <p>當使用者在 BCSS 中建立一筆新的 <span class="en">Entry（行為紀錄）</span>時，<span class="en">Entry Controller（紀錄控制器）</span>的 <span class="en">Create action（建立動作）</span>會立即分析該紀錄。依據分析結果，將適當的回饋訊息（稱讚良好表現，或針對不足提出改善建議）傳遞至 <span class="en">View（視圖）</span>呈現給使用者。</p>
+    </div>
+  </div>
+
+  <div class="model-box">
+    <h4>即時回饋模式流程 / Instant Feedback Pattern Flow</h4>
+    <div class="model-flow">
+      <div class="mnode">使用者提交<br><small>User Submits Entry</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode p">Entry Controller<br><small>Create Action</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode" style="background:#d97706">分析表現<br><small>Analyze Performance</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode g">回饋訊息<br><small>Feedback to View</small></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:24px;margin-top:16px;flex-wrap:wrap">
+      <div style="text-align:center;font-size:.83rem">
+        <div style="background:#059669;color:#fff;padding:6px 14px;border-radius:6px;margin-bottom:4px">表現良好</div>
+        <span style="color:var(--muted)">→ 稱讚訊息 Praise</span>
+      </div>
+      <div style="text-align:center;font-size:.83rem">
+        <div style="background:#d97706;color:#fff;padding:6px 14px;border-radius:6px;margin-bottom:4px">有待改善</div>
+        <span style="color:var(--muted)">→ 改善建議 Suggestion</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>後果與影響 <span class="en">Consequences</span></h3>
+  <div class="grid-2">
+    <div class="hl green">
+      <p>✅ <strong>正面後果：</strong>使用者每次提交紀錄時，都能收到適切的回饋；有助於使用者重新審視自身進展（<span class="en">reexamine progress</span>）並調整行為習慣。即時性強化了行為—結果的連結，提升學習效果。</p>
+    </div>
+    <div class="hl amber">
+      <p>⚠️ <strong>實作考量：</strong>回饋訊息的品質取決於 <span class="en">Entry Controller</span> 中分析邏輯的設計精細程度。過於簡單的判斷規則可能產生不適切甚至誤導性的回饋，反而損害使用者信任。</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 5. REMINDER ══ -->
+<section class="section" id="pat2">
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">
+      <h2>設計模式二：提醒</h2>
+      <div class="en-sub">Design Pattern 2: Reminder</div>
+    </div>
+  </div>
+
+  <div class="pat-card pat2">
+    <h3>提醒模式 <span style="font-size:.85rem;font-weight:500">Reminder Pattern</span></h3>
+    <div class="pat-meta">
+      <span class="tag tp">對話支援</span>
+      <span class="tag tp">提醒功能</span>
+      <span class="tag tp">習慣養成</span>
+      <span class="tag tp">PSD Dialogue Support</span>
+    </div>
+
+    <div class="pat-section">
+      <label>問題 Problem</label>
+      <p>系統應持續主動接觸使用者（<span class="en">continuously reach out to users</span>），強化使用者定期造訪系統的習慣，防止中途放棄（<span class="en">attrition</span>），特別是在使用者一段時間未登入後更需要適時介入。</p>
+    </div>
+
+    <div class="pat-section">
+      <label>涉及元件 Components</label>
+      <div class="comp-flow">
+        <span class="comp c-blue">User（使用者）</span>
+        <span class="carr">+</span>
+        <span class="comp c-purple">Mailer（郵件發送器）</span>
+        <span class="carr">+</span>
+        <span class="comp c-green">Scheduler（排程器）</span>
+      </div>
+    </div>
+
+    <div class="pat-section">
+      <label>解決方案 Solution</label>
+      <p><span class="en">User 元件</span>保存使用者個人資料與聯絡資訊（電子郵件地址等）；<span class="en">Mailer 元件</span>包含各種提醒傳遞方法，包括：週期性電子報（<span class="en">weekly newsletter</span>）、閒置觸發提醒（<span class="en">triggered reminder after inactivity</span>）、以及基於行為檔案的個人化提醒（<span class="en">personalized reminders based on behavioral profiles</span>）；<span class="en">Scheduler 元件</span>依設定的時間表自動執行提醒任務。</p>
+    </div>
+  </div>
+
+  <div class="model-box">
+    <h4>提醒模式架構 / Reminder Pattern Architecture</h4>
+    <div class="model-flow">
+      <div class="mnode">User<br><small>個人資料 + Email</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode p">Mailer<br><small>提醒傳遞方法</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode g">Scheduler<br><small>排程自動執行</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode" style="background:#0ea5e9">Email / SMS<br><small>傳送給使用者</small></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:18px;margin-top:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)">
+      <span>📧 週期電子報</span>
+      <span>⏰ 閒置觸發提醒</span>
+      <span>🎯 個人化提醒</span>
+    </div>
+  </div>
+
+  <h3>後果與影響 <span class="en">Consequences</span></h3>
+  <p class="zh-block">Kelders 等人（2012）的研究證實，提醒功能是預測使用者更高遵從度（<span class="en">better adherence</span>）的重要因素。</p>
+
+  <div class="grid-2">
+    <div class="hl green">
+      <p>✅ <strong>正面後果：</strong>定期的提醒電子郵件或簡訊使使用者持續投入系統；支援習慣養成，防止使用者流失（<span class="en">dropout</span>）。個人化提醒比通用提醒更具效果。</p>
+    </div>
+    <div class="hl amber">
+      <p>⚠️ <strong>負面風險：</strong>過於頻繁的提醒反而可能使使用者感到厭煩（<span class="en">irritate users</span>），導致退訂或反感。提醒的間隔與頻率必須審慎評估（<span class="en">carefully evaluated</span>），以在維持參與度與避免騷擾之間取得平衡。</p>
+    </div>
+  </div>
+
+  <div class="en-quote">"Kelders et al. (2012) found that reminders predict better adherence, but too-frequent reminders can irritate users; interval must be carefully evaluated."</div>
+  <div class="zh-note">Kelders 等人（2012）發現提醒功能能預測更高的遵從度，但過於頻繁的提醒可能使使用者感到厭煩——提醒間隔必須審慎評估。</div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 6. REWARD ══ -->
+<section class="section" id="pat3">
+  <div class="sec-header">
+    <div class="sec-num">6</div>
+    <div class="sec-title">
+      <h2>設計模式三：獎勵</h2>
+      <div class="en-sub">Design Pattern 3: Reward</div>
+    </div>
+  </div>
+
+  <div class="pat-card pat3">
+    <h3>獎勵模式 <span style="font-size:.85rem;font-weight:500">Reward Pattern</span></h3>
+    <div class="pat-meta">
+      <span class="tag tg">對話支援</span>
+      <span class="tag tg">獎勵機制</span>
+      <span class="tag tg">遊戲化</span>
+      <span class="tag tg">PSD Dialogue Support</span>
+    </div>
+
+    <div class="pat-section">
+      <label>問題 Problem</label>
+      <p>系統應給予使用者虛擬獎勵（<span class="en">virtual rewards</span>），進一步激勵其持續參與，並協助目標設定（<span class="en">assist goal-setting</span>）。獎勵機制對應遊戲化（<span class="en">gamification</span>）設計原則，透過成就感維持使用者的長期投入。</p>
+    </div>
+
+    <div class="pat-section">
+      <label>涉及元件 Components</label>
+      <div class="comp-flow" style="flex-wrap:wrap">
+        <span class="comp c-blue">User（使用者）</span>
+        <span class="carr">+</span>
+        <span class="comp c-purple">Entry（行為紀錄）</span>
+        <span class="carr">+</span>
+        <span class="comp c-green">EntryObserver（紀錄觀察者）</span>
+        <span class="carr">+</span>
+        <span class="comp c-amber">Reward（獎勵）</span>
+        <span class="carr">+</span>
+        <span class="comp" style="background:#dc2626">Accomplishment（成就）</span>
+      </div>
+    </div>
+
+    <div class="pat-section">
+      <label>解決方案 Solution</label>
+      <p><span class="en">User</span> 與 <span class="en">Reward</span> 之間透過 <span class="en">Accomplishment 模型（成就模型）</span>建立多對多關聯（<span class="en">many-to-many relationship</span>）——一位使用者可以獲得多個獎勵，一個獎勵也可被多位使用者取得。<span class="en">EntryObserver</span> 採用<strong>觀察者設計模式</strong>（<span class="en">Observer design pattern</span>），觀察何時有新的 Entry 被提交；一旦觸發，即檢查該筆紀錄是否使使用者達到獲獎條件；若符合，則建立一筆 <span class="en">Accomplishment</span> 紀錄連結使用者與其獲得的獎勵。</p>
+    </div>
+  </div>
+
+  <div class="model-box">
+    <h4>獎勵模式架構 / Reward Pattern Architecture</h4>
+    <div class="model-flow">
+      <div class="mnode">User<br><small>使用者</small></div>
+      <div class="marrow">←→</div>
+      <div class="mnode" style="background:#dc2626">Accomplishment<br><small>成就（多對多關聯）</small></div>
+      <div class="marrow">←→</div>
+      <div class="mnode g">Reward<br><small>獎勵</small></div>
+    </div>
+    <div class="marrow" style="display:block;text-align:center;margin:8px 0">↑ 觀察觸發 Triggered by</div>
+    <div class="model-flow">
+      <div class="mnode p">EntryObserver<br><small>紀錄觀察者</small></div>
+      <div class="marrow">←</div>
+      <div class="mnode" style="background:#0ea5e9">Entry<br><small>新提交的行為紀錄</small></div>
+    </div>
+  </div>
+
+  <h3>後果與影響 <span class="en">Consequences</span></h3>
+  <div class="grid-2">
+    <div class="hl green">
+      <p>✅ <strong>正面後果：</strong>給予使用者獎勵能激勵持續參與（<span class="en">motivate continued participation</span>）；協助使用者建立和追蹤目標；成就感與里程碑的累積增強自我效能感（<span class="en">self-efficacy</span>）。</p>
+    </div>
+    <div class="hl amber">
+      <p>⚠️ <strong>個體差異：</strong>並非所有使用者都認為虛擬獎勵同等吸引人（<span class="en">not all users find rewards equally desirable</span>）。部分使用者可能對遊戲化元素反感，因此獎勵機制的設計應考量目標族群的個體差異與偏好。</p>
+    </div>
+  </div>
+
+  <h3>三種設計模式總覽 <span class="en">Three Patterns Overview</span></h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>模式名稱</th>
+          <th>中文 / English</th>
+          <th>核心元件</th>
+          <th>主要後果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>即時回饋</strong></td>
+          <td><div class="td-en">Instant Feedback</div></td>
+          <td>User + Entry Controller</td>
+          <td>提交紀錄即時獲得稱讚或改善建議</td>
+        </tr>
+        <tr>
+          <td><strong>提醒</strong></td>
+          <td><div class="td-en">Reminder</div></td>
+          <td>User + Mailer + Scheduler</td>
+          <td>持續觸及使用者，強化回訪習慣；過頻則可能造成厭煩</td>
+        </tr>
+        <tr>
+          <td><strong>獎勵</strong></td>
+          <td><div class="td-en">Reward</div></td>
+          <td>User + Entry + EntryObserver + Reward + Accomplishment</td>
+          <td>激勵持續參與與目標設定；但使用者對獎勵的偏好存在個體差異</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 7. PROTOTYPE ══ -->
+<section class="section" id="prototype">
+  <div class="sec-header">
+    <div class="sec-num">7</div>
+    <div class="sec-title">
+      <h2>範例實作：「別中斷鏈條」原型系統</h2>
+      <div class="en-sub">Example Implementation: "Don't Break the Chain" Prototype</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Jerry Seinfeld 生產力法則 <span style="font-weight:400;font-size:.88rem;opacity:.8">Seinfeld Productivity Method</span></h4>
+    <p>「別中斷鏈條」（<span class="en" style="color:#93c5fd">Don't Break the Chain</span>）原型系統以美國喜劇演員 Jerry Seinfeld 的生產力方法為基礎：選擇一個習慣，每天實踐它，並在日曆上標記當天。連續的標記形成一條「鏈條」（<span class="en" style="color:#93c5fd">chain</span>）。</p>
+    <div class="en-quote-w">"Choose a habit, perform it daily, mark each day → build a 'chain.' The longer the chain, the more resilient the user is in maintaining behavior."</div>
+  </div>
+
+  <p class="zh-block">鏈條越長，使用者維持該行為的韌性（<span class="en">resilience</span>）便越強——中斷鏈條的心理代價足以作為強大的激勵因素，防止使用者放棄目標行為。這一機制本質上融合了<strong>習慣養成</strong>（衝動歷程）與<strong>目標追蹤</strong>（反思歷程）兩種機制。</p>
+
+  <h3>技術實作細節 <span class="en">Technical Implementation</span></h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--blue-d)">技術框架
+        <span class="en" style="font-size:.82rem;font-weight:400">Technology Stack</span>
+      </h3>
+      <p style="font-size:.9rem">原型系統以 <span class="en">Ruby on Rails</span> 開發——這是一個原生支援 <span class="en">MVC 架構</span>與 <span class="en">REST 設計原則</span>的 Web 應用程式框架，非常適合展示本章提出的三種軟體設計模式。</p>
+      <div style="margin-top:10px"><span class="tag tb">Ruby on Rails</span><span class="tag tb">MVC</span><span class="tag tb">REST</span><span class="tag tg">開源框架</span></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--purple)">三種模式的整合應用
+        <span class="en" style="font-size:.82rem;font-weight:400">Integration of Three Patterns</span>
+      </h3>
+      <ul style="list-style:none;padding:0;font-size:.9rem">
+        <li style="padding:6px 0;border-bottom:1px solid var(--border)">✅ <strong>即時回饋</strong>：使用者每次標記完成當日習慣後，系統立即顯示稱讚（表現良好）或鼓勵訊息（需加油）</li>
+        <li style="padding:6px 0;border-bottom:1px solid var(--border)">✅ <strong>提醒</strong>：系統透過排程器在使用者閒置時自動發送電子郵件提醒，鼓勵回訪並繼續維持鏈條</li>
+        <li style="padding:6px 0">✅ <strong>獎勵</strong>：達到特定鏈條長度里程碑（如連續 7 天、30 天）時，EntryObserver 觸發成就獎勵</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hl">
+    <p>📌 <strong>原型的研究意義：</strong>「別中斷鏈條」原型展示了三種設計模式在真實 BCSS 脈絡中的可應用性（<span class="en">applicability in a prototype BCSS</span>）。然而，原型層級的驗證只是第一步——模式仍需在<strong>完整功能系統</strong>中進行更嚴謹的測試，才能確立其實際效用。</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 8. DISCUSSION ══ -->
+<section class="section" id="discussion">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">
+      <h2>討論與結論</h2>
+      <div class="en-sub">Discussion &amp; Conclusions</div>
+    </div>
+  </div>
+
+  <h3>研究貢獻 <span class="en">Contributions</span></h3>
+  <p class="zh-block">目前 BCSSs 的開發缺乏清晰、定義明確且具彈性的設計模式（<span class="en">clear, well-defined, flexible design patterns</span>）。本章提出的三種設計模式——即時回饋、提醒、獎勵——試圖填補這一空缺，在行為科學的說服理論與軟體工程的實作實踐之間架起橋樑。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--blue-d)">知識分享與最佳實踐文件化
+        <span class="en" style="font-size:.78rem;font-weight:400">Knowledge Sharing &amp; Documentation</span>
+      </h3>
+      <p style="font-size:.9rem">設計模式對於知識分享（<span class="en">knowledge sharing</span>）與記錄最佳實踐（<span class="en">documenting best practices</span>）至關重要。透過模式化描述，開發者無需從零開始，可直接套用已驗證的解決方案，顯著降低開發成本與風險。</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:var(--purple)">標準化與可比性
+        <span class="en" style="font-size:.78rem;font-weight:400">Standardization &amp; Comparability</span>
+      </h3>
+      <p style="font-size:.9rem">設計模式有助於 BCSSs 開發的標準化，使不同系統間的比較成為可能。解決「黑箱問題」，讓研究者能清楚了解系統內部機制，進而提升研究結果的可類化性（<span class="en">generalizability</span>）。</p>
+    </div>
+  </div>
+
+  <h3>研究限制 <span class="en">Limitations</span></h3>
+  <div class="hl amber">
+    <p>⚠️ <strong>限制一：</strong>三種模式目前僅在<strong>原型層級</strong>（<span class="en">prototype level</span>）進行概念化，尚未在完整功能系統（<span class="en">fully functional systems</span>）中接受嚴謹測試。</p>
+  </div>
+  <div class="hl amber" style="margin-top:8px">
+    <p>⚠️ <strong>限制二：</strong>本章僅聚焦於 PSD 模型中<strong>對話支援</strong>類別的三項功能，其他類別（如社會影響力模式 <span class="en">social influence patterns</span>）的設計模式仍有待未來研究補充。</p>
+  </div>
+
+  <h3>未來研究方向 <span class="en">Future Directions</span></h3>
+  <ol class="steps">
+    <li>
+      <div class="sc">
+        <strong>原生行動應用程式測試 <em class="en-label">Testing in Native Mobile Apps</em></strong>
+        <span class="zh">模式應在原生行動應用程式（<span class="en">native mobile apps</span>）中進行測試，以驗證其在行動裝置脈絡下的適用性。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>感測器系統整合 <em class="en-label">Integration with Sensor Systems</em></strong>
+        <span class="zh">與行動裝置或穿戴式裝置的感測器系統連結，實現更精確的行為偵測與即時回饋，強化即時回饋與提醒模式的效能。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>彈性評估 <em class="en-label">Evaluating Flexibility</em></strong>
+        <span class="zh">評估模式在不同 BCSSs 脈絡中的彈性，確認設計模式是否能有效跨越不同健康行為領域（如運動、飲食、戒菸）進行應用。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>開發者溝通改善評估 <em class="en-label">Evaluating Communication Improvement</em></strong>
+        <span class="zh">實證評估模式是否確實改善了行為科學家與軟體工程師之間的溝通效率，以及是否降低了 BCSSs 開發的複雜性與成本。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>其他 PSD 類別模式化 <em class="en-label">Patterns for Other PSD Categories</em></strong>
+        <span class="zh">將模式化方法擴展至 PSD 模型的其他三個類別（主要任務支援、系統可信度支援、社會支援），建立完整的 BCSSs 軟體設計模式庫。</span>
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout">
+    <h4>核心結論 <span style="font-weight:400;font-size:.88rem;opacity:.8">Key Conclusions</span></h4>
+    <p>軟體設計模式為 BCSSs 開發提供了一個具體且可操作的橋樑，連接行為科學的說服意圖與軟體工程的實作執行。透過記錄、分享並標準化這些模式，研究者與開發者可以更有效率地建構更有效的行為改變支援系統——不必每次都重新發明輪子，而是站在前人經驗的肩膀上持續創新。</p>
+    <div class="en-quote-w">"Patterns are important for knowledge sharing and documenting best practices … they enhance standardization of BCSS development and bridge behavioral science intent with software engineering implementation." — Oduor, Alahäivälä &amp; Oinas-Kukkonen (2017)</div>
+  </div>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section class="section" id="quiz">
+  <div class="qhead">
+    <h2>📝 隨堂練習 Practice Quiz</h2>
+    <p>每次從題庫隨機抽出 5 題，作答後點「提交答案」即可看到解析。點「重新出題」可換一組新題目。</p>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="qactions">
+    <button class="btn btn-p" onclick="submitQuiz()">✔ 提交答案 Submit</button>
+    <button class="btn btn-o" onclick="generateQuiz()">🔀 重新出題 New Quiz</button>
+  </div>
+  <div class="scorebox" id="scorebox">
+    <div class="score-s" id="sc-stars"></div>
+    <div class="score-n" id="sc-num"></div>
+    <div class="score-l">/ 5 題正確</div>
+    <div class="score-m" id="sc-msg"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copyright">
+    <strong>版權所有 &copy; 葉欲禾（Gary Yu-Ho Yen）</strong><br>
+    本互動教材依原著內容製作，僅供學術教學用途。All rights reserved for academic use only.
+  </div>
+  <div class="ref">
+    Source: Little, L., Sillence, E., &amp; Joinson, A. (Eds.). (2017). <em>Behavior Change Research and Theory: Psychological and Technological Perspectives</em>. Academic Press / Elsevier.<br>
+    Chapter 3: Oduor, M., Alahäivälä, T., &amp; Oinas-Kukkonen, H. — Software Design Patterns for Persuasive Computer–Human Dialogue: Reminder, Reward, and Instant Feedback.
+  </div>
+</footer>
+
+<script>
+const QB = [
+  {
+    q:"Oinas-Kukkonen（2013）如何定義<span class='en'>BCSSs（Behavior Change Support Systems）</span>——行為改變支援系統？",
+    opts:[
+      "一種以人工智慧為核心的醫療診斷系統，能自動判斷患者最佳治療方案",
+      "一種社會—技術資訊系統，具有心理與行為層面的預期結果，旨在形成、改變或強化態度或行為，且不涉及強制或欺騙",
+      "一種由政府機構建立的公共衛生監控平台，用於追蹤人口健康行為趨勢",
+      "一種純粹技術性的應用程式架構，用於收集和儲存使用者的健康數據"
+    ],
+    correct:1,
+    feedback:"Oinas-Kukkonen（2013）將 BCSSs 定義為「<strong>一種社會—技術資訊系統，具有心理與行為層面的預期結果，旨在形成、改變或強化態度、行為或遵從行為，且不涉及強制或欺騙</strong>」。定義的關鍵在於：（1）社會—技術系統；（2）以心理與行為結果為目標；（3）排除強制與欺騙手段——這與廣告操控手法的本質區別。"
+  },
+  {
+    q:"Fogg（2002）指出電腦在說服方面相較於人類具有六項優勢。以下哪一項<em>不</em>在其中？",
+    opts:[
+      "無所不在性（<span class='en'>ubiquity</span>）——隨時隨地透過行動裝置提供支援",
+      "情感共鳴性（<span class='en'>emotional resonance</span>）——電腦比人類更能感受並回應使用者情緒",
+      "持久性（<span class='en'>persistence</span>）——系統不會疲倦，能持續傳遞說服訊息",
+      "可擴展性（<span class='en'>scalability</span>）——可同時觸及數以百萬計的使用者"
+    ],
+    correct:1,
+    feedback:"Fogg（2002）提出的電腦說服六項優勢為：<strong>持久性（persistence）、匿名性（anonymity）、資料管理能力（ability to manage huge volumes of data）、多模態性（modality）、可擴展性（scalability）、無所不在性（ubiquity）</strong>。「情感共鳴性」並不在其中——事實上，缺乏真實情感體驗被認為是電腦說服的潛在限制，而非優勢。"
+  },
+  {
+    q:"PSD 模型（Oinas-Kukkonen &amp; Harjumaa, 2009）將設計原則分為四大類別。<span class='en'>Dialogue Support（對話支援）</span>類別的主要目的為何？",
+    opts:[
+      "確保系統在技術層面的安全性，防止資料外洩與未授權存取",
+      "改善使用者與系統之間的溝通品質，維持使用者的持續參與動機",
+      "提供使用者關於健康科學的正確資訊，增強其行為改變知識",
+      "讓系統能夠與其他健康照護系統進行資料交換與互通"
+    ],
+    correct:1,
+    feedback:"PSD 模型的<span class='en'>Dialogue Support（對話支援）</span>類別的核心目的是<strong>改善使用者與系統之間的溝通，並維持使用者對系統的持續投入（keep users engaged）</strong>。此類別包含稱讚、獎勵、提醒、建議、相似性、喜好性、社會角色等七項設計功能，都是為了在使用者與系統之間建立有意義的雙向溝通關係。"
+  },
+  {
+    q:"在軟體設計模式理論（Gamma et al., 1994）中，「模式名稱（<span class='en'>pattern name</span>）」這項特徵的主要功能是什麼？",
+    opts:[
+      "作為程式碼的唯一識別符，讓編譯器能正確找到對應的實作類別",
+      "提供一個高層次抽象的共通術語，使開發者能在更高的抽象層次上進行有效溝通，無需每次從零解釋設計思路",
+      "記錄該模式首次被提出的日期與開發者姓名，確保智慧財產權",
+      "指定模式適用的程式語言種類，限制其在特定技術環境中的使用"
+    ],
+    correct:1,
+    feedback:"設計模式的「模式名稱」提供一個<strong>高層次抽象的共通術語（common term for communication at higher abstraction level）</strong>。有了共通的模式名稱，兩位開發者只需說「讓我們在這裡使用觀察者模式」，便能立即相互理解對方的設計意圖——這種共同語言大幅降低溝通成本，是設計模式最重要的貢獻之一。"
+  },
+  {
+    q:"在<span class='en'>Instant Feedback（即時回饋）</span>設計模式中，哪個元件負責分析使用者提交的行為紀錄，並決定要呈現何種回饋訊息？",
+    opts:[
+      "Scheduler（排程器）——按預設時間表觸發回饋訊息的發送",
+      "EntryObserver（紀錄觀察者）——使用觀察者模式監控新紀錄的提交事件",
+      "Entry Controller 的 Create action（紀錄控制器的建立動作）——在使用者提交新紀錄時立即執行分析",
+      "Accomplishment（成就模型）——根據累積的行為紀錄計算是否達到獲獎條件"
+    ],
+    correct:2,
+    feedback:"在即時回饋模式中，<strong>Entry Controller 的 Create action（紀錄控制器的建立動作）</strong>是核心元件。當使用者建立一筆新的 Entry（行為紀錄）時，Create action 立即執行分析，根據分析結果將適當的回饋訊息（稱讚良好表現或提供改善建議）傳遞至 View 呈現給使用者。這一設計確保使用者每次提交紀錄都能獲得即時且適切的回應。"
+  },
+  {
+    q:"<span class='en'>Reminder（提醒）</span>設計模式包含三個核心元件：<span class='en'>User、Mailer、Scheduler</span>。以下關於 <span class='en'>Mailer</span> 元件功能的描述，何者最為正確？",
+    opts:[
+      "Mailer 只負責儲存使用者的電子郵件地址與個人聯絡資料",
+      "Mailer 包含各種提醒傳遞方法，包括週期性電子報、閒置觸發提醒，以及基於行為檔案的個人化提醒",
+      "Mailer 是決定何時觸發提醒的排程元件，按照固定間隔自動執行",
+      "Mailer 負責分析使用者的行為數據，判斷哪些使用者需要接收提醒"
+    ],
+    correct:1,
+    feedback:"<span class='en'>Mailer 元件</span>包含<strong>各種提醒傳遞方法（methods for reminder delivery）</strong>，具體包括：（1）週期性電子報（weekly newsletter）；（2）閒置觸發提醒（triggered reminder after inactivity）；（3）基於行為檔案的個人化提醒（personalized reminders based on behavioral profiles）。而 User 元件負責保存個人資料與聯絡資訊；Scheduler 元件則負責按時間表執行提醒任務——三者分工明確，共同構成完整的提醒機制。"
+  },
+  {
+    q:"Kelders 等人（2012）針對<span class='en'>Reminder（提醒）</span>模式的研究指出了什麼重要發現，以及什麼潛在風險？",
+    opts:[
+      "發現：提醒功能能預測更高的使用者遵從度；風險：過於頻繁的提醒可能使使用者感到厭煩，因此提醒間隔必須審慎評估",
+      "發現：提醒功能對使用者遵從度沒有顯著影響；風險：提醒可能洩露使用者的敏感健康資訊",
+      "發現：電子郵件提醒比簡訊提醒效果好三倍；風險：過少的提醒反而讓使用者遺忘系統存在",
+      "發現：個人化提醒完全無效；風險：標準化提醒會讓使用者感到被監控"
+    ],
+    correct:0,
+    feedback:"Kelders 等人（2012）的研究有兩項關鍵發現：<strong>正面發現</strong>——提醒功能能預測更高的使用者遵從度（reminders predict better adherence）；<strong>潛在風險</strong>——過於頻繁的提醒可能使使用者感到厭煩（too-frequent reminders can irritate users）。因此，提醒的<strong>間隔必須審慎評估</strong>，在維持使用者參與度與避免造成困擾之間取得適當平衡。這也說明為何個人化提醒策略（基於個別使用者的行為模式調整頻率）可能優於固定頻率的通用提醒。"
+  },
+  {
+    q:"<span class='en'>Reward（獎勵）</span>設計模式中，<span class='en'>Accomplishment</span> 元件的主要功能是什麼？為何需要這個元件？",
+    opts:[
+      "Accomplishment 負責儲存所有可用的獎勵項目清單，並決定各獎勵的解鎖條件",
+      "Accomplishment 是觀察者模式的實作核心，監控 Entry 的提交事件",
+      "Accomplishment 建立 User 與 Reward 之間的多對多關聯，記錄特定使用者獲得特定獎勵的成就紀錄",
+      "Accomplishment 是用戶介面元件，負責以視覺化方式呈現使用者累積的成就"
+    ],
+    correct:2,
+    feedback:"<span class='en'>Accomplishment 元件</span>的核心功能是<strong>建立 User 與 Reward 之間的多對多關聯（many-to-many relationship）</strong>。在資料庫設計中，User 和 Reward 是多對多關係（一位使用者可獲得多個獎勵；一個獎勵可被多位使用者取得），這需要一個中介模型（junction model）來記錄。Accomplishment 扮演這個中介模型的角色，每一筆 Accomplishment 紀錄代表「特定使用者獲得特定獎勵」這一成就事件。"
+  },
+  {
+    q:"本章為何強調解決「黑箱問題（<span class='en'>black-box approach</span>）」的重要性？",
+    opts:[
+      "因為黑箱設計無法通過資訊安全審查，會導致 BCSSs 被政府監管機構禁止上市",
+      "因為只描述系統外在表現而不解釋其內部機制，使得研究結果難以跨系統類化，阻礙了 BCSSs 研究領域的累積性知識建構",
+      "因為黑箱設計增加了使用者資料洩露的風險，必須透過透明設計保護使用者隱私",
+      "因為黑箱系統的開發成本遠高於透明設計系統，不符合衛生機構的預算限制"
+    ],
+    correct:1,
+    feedback:"「黑箱問題」是指許多 BCSSs 研究只描述系統的外在表現，而不解釋其<strong>內部運作機制（system internals）</strong>。這種取向導致<strong>研究結果難以跨系統、跨脈絡加以類化（difficult to generalize results）</strong>——當我們不知道系統為何有效（或無效），就無法將這個知識應用到其他系統的設計上。本章提出的設計模式正是解決這一問題的方法：透過明確記錄設計元件與其關聯，提升 BCSSs 開發的透明度，使知識得以累積與傳播。"
+  },
+  {
+    q:"「別中斷鏈條」（<span class='en'>Don't Break the Chain</span>）原型系統的核心設計理念是什麼？它如何體現行為科學原則？",
+    opts:[
+      "透過隨機獎勵機制（如賭博機制），製造使用者對系統的依賴性以維持參與度",
+      "以 Jerry Seinfeld 的生產力方法為基礎：每日標記完成習慣，累積形成視覺化鏈條；鏈條越長，中斷的心理代價越高，從而激勵持續行為",
+      "強制使用者每天登入系統，否則自動退訂服務，以強制手段維持使用習慣",
+      "以人工智慧分析使用者行為模式，自動調整任務難度確保使用者不會感到挫折"
+    ],
+    correct:1,
+    feedback:"「別中斷鏈條」系統的核心理念是：<strong>每日標記完成習慣，累積形成視覺化鏈條；鏈條越長，中斷的心理代價越大，從而強化繼續維持行為的動機</strong>。從行為科學角度，這一設計融合了：（1）<span class='en'>loss aversion（損失規避）</span>——破壞鏈條的損失感強於繼續維持的獲得感；（2）習慣養成機制——每日重複建立自動化的行為模式；（3）視覺化進度追蹤——強化目標設定與自我監控。系統同時應用了即時回饋、提醒、獎勵三種設計模式，是完整的整合示範。"
+  },
+  {
+    q:"MVC 架構與 REST 架構在 BCSSs 設計中分別扮演什麼角色？兩者如何互補？",
+    opts:[
+      "MVC 用於前端視覺設計，REST 用於後端資料庫管理；兩者分工不同但無直接關聯",
+      "MVC 將系統分為資料、視圖、控制三層，實現關注點分離；REST 以 URL 識別資源並透過 CRUD 操作管理；兩者共同構成 BCSSs 的結構性基礎，使設計模式得以清楚落地實作",
+      "MVC 是伺服器端框架，REST 是客戶端框架；兩者分別處理系統的不同端點",
+      "MVC 僅適用於 Ruby on Rails，REST 僅適用於 Python Django；選擇其中一種即可"
+    ],
+    correct:1,
+    feedback:"在 BCSSs 設計中，<strong>MVC（Model-View-Controller）</strong>透過將系統分為資料層（Model）、視圖層（View）、控制層（Controller），實現關注點分離，使程式碼更易維護與擴展；<strong>REST（Representational State Transfer）</strong>以 URL 識別應用程式資源，透過 CRUD 操作（Create/Read/Update/Delete）標準化資源管理。任何 BCSS 的基礎資源都包含 User 資源（個人資料）與 Entry 資源（行為紀錄）。兩者結合，為本章三種設計模式提供了清晰的架構基礎，使模式的概念得以具體落地實作。"
+  },
+  {
+    q:"本章提出的三種軟體設計模式主要對應 PSD 模型哪個類別中的哪些功能？這些模式的整體目標為何？",
+    opts:[
+      "對應「主要任務支援（Primary Task Support）」類別，目標是優化使用者完成核心任務的效率",
+      "對應「系統可信度支援（System Credibility Support）」類別，目標是提升使用者對系統的信任度",
+      "對應「對話支援（Dialogue Support）」類別中的稱讚、獎勵、提醒等功能；整體目標是透過明確記錄可重複使用的設計方案，橋接行為科學說服理論與軟體工程實作，提升 BCSSs 開發的標準化程度",
+      "對應「社會支援（Social Support）」類別，目標是透過社群功能促進使用者之間的相互影響"
+    ],
+    correct:2,
+    feedback:"本章三種設計模式——即時回饋、提醒、獎勵——主要對應 PSD 模型的<strong>對話支援（Dialogue Support）</strong>類別中的稱讚（praise）、提醒（reminders）、獎勵（rewards）功能。這些模式的整體目標是：（1）以可重複使用的模板形式記錄 BCSSs 對話支援功能的最佳實踐；（2）解決「黑箱問題」，提升研究可類化性；（3）在行為科學說服理論與軟體工程實作之間架起橋樑；（4）提升 BCSSs 開發的標準化程度，促進知識分享。"
+  }
+];
+
+let cur=[], done=false;
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+function generateQuiz(){
+  done=false;
+  cur=shuffle(QB).slice(0,5);
+  const c=document.getElementById('quiz-container');
+  c.innerHTML='';
+  cur.forEach((q,qi)=>{
+    const opts=shuffle(q.opts.map((o,i)=>({t:o,orig:i})));
+    const corr=opts.findIndex(o=>o.orig===q.correct);
+    const html=opts.map((o,i)=>`<li>
+      <input type="radio" name="q${qi}" id="q${qi}o${i}" value="${i}" data-c="${corr}">
+      <label for="q${qi}o${i}"><span class="olet">${['A','B','C','D'][i]}</span>${o.t}</label>
+    </li>`).join('');
+    const d=document.createElement('div');
+    d.className='qcard';d.id=`qc${qi}`;
+    d.innerHTML=`<div class="qnum">${qi+1}</div><div class="qtext">${q.q}</div><ul class="opts">${html}</ul><div class="fb" id="fb${qi}"></div>`;
+    c.appendChild(d);
+  });
+  document.getElementById('scorebox').classList.remove('show');
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+
+function submitQuiz(){
+  if(done)return;done=true;
+  let sc=0;
+  cur.forEach((q,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb=document.getElementById(`fb${qi}`);
+    const labs=document.querySelectorAll(`#qc${qi} label`);
+    const inps=document.querySelectorAll(`input[name="q${qi}"]`);
+    const corr=parseInt(inps[0].dataset.c);
+    labs[corr].classList.add('correct');
+    if(sel){
+      const si=parseInt(sel.value);
+      if(si===corr){sc++;fb.innerHTML=`✅ <strong>答對了！</strong> ${q.feedback}`;fb.className='fb correct show';}
+      else{labs[si].classList.add('wrong');fb.innerHTML=`❌ <strong>答錯了。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    }else{fb.innerHTML=`⚠️ <strong>未作答。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    inps.forEach(i=>i.disabled=true);
+  });
+  const stars=['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
+  const msgs=['繼續加油！請重新回顧 BCSSs 定義與三種設計模式。','有進步！特別複習 PSD 模型與設計模式四項特徵。','不錯！再複習即時回饋、提醒、獎勵三個模式的元件與後果。','非常好！已掌握大部分核心概念。','滿分！完美掌握第三章所有核心概念！'];
+  document.getElementById('sc-num').textContent=`${sc}/5`;
+  document.getElementById('sc-stars').textContent=stars[sc]||'';
+  document.getElementById('sc-msg').textContent=msgs[sc-1]||msgs[0];
+  const box=document.getElementById('scorebox');
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+document.addEventListener('DOMContentLoaded',generateQuiz);
+window.addEventListener('scroll',()=>{
+  const secs=document.querySelectorAll('.section');
+  let id='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-90)id=s.id;});
+  document.querySelectorAll('.toc-link').forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+});
+</script>
+</body>
+</html>

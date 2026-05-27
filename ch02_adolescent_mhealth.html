@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Designing Interventions for Adolescents｜為青少年設計健康行為改變介入</title>
+<style>
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#1e3a5f,#2563eb 50%,#7c3aed);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
+
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
+
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
+
+/* ── Bilingual para ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl p:last-child{margin-bottom:0}
+
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
+
+/* ── Concept callout ── */
+.callout{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
+
+/* ── Framework grid ── */
+.fw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0}
+.fw-item{border-radius:var(--rs);padding:18px 12px;text-align:center;transition:transform .2s;cursor:default}
+.fw-item:hover{transform:translateY(-4px)}
+.fw-item .letter{font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:6px}
+.fw-item .word-en{font-size:.9rem;font-weight:700;margin-bottom:3px}
+.fw-item .word-zh{font-size:.82rem;font-weight:600;opacity:.8;margin-bottom:6px}
+.fw-item .desc{font-size:.76rem;line-height:1.45;opacity:.82}
+
+/* ── Dual process ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+.proc{border-radius:var(--r);padding:22px;border:2px solid}
+.proc.ref{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.proc.imp{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.proc h4{font-size:1rem;font-weight:700;margin-bottom:12px;text-align:center}
+.proc.ref h4{color:#1d4ed8}.proc.imp h4{color:#7c3aed}
+.proc ul{list-style:none;padding:0}
+.proc ul li{padding:5px 0;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px}
+.proc ul li:last-child{border:none}
+.proc ul li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:1px}
+.proc.ref ul li::before{color:#2563eb}.proc.imp ul li::before{color:#7c3aed}
+.proc ul li .zh{display:block;font-size:.82rem;color:var(--muted)}
+
+/* ── Model flow ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}
+.marrow{font-size:1.3rem;color:var(--muted)}
+
+/* ── Numbered steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
+
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:12px 16px;text-align:left;font-size:.88rem;font-weight:600}
+td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:2px}
+
+/* ── COM-B circles ── */
+.comb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:20px 0}
+.comb-card{border-radius:var(--r);padding:22px 16px;text-align:center;border:2px solid}
+.comb-cap{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.comb-opp{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.comb-mot{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#a7f3d0}
+.comb-beh{background:linear-gradient(135deg,#fff7ed,#fed7aa);border-color:#fdba74}
+.comb-card .icon{font-size:2rem;margin-bottom:8px}
+.comb-card h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.comb-card .en-name{font-size:.78rem;font-style:italic;margin-bottom:10px;opacity:.7}
+.comb-cap h4{color:#1d4ed8}.comb-opp h4{color:#7c3aed}.comb-mot h4{color:#059669}.comb-beh h4{color:#d97706}
+.comb-card p{font-size:.84rem;line-height:1.55;margin:0}
+
+/* ── Three A's ── */
+.aaa{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.aaa-i{border-radius:var(--r);padding:22px 16px;text-align:center}
+.aaa-i:nth-child(1){background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #93c5fd}
+.aaa-i:nth-child(2){background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border:2px solid #d8b4fe}
+.aaa-i:nth-child(3){background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #a7f3d0}
+.aaa-i .al{font-size:2.4rem;font-weight:900;line-height:1;margin-bottom:5px}
+.aaa-i:nth-child(1) .al{color:#1d4ed8}.aaa-i:nth-child(2) .al{color:#7c3aed}.aaa-i:nth-child(3) .al{color:#059669}
+.aaa-i .aw{font-size:.95rem;font-weight:700;margin-bottom:2px}
+.aaa-i .az{font-size:.82rem;font-weight:600;opacity:.75;margin-bottom:8px}
+.aaa-i .ad{font-size:.8rem;line-height:1.5;color:var(--text)}
+
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
+
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.opts input:checked+label .olet{background:var(--blue);color:#fff}
+.opts label.correct .olet{background:var(--green);color:#fff}
+.opts label.wrong .olet{background:var(--red);color:#fff}
+.fb{margin-top:14px;padding:13px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.fb.show{display:block}
+.fb.correct{background:#f0fdf4;color:#065f46;border:1px solid #a7f3d0}
+.fb.wrong{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.qactions{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.btn{padding:13px 28px;border:none;border-radius:8px;font-size:.97rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.btn-o{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-o:hover{background:#eff6ff}
+.scorebox{display:none;text-align:center;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:32px;margin-top:28px}
+.scorebox.show{display:block}
+.score-n{font-size:3.6rem;font-weight:900;line-height:1;margin-bottom:6px}
+.score-l{font-size:1rem;opacity:.9;margin-bottom:6px}
+.score-s{font-size:1.8rem;margin-bottom:10px}
+.score-m{font-size:.95rem;opacity:.85}
+
+/* ── Footer ── */
+footer{background:#1e293b;color:#94a3b8;text-align:center;padding:38px 24px}
+footer strong{color:#f1f5f9;font-size:1.02rem}
+footer .ref{font-size:.8rem;margin-top:10px;opacity:.55}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .dual{grid-template-columns:1fr}
+  .aaa{grid-template-columns:1fr}
+  .comb-grid{grid-template-columns:1fr}
+  #quiz{padding:26px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Behavior Change Research &amp; Theory · Chapter 2</div>
+  <h1>為青少年設計健康行為改變介入
+    <small>Designing &amp; Delivering HBCIs for Adolescents Using Multitechnology Systems</small>
+  </h1>
+  <p class="hero-sub">行為改變輪 · COM-B 模型 · 以人為中心取向 · mHealth · PEGASO 案例研究<br>
+  <em style="font-size:.92em;opacity:.8">Behaviour Change Wheel · COM-B · Person-Based Approach · mHealth · PEGASO Project</em></p>
+  <div class="hero-meta">
+    <span>&#128218; Condon &amp; Coulson</span>
+    <span>&#127979; University of Nottingham</span>
+    <span>&#9201; 約 25 分鐘</span>
+    <span>&#9989; 五題隨機測驗</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#intro">導論</a>
+    <a class="toc-link" href="#context">了解脈絡</a>
+    <a class="toc-link" href="#methods">研究方法</a>
+    <a class="toc-link" href="#frameworks">設計框架</a>
+    <a class="toc-link" href="#comb">COM-B 模型</a>
+    <a class="toc-link" href="#implementation">實施因素</a>
+    <a class="toc-link" href="#tailoring">個人化介入</a>
+    <a class="toc-link" href="#mhealth">mHealth</a>
+    <a class="toc-link" href="#pegaso">PEGASO 案例</a>
+    <a class="toc-link" href="#conclusion">結論</a>
+    <a class="toc-link" href="#quiz">&#128221; 測驗</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══ 1. INTRODUCTION ══ -->
+<section class="section" id="intro">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">
+      <h2>導論：設計介入的前置準備</h2>
+      <div class="en-sub">Introduction: Prerequisites for Designing Health Behavior Change Interventions</div>
+    </div>
+  </div>
+
+  <p class="zh-block">在設計任何<span class="en">Health Behavior Change Intervention（HBCI，健康行為改變介入）</span>之前，研究者必須先具備三個層面的深入理解。這三個層面相互交織，若缺乏任一層面的充分認識，介入方案的效果將受到嚴重限制。</p>
+
+  <div class="grid-3">
+    <div class="card" style="border-top:4px solid var(--blue)">
+      <div style="font-size:1.8rem;margin-bottom:8px">&#127919;</div>
+      <h3 style="margin-top:0">目標行為<br><span class="en" style="font-size:.78rem;font-weight:400">Target Behavior</span></h3>
+      <p style="font-size:.88rem">充分理解欲改變的具體行為本身——其頻率、觸發因素、維持機制、以及在日常生活中的意義與功能。</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--purple)">
+      <div style="font-size:1.8rem;margin-bottom:8px">&#128101;</div>
+      <h3 style="margin-top:0">目標族群特質<br><span class="en" style="font-size:.78rem;font-weight:400">Target Population Characteristics</span></h3>
+      <p style="font-size:.88rem">了解目標族群（如青少年）的生理、心理、社會發展特質，包括他們的動機、價值觀、科技使用習慣與溝通偏好。</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--green)">
+      <div style="font-size:1.8rem;margin-bottom:8px">&#127963;</div>
+      <h3 style="margin-top:0">實施因素<br><span class="en" style="font-size:.78rem;font-weight:400">Implementation Factors</span></h3>
+      <p style="font-size:.88rem">掌握行為發生的脈絡——行為模式、物理與社會環境、可用資源（時間、經費、人力）及組織支持。</p>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p>&#128308; <strong>本章的核心主張：</strong>有效的健康行為改變介入，必須以<strong>對目標行為在脈絡中的全面理解</strong>為設計基礎。這種理解既來自現有研究文獻的整合，也需要針對目標族群蒐集原始實證資料。</p>
+  </div>
+
+  <div class="en-quote">"Before any HBCI can be designed and implemented, researchers must understand: (1) the target behavior, (2) characteristics of the target population, and (3) implementation factors including behavioral patterns, the environment in which the behavior occurs, the social context, and the resources available." — Condon &amp; Coulson (2017)</div>
+  <div class="zh-note">在設計與實施任何健康行為改變介入之前，研究者必須理解：(1) 目標行為、(2) 目標族群特質、(3) 實施因素，包括行為模式、行為發生的環境、社會脈絡，以及可用資源。</div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 2. UNDERSTANDING TARGET BEHAVIOR IN CONTEXT ══ -->
+<section class="section" id="context">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">
+      <h2>在脈絡中理解目標行為</h2>
+      <div class="en-sub">Understanding the Target Behavior in Context</div>
+    </div>
+  </div>
+
+  <p class="zh-block">設計有效介入的第一步，是整合既有研究文獻。<span class="en">Systematic review（系統性文獻綜述）</span>提供對現有知識的全面概覽，幫助研究者避免重複已知無效的做法，並辨識尚待填補的知識缺口。然而，文獻綜述的發現往往不足以直接指導介入設計——研究者還需要針對目標族群蒐集<span class="en">primary empirical data（原始實證資料）</span>。</p>
+
+  <div class="callout">
+    <h4>行為診斷 <span style="font-weight:400;font-size:.88rem;opacity:.8">Behavioral Diagnosis</span></h4>
+    <p>透過直接研究目標族群，辨識行為發生或未發生的原因——這個過程稱為「行為診斷」。就如同醫師在開處方前必須先診斷病情，介入設計者在選擇改變技術前，必須先了解行為改變的障礙（<span class="en" style="color:#93c5fd">barriers</span>）與促進因素（<span class="en" style="color:#93c5fd">facilitators</span>）。</p>
+    <div class="en-quote-w">"Both the Behaviour Change Wheel (BCW) and the Person-Based Approach (PCA) advocate grounding intervention design in a thorough understanding of the target population." — Condon &amp; Coulson (2017)</div>
+  </div>
+
+  <h3>Michie 等人的行為改變輪 <span class="en">Behaviour Change Wheel, Michie et al. (2011)</span></h3>
+  <p class="zh-block"><span class="en">Michie et al. (2011)</span> 提出的<span class="en">Behaviour Change Wheel（BCW，行為改變輪）</span>框架，整合了 19 個以上的現有行為改變框架，提供一套系統性的介入設計工具。BCW 的設計前提之一，即是充分的前置理解與「行為診斷」——不了解行為的根源，就無法選擇合適的介入功能。</p>
+
+  <div class="hl green">
+    <p>&#128204; <strong>BCW 的邏輯：</strong>研究者必須先辨識目標行為的<span class="en">sources of behavior（行為來源）</span>——亦即<span class="en">Capability（能力）、Opportunity（機會）、Motivation（動機）</span>中究竟哪個環節出了問題，才能選擇對應的<span class="en">intervention functions（介入功能）</span>，進而規劃相應的<span class="en">policy categories（政策類別）</span>。</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 3. METHODOLOGICAL APPROACHES ══ -->
+<section class="section" id="methods">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">
+      <h2>資料蒐集的方法論取向</h2>
+      <div class="en-sub">Methodological Approaches to Data Collection</div>
+    </div>
+  </div>
+
+  <h3>混合方法取向 <span class="en">Mixed-Methods Approach (Creswell, 2014)</span></h3>
+  <p class="zh-block">研究者通常採用<span class="en">mixed-methods approach（混合方法取向）</span>，結合質性（<span class="en">qualitative</span>）與量化（<span class="en">quantitative</span>）資料蒐集方法。質性方法包括<span class="en">interviews（訪談）</span>與<span class="en">focus groups（焦點團體）</span>，能深入探索行為的意義、脈絡與障礙；量化方法則能提供可推論的測量資料。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">&#128221; 質性方法的優勢<br><span class="en" style="font-size:.78rem;font-weight:400">Qualitative Methods</span></h3>
+      <p style="font-size:.9rem">能深入探索行為背後的意義、情感與社會脈絡。訪談與焦點團體讓研究者聽到目標族群自己的聲音，了解介入對象真正的需求、擔憂與偏好。</p>
+      <div style="margin-top:10px"><span class="tag tb">訪談 Interview</span><span class="tag tb">焦點團體 Focus Group</span><span class="tag tb">觀察 Observation</span></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">&#128202; 量化方法的優勢<br><span class="en" style="font-size:.78rem;font-weight:400">Quantitative Methods</span></h3>
+      <p style="font-size:.9rem">能提供可推論至更大族群的測量資料，包括行為頻率、態度量表分數、自我效能評估等。與質性資料結合，可達成<span class="en">triangulation（三角檢證）</span>。</p>
+      <div style="margin-top:10px"><span class="tag tp">問卷 Survey</span><span class="tag tp">生理測量</span><span class="tag tp">行為紀錄</span></div>
+    </div>
+  </div>
+
+  <div class="hl">
+    <p>&#128161; <strong>混合方法的三大優勢（Creswell, 2014）：</strong><span class="en">Triangulation（三角檢證）</span>——以多種方法互相驗證結論；<span class="en">Verification（核實）</span>——確認質性發現是否獲得量化資料支持；<span class="en">Dilution of biases（偏誤稀釋）</span>——各方法的限制可互相補足，降低單一方法的偏誤影響。</p>
+  </div>
+
+  <h3>社會期許回應偏誤 <span class="en">Social Desirability Response Bias</span></h3>
+  <p class="zh-block">在身體活動與飲食研究中，<span class="en">social desirability response bias（社會期許回應偏誤）</span>是一個特別值得關注的方法論挑戰。受試者往往傾向回報自己認為研究者希望聽到、或社會認可的答案，而非真實行為，導致<span class="en">self-report data（自陳式資料）</span>的效度（<span class="en">validity</span>）受損。</p>
+
+  <div class="hl amber">
+    <p>&#127758; <strong>文化變異性：</strong>社會期許偏誤的程度因文化背景而異（<span class="en">Lalwani et al., 2006</span>）。來自<span class="en">collectivist cultures（集體主義文化）</span>的受試者，因重視群體和諧與對外展示，可能比來自<span class="en">individualist cultures（個人主義文化）</span>的受試者，更傾向回報符合社會期許的行為。這在跨國研究設計中尤其重要。</p>
+  </div>
+
+  <h3>行為的相互依存性 <span class="en">Interdependence of Behaviors</span></h3>
+  <p class="zh-block">健康行為並非孤立發生——飲食、身體活動、睡眠、螢幕使用時間等行為彼此交互影響，形成複雜的<span class="en">behavioral clusters（行為叢）</span>。設計者若只關注單一目標行為而忽視其與其他行為的互動，可能導致介入效果不佳，甚至出現意外的副作用。</p>
+
+  <h3>資源限制與多場域研究挑戰 <span class="en">Resource Limitations &amp; Multi-Site Challenges</span></h3>
+  <p class="zh-block">現實的研究設計往往面臨<span class="en">resource limitations（資源限制）</span>：經費、時間與人力均有限。在多國或多場域研究中，語言差異帶來額外挑戰——問卷與訪談綱要需要進行<span class="en">translation and back-translation（正向翻譯與回譯）</span>，以確保不同語言版本的概念等效性（<span class="en">conceptual equivalence</span>）。</p>
+
+  <h3>以人為本取向的規劃步驟 <span class="en">Person-Based Approach Planning Steps (Yardley et al., 2015)</span></h3>
+  <p class="zh-block">Yardley 等人（2015）提出的<span class="en">Person-Based Approach（PBA，以人為本取向）</span>，特別強調在設計早期就系統性地蒐集目標族群的觀點。以下表格呈現 PBA 的前兩個規劃階段：</p>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>階段 / Stage</th>
+          <th>時程 / Timeline</th>
+          <th>主要活動（中文）</th>
+          <th>Key Activities (English)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>步驟一：規劃</strong><br><span style="font-size:.82rem;font-style:italic;color:var(--muted)">Step 1: Planning</span></td>
+          <td>第 0–6 月<br><span style="font-size:.82rem;color:var(--muted)">Months 0–6</span></td>
+          <td class="td-zh">系統性文獻綜述；辨識目標行為；與目標族群進行初步焦點團體；確認主要障礙與促進因素；建立介入設計的理論基礎</td>
+          <td><div class="td-en">Systematic reviews; identify target behaviors; initial focus groups with target population; identify key barriers &amp; facilitators; establish theoretical basis for intervention design</div></td>
+        </tr>
+        <tr>
+          <td><strong>步驟二：設計</strong><br><span style="font-size:.82rem;font-style:italic;color:var(--muted)">Step 2: Design</span></td>
+          <td>第 3–9 月<br><span style="font-size:.82rem;color:var(--muted)">Months 3–9</span></td>
+          <td class="td-zh">基於前置研究發展介入原型；進行迭代式使用者測試（訪談與「放聲思考」方法）；根據使用者回饋修訂設計；確認介入內容與功能符合目標族群需求</td>
+          <td><div class="td-en">Develop intervention prototype based on formative research; iterative user testing (interviews &amp; think-aloud); revise design based on user feedback; confirm content &amp; functions meet target population needs</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.82rem;color:var(--muted);margin-top:4px">表 2.1 改編自 Yardley et al. (2015) 的 Person-Based Approach 規劃階段 / Adapted from Table 2.1 in Condon &amp; Coulson (2017)</p>
+</section>
+
+<hr class="div">
+
+<!-- ══ 4. BCW FRAMEWORK ══ -->
+<section class="section" id="frameworks">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">
+      <h2>行為改變介入設計框架</h2>
+      <div class="en-sub">Behavior Change Intervention Design Frameworks</div>
+    </div>
+  </div>
+
+  <h3>行為改變輪（BCW）<span class="en">The Behaviour Change Wheel, Michie et al. (2011)</span></h3>
+  <p class="zh-block"><span class="en">Behaviour Change Wheel（BCW）</span>由 Michie 等人於 2011 年提出，整合了 19 個以上現有的行為改變框架，是迄今為止最全面的介入設計指南之一。BCW 由三個同心圓組成，由內而外分別代表不同的分析與設計層次：</p>
+
+  <div class="model-box">
+    <h4>行為改變輪：三層同心圓結構 / The Three-Circle Structure of the BCW</h4>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0">
+      <div style="background:#1e3a5f;color:#fff;border-radius:50px;padding:14px 28px;font-weight:700;font-size:.9rem;text-align:center;width:100%;max-width:500px">
+        外圈：政策類別 Policy Categories<br>
+        <span style="font-size:.78rem;font-weight:400;opacity:.85">立法、環境計畫、溝通、財務、準則、規範、服務</span>
+      </div>
+      <div style="background:var(--purple);color:#fff;border-radius:50px;padding:14px 28px;font-weight:700;font-size:.9rem;text-align:center;width:90%;max-width:440px">
+        中圈：介入功能 Intervention Functions<br>
+        <span style="font-size:.78rem;font-weight:400;opacity:.85">教育、說服、激勵、強制、訓練、限制、環境重構、示範、賦能</span>
+      </div>
+      <div style="background:var(--blue);color:#fff;border-radius:50px;padding:14px 28px;font-weight:700;font-size:.9rem;text-align:center;width:80%;max-width:380px">
+        內圈：行為來源（COM-B 模型）<br>
+        <span style="font-size:.78rem;font-weight:400;opacity:.85">能力（Capability）·機會（Opportunity）·動機（Motivation）→ 行為（Behaviour）</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-quote">"The BCW integrates 19 or more existing frameworks and provides a systematic method for identifying appropriate intervention functions and policy categories once the sources of behavior have been identified using the COM-B model." — Condon &amp; Coulson (2017)</div>
+  <div class="zh-note">BCW 整合了 19 個以上現有框架，提供一套系統性方法：在使用 COM-B 模型辨識行為來源後，即可對應選擇適當的介入功能與政策類別。</div>
+
+  <h3>PRIME 理論 <span class="en">PRIME Theory, West (2006)</span></h3>
+  <p class="zh-block">West（2006）提出的<span class="en">PRIME Theory</span>，從動機理論的層次提供對行為的更細緻理解。PRIME 理論採用<span class="en">hierarchical view of motivation（動機的階層觀）</span>，區分<span class="en">wants（慾望）</span>與<span class="en">needs（需求）</span>，並關注<span class="en">impulse（衝動）</span>與<span class="en">reflective goal-directed behavior（反思性目標導向行為）</span>之間的競爭。</p>
+
+  <div class="hl purple">
+    <p>&#128161; <strong>PRIME 理論的核心洞見：</strong>動機並非單一的「想要」，而是由多種力量（包括即時的衝動、習慣、情感反應、反思性計畫等）在當下競爭的結果。了解動機的層次結構，有助於設計針對性的介入功能。</p>
+  </div>
+
+  <h3>以人為本取向（PCA） <span class="en">Person-Based Approach, Yardley et al. (2015)</span></h3>
+  <p class="zh-block"><span class="en">Person-Based Approach（PCA，以人為本取向）</span>是專為數位介入（<span class="en">digital interventions</span>）設計而發展的框架。PCA 的核心理念是：介入設計應以使用介入的人們的<strong>觀點與體驗</strong>為中心，而非以研究者或理論為中心。</p>
+
+  <div class="dual">
+    <div class="proc ref">
+      <h4>&#128269; PCA 的關鍵特徵<br><em style="font-size:.82rem;font-weight:500">Key Features of PCA</em></h4>
+      <ul>
+        <li>專為數位介入設計<span class="zh">Designed specifically for digital health interventions</span></li>
+        <li>聚焦於使用者的觀點與體驗<span class="zh">Focus on perspectives of people who will use the intervention</span></li>
+        <li>採迭代式質性研究設計<span class="zh">Iterative qualitative research process</span></li>
+        <li>以使用者觀點為設計基礎<span class="zh">Grounded in user perspectives throughout</span></li>
+        <li>追求提升使用率、依從性與成效<span class="zh">Aims to improve uptake, adherence &amp; outcomes</span></li>
+      </ul>
+    </div>
+    <div class="proc imp">
+      <h4>&#128201; PCA vs. 傳統取向<br><em style="font-size:.82rem;font-weight:500">PCA vs. Traditional Approaches</em></h4>
+      <ul>
+        <li>傳統：以理論框架驅動設計<span class="zh">Traditional: theory-driven design</span></li>
+        <li>PCA：以使用者觀點驅動設計<span class="zh">PCA: user-perspective-driven design</span></li>
+        <li>傳統：完成後才測試可用性<span class="zh">Traditional: usability testing after completion</span></li>
+        <li>PCA：從早期就持續納入使用者<span class="zh">PCA: users involved from early stages onward</span></li>
+        <li>結合兩者：最佳化介入設計<span class="zh">Combining both: optimal intervention design</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 5. COM-B MODEL ══ -->
+<section class="section" id="comb">
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">
+      <h2>COM-B 模型：行為改變輪的核心</h2>
+      <div class="en-sub">The COM-B Model: At the Heart of the Behaviour Change Wheel</div>
+    </div>
+  </div>
+
+  <p class="zh-block"><span class="en">COM-B 模型</span>位於行為改變輪的最內層，是整個 BCW 框架的核心分析工具。COM-B 主張：行為（<span class="en">Behaviour</span>）的發生，取決於個體在特定脈絡中是否同時具備<strong>能力（Capability）</strong>、<strong>機會（Opportunity）</strong>，以及<strong>動機（Motivation）</strong>。三個組成成分相互依存，缺一不可。</p>
+
+  <div class="comb-grid">
+    <div class="comb-card comb-cap">
+      <div class="icon">&#129504;</div>
+      <h4>能力</h4>
+      <div class="en-name">Capability</div>
+      <p><strong>心理能力（Psychological Capability）：</strong>具備執行行為所需的知識與心理技能（如了解何謂均衡飲食、如何計算卡路里）。<br><br><strong>身體能力（Physical Capability）：</strong>具備執行行為所需的體能或動作技能（如進行特定強度運動的體力）。</p>
+    </div>
+    <div class="comb-card comb-opp">
+      <div class="icon">&#127968;</div>
+      <h4>機會</h4>
+      <div class="en-name">Opportunity</div>
+      <p><strong>物理機會（Physical Opportunity）：</strong>物理環境中支持行為的條件（如附近是否有運動設施、健康食物是否可及且負擔得起）。<br><br><strong>社會機會（Social Opportunity）：</strong>社會環境對行為的影響，包括社會規範、文化期待與同儕行為（如朋友的飲食習慣）。</p>
+    </div>
+    <div class="comb-card comb-mot">
+      <div class="icon">&#128293;</div>
+      <h4>動機</h4>
+      <div class="en-name">Motivation</div>
+      <p><strong>反思性動機（Reflective Motivation）：</strong>有意識的計畫、評估與意圖（如決心要增加每日運動量）。<br><br><strong>自動化動機（Automatic Motivation）：</strong>習慣、衝動、情緒與無意識的趨近－迴避反應（如看到喜歡的食物時的自動慾望）。</p>
+    </div>
+    <div class="comb-card comb-beh">
+      <div class="icon">&#9889;</div>
+      <h4>行為</h4>
+      <div class="en-name">Behaviour</div>
+      <p>COM-B 認為，能力、機會與動機<strong>相互作用</strong>，共同決定行為是否發生。改變其中一個組成，可能影響其他組成——例如提高能力（學到新知識）可能同時提升動機（因為知道如何做才有信心嘗試）。</p>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p>&#128204; <strong>介入設計的實踐意義：</strong>研究者必須分析每一個子成分（心理能力、身體能力、物理機會、社會機會、反思性動機、自動化動機）對目標行為的具體貢獻，才能精確選擇針對性的<span class="en">intervention functions</span>。若誤判了行為的主要障礙，將導致選用無效甚至有害的介入技術。</p>
+  </div>
+
+  <div class="model-box">
+    <h4>COM-B 的互動關係 / COM-B Interactions</h4>
+    <div class="model-flow">
+      <div class="mnode" style="background:#1d4ed8">能力<br><small>Capability</small></div>
+      <div class="marrow">+</div>
+      <div class="mnode p">機會<br><small>Opportunity</small></div>
+      <div class="marrow">+</div>
+      <div class="mnode" style="background:#059669">動機<br><small>Motivation</small></div>
+      <div class="marrow">&#8594;</div>
+      <div class="mnode" style="background:#d97706">行為<br><small>Behaviour</small></div>
+    </div>
+    <p style="margin-top:14px;font-size:.85rem;color:var(--muted)">三者相互依存，且各有心理與身體（或物理與社會、反思與自動）兩個子成分<br>All three components are interdependent, each with two sub-components</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 6. IMPLEMENTATION FACTORS ══ -->
+<section class="section" id="implementation">
+  <div class="sec-header">
+    <div class="sec-num">6</div>
+    <div class="sec-title">
+      <h2>辨識實施因素：三個 A</h2>
+      <div class="en-sub">Identifying Implementation Factors: The Three A's</div>
+    </div>
+  </div>
+
+  <p class="zh-block">即使設計出理論基礎扎實、內容完善的介入方案，若缺乏對實施因素的充分考量，方案仍可能無法發揮預期效果。三個關鍵的實施考量——<strong>接受度、可及性、依從性</strong>——簡稱為「三個 A」。</p>
+
+  <div class="aaa">
+    <div class="aaa-i">
+      <div class="al">A</div>
+      <div class="aw">接受度</div>
+      <div class="az">Acceptance</div>
+      <div class="ad">目標族群是否認為介入可接受、值得信賴、且符合其價值觀與需求？個體的動機水準與自我效能感，是決定接受度的重要因素。</div>
+    </div>
+    <div class="aaa-i">
+      <div class="al">A</div>
+      <div class="aw">可及性</div>
+      <div class="az">Accessibility</div>
+      <div class="ad">目標族群是否能輕易取得並使用介入？數位落差（<span class="en">digital divide</span>）、地理位置、語言障礙與經濟能力，均可能影響可及性。</div>
+    </div>
+    <div class="aaa-i">
+      <div class="al">A</div>
+      <div class="aw">依從性</div>
+      <div class="az">Adherence</div>
+      <div class="ad">目標族群是否能持續按照設計使用介入，直到完成或達到預期效果？動機的個別差異，以及介入的使用者負擔，是影響依從性的關鍵。</div>
+    </div>
+  </div>
+
+  <div class="hl amber">
+    <p>&#128308; <strong>動機個別差異的挑戰：</strong>個體在動機（<span class="en">motivation</span>）與自我效能（<span class="en">self-efficacy</span>）上的差異，會在接受度與依從性上造成<span class="en">disparities（落差）</span>。高動機、高自我效能者通常接受度與依從性較好；低動機或對自己的改變能力缺乏信心者，往往在介入初期就退出。這意味著介入設計必須考量如何支持動機較低的使用者。</p>
+  </div>
+
+  <div class="en-quote">"Individual differences in motivation and self-efficacy can create disparities in acceptance and adherence. Those with higher motivation and greater confidence in their ability to change are more likely to engage with and maintain use of an intervention." — Condon &amp; Coulson (2017)</div>
+  <div class="zh-note">動機與自我效能的個別差異，會在接受度與依從性上造成落差。動機較高、對自身改變能力更有信心者，更可能參與並持續使用介入方案。</div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 7. TAILORED INTERVENTIONS ══ -->
+<section class="section" id="tailoring">
+  <div class="sec-header">
+    <div class="sec-num">7</div>
+    <div class="sec-title">
+      <h2>個人化介入：電腦化客製</h2>
+      <div class="en-sub">Tailored Interventions &amp; Computer-Tailoring</div>
+    </div>
+  </div>
+
+  <p class="zh-block">提高接受度與依從性的一個重要策略，是<span class="en">tailored interventions（個人化介入）</span>。Kreuter 等人（1999）將「個人化（tailoring）」定義為：<strong>根據個人特質，對特定個體採用的策略</strong>。與一般化介入相比，個人化介入提供更具相關性的內容，因而更可能引起使用者的注意，並促進行為改變。</p>
+
+  <div class="callout">
+    <h4>電腦化客製 <span style="font-weight:400;font-size:.88rem;opacity:.8">Computer-Tailoring (Kreuter et al., 1999)</span></h4>
+    <p>電腦化客製介入透過<span class="en" style="color:#93c5fd">algorithms（演算法）</span>，評估使用者在 COM-B 各成分上的狀態，並從預先建立的<span class="en" style="color:#93c5fd">message repository（訊息庫）</span>中，選取並觸發最適合該使用者當下狀態的個人化回饋與建議。</p>
+    <div class="en-quote-w">"Computer-tailoring uses algorithms to assess COM-B components and trigger personalized feedback from a message repository, delivering content that is specifically relevant to each individual." — Condon &amp; Coulson (2017)</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">&#127919; 個人化的層次<br><span class="en" style="font-size:.78rem;font-weight:400">Levels of Tailoring</span></h3>
+      <p style="font-size:.9rem">個人化可以發生在多個層次：</p>
+      <ul style="font-size:.88rem;padding-left:18px;margin-bottom:0">
+        <li style="margin-bottom:6px"><strong>內容個人化：</strong>根據使用者特質提供相關訊息（如針對素食者提供素食飲食建議）</li>
+        <li style="margin-bottom:6px"><strong>目標個人化：</strong>根據使用者現有行為水準設定個人化目標</li>
+        <li style="margin-bottom:6px"><strong>時機個人化：</strong>在最適當的時機（如剛完成一餐後）提供回饋</li>
+        <li><strong>管道個人化：</strong>透過使用者偏好的溝通管道（如推播通知、電子郵件）傳遞訊息</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">&#128200; 個人化介入的效益<br><span class="en" style="font-size:.78rem;font-weight:400">Benefits of Tailoring</span></h3>
+      <p style="font-size:.9rem">相較於一般化（<span class="en">generic</span>）介入：</p>
+      <ul style="font-size:.88rem;padding-left:18px;margin-bottom:0">
+        <li style="margin-bottom:6px">使用者感受到更高的相關性，更可能閱讀並記憶內容</li>
+        <li style="margin-bottom:6px">更精準地針對個體的特定障礙，提升介入效率</li>
+        <li style="margin-bottom:6px">有助於提升動機較低者的接受度與依從性</li>
+        <li>配合科技（如智慧型手機），可實現大規模自動化的個人化遞送</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 8. mHEALTH ══ -->
+<section class="section" id="mhealth">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">
+      <h2>行動健康科技：mHealth 與 eHealth</h2>
+      <div class="en-sub">Mobile Health Technologies: mHealth &amp; eHealth</div>
+    </div>
+  </div>
+
+  <p class="zh-block">智慧型手機（<span class="en">smartphones</span>）的普及，為健康行為改變介入帶來了革命性的可能。與傳統介入方式相比，<span class="en">mHealth（行動健康）</span>與<span class="en">eHealth（電子健康）</span>科技提供了一系列獨特優勢，使其成為青少年族群介入的理想媒介。</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">&#128241; 智慧型手機的獨特優勢<br><span class="en" style="font-size:.78rem;font-weight:400">Unique Advantages of Smartphones</span></h3>
+      <ul style="font-size:.88rem;padding-left:18px;margin-bottom:0">
+        <li style="margin-bottom:6px"><strong>無縫融入日常生活：</strong>青少年幾乎全天候隨身攜帶手機，介入可自然嵌入日常生活流程</li>
+        <li style="margin-bottom:6px"><strong>即時資料蒐集：</strong>可連續蒐集行為、生理與情境資料，無需受試者額外努力</li>
+        <li style="margin-bottom:6px"><strong>即時回饋：</strong>可在行為發生的當下立即提供個人化回饋與建議</li>
+        <li style="margin-bottom:6px"><strong>最低使用者負擔：</strong>設計良好的 app 可最小化使用者的認知與時間負擔</li>
+        <li><strong>社會支持網絡：</strong>透過線上社群功能，促進同儕支持與社會比較</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">&#9201; 即時適應性介入<br><span class="en" style="font-size:.78rem;font-weight:400">Just-in-Time Adaptive Interventions (Intille, 2004)</span></h3>
+      <p style="font-size:.9rem">Intille（2004）提出<span class="en">just-in-time adaptive interventions</span>的概念——系統能夠偵測到個體在特定時刻面臨的情境風險（如即將進食前的高熱量誘惑），並在<strong>最恰當的時機</strong>提供個人化的支持訊息。</p>
+      <div class="hl green" style="margin:12px 0 0">
+        <p style="margin:0;font-size:.85rem">&#128204; 即時介入能針對行為發生的<strong>前因脈絡</strong>精準介入，而非事後補救，因此理論上能達到更好的行為改變效果。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl">
+    <p>&#127760; <strong>青少年的科技使用特性：</strong>對青少年而言，智慧型手機不僅是通訊工具，更是「個人伴侶（<span class="en">personal companion</span>）」——承載著社交生活、娛樂、自我表達與身份認同。以青少年的科技使用習慣與偏好為設計出發點，是提升介入接受度與依從性的關鍵。</p>
+  </div>
+
+  <h3>線上社會支持 <span class="en">Social Support via Online Networks</span></h3>
+  <p class="zh-block">mHealth 介入可整合<span class="en">online social networks（線上社交網絡）</span>功能，讓使用者與同儕分享進度、互相鼓勵、建立問責關係（<span class="en">accountability</span>）。社會支持是行為改變的重要促進因素，而行動科技使得大規模的社會連結成為可能，突破了傳統介入的地理與時間限制。</p>
+</section>
+
+<hr class="div">
+
+<!-- ══ 9. PEGASO CASE STUDY ══ -->
+<section class="section" id="pegaso">
+  <div class="sec-header">
+    <div class="sec-num">9</div>
+    <div class="sec-title">
+      <h2>案例研究：PEGASO 計畫</h2>
+      <div class="en-sub">Case Study: The PEGASO Project (EU FP7, Grant Ref: 610727)</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>PEGASO 計畫概覽</h4>
+    <p><span class="en">PEGASO</span> 是一個由歐盟第七研究框架計畫（<span class="en" style="color:#93c5fd">EU FP7, Grant Ref: 610727</span>）資助的多國合作研究計畫，目標是開發一套多科技系統（<span class="en" style="color:#93c5fd">multitechnology system</span>），以優化歐洲青少年的飲食與運動行為，預防青少年肥胖及其成年後的相關疾病。</p>
+    <div class="en-quote-w">"The PEGASO project aimed to develop a multitechnology system to optimize healthy dietary and exercise behaviours in European teenagers, with the goal of preventing obesity and obesity-related diseases in adulthood." — Condon &amp; Coulson (2017)</div>
+  </div>
+
+  <div class="hl amber">
+    <p>&#128200; <strong>青少年肥胖的公共衛生重要性：</strong>肥胖問題在青少年期的醫療成本，估計占歐盟整體醫療支出的 <strong>7%</strong>。若能有效預防青少年期的不健康飲食與久坐行為，預期可大幅降低成年後的慢性病發生率與醫療負擔。</p>
+  </div>
+
+  <h3>PEGASO 的設計流程 <span class="en">PEGASO Design Process</span></h3>
+  <ol class="steps">
+    <li>
+      <div class="sc">
+        <strong>專家共識：確認目標行為 <em class="en-label">Expert Consensus on Target Health Behaviors</em></strong>
+        <span class="zh">由跨領域專家（公共衛生、運動科學、營養學、心理學、科技設計）通過共識流程，確認 <strong>10 項</strong>優先目標健康行為，作為介入的焦點。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>系統性文獻綜述 <em class="en-label">Systematic Literature Reviews</em></strong>
+        <span class="zh">針對每一項目標行為，進行系統性文獻綜述，整合現有研究對青少年行為模式、障礙與促進因素的理解，為後續實證研究奠定基礎。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>跨國焦點團體 <em class="en-label">Focus Groups in Italy, Spain, and the UK</em></strong>
+        <span class="zh">在義大利、西班牙、英國三國分別舉辦焦點團體，直接蒐集青少年對目標行為的看法、動機障礙，以及對科技介入的偏好與期望。</span>
+      </div>
+    </li>
+    <li>
+      <div class="sc">
+        <strong>迭代式設計開發 <em class="en-label">Iterative Design Development</em></strong>
+        <span class="zh">根據前置研究發現，透過迭代式設計流程開發系統原型，並持續進行使用者測試與修訂，確保最終產品符合青少年的真實需求與偏好。</span>
+      </div>
+    </li>
+  </ol>
+
+  <h3>焦點團體的主要發現 <span class="en">Key Focus Group Findings</span></h3>
+  <p class="zh-block">跨國焦點團體揭示了青少年對科技介入的偏好與期望，這些發現直接指導了 PEGASO 系統的功能設計：</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">&#128149; 青少年的偏好 <span class="en" style="font-size:.78rem;font-weight:400">What Teenagers Want</span></h3>
+      <ul style="font-size:.88rem;padding-left:18px;margin-bottom:0">
+        <li style="margin-bottom:6px">不令人疲乏的視覺呈現（<span class="en">non-tiring display</span>）</li>
+        <li style="margin-bottom:6px">多媒體內容與圖像（<span class="en">multimedia and images</span>）</li>
+        <li style="margin-bottom:6px">有趣的應用程式功能（<span class="en">interesting apps</span>）</li>
+        <li>遊戲化元素（<span class="en">gamification</span>）——分數、成就、排行榜</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">&#9889; PEGASO 系統功能 <span class="en" style="font-size:.78rem;font-weight:400">PEGASO System Features</span></h3>
+      <ul style="font-size:.88rem;padding-left:18px;margin-bottom:0">
+        <li style="margin-bottom:6px">互動式視覺回饋（<span class="en">interactive visual feedback</span>）</li>
+        <li style="margin-bottom:6px">互相連結的應用程式（<span class="en">interconnected apps</span>）</li>
+        <li style="margin-bottom:6px">健康遊戲積分系統（<span class="en">health game with points</span>）</li>
+        <li style="margin-bottom:6px">使用者自主目標設定（<span class="en">user-led goal setting</span>）</li>
+        <li style="margin-bottom:6px">穿戴式感測器（<span class="en">on-body sensor component</span>）</li>
+        <li>即時回饋功能（<span class="en">instant feedback</span>）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>PEGASO 的理論整合 <span class="en">Theoretical Integration in PEGASO</span></h3>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>框架 / Framework</th>
+          <th>在 PEGASO 中的應用（中文）</th>
+          <th>Application in PEGASO (English)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>BCW &amp; COM-B</strong><br><span style="font-size:.82rem;font-style:italic;color:var(--muted)">Michie et al., 2011</span></td>
+          <td class="td-zh">系統性辨識青少年飲食與運動行為的能力、機會、動機障礙，並對應選擇介入功能（教育、訓練、賦能等）</td>
+          <td><div class="td-en">Systematically identify Capability, Opportunity, Motivation barriers for dietary &amp; exercise behaviors; select corresponding intervention functions</div></td>
+        </tr>
+        <tr>
+          <td><strong>Person-Based Approach</strong><br><span style="font-size:.82rem;font-style:italic;color:var(--muted)">Yardley et al., 2015</span></td>
+          <td class="td-zh">在三國進行焦點團體，以青少年的觀點為中心進行迭代式設計，確保系統符合使用者需求</td>
+          <td><div class="td-en">Focus groups in three countries; iterative user-centred design; ensure system meets user needs and preferences</div></td>
+        </tr>
+        <tr>
+          <td><strong>mHealth &amp; 即時適應性介入</strong><br><span style="font-size:.82rem;font-style:italic;color:var(--muted)">Intille, 2004</span></td>
+          <td class="td-zh">以智慧型手機為主要遞送媒介；穿戴式感測器連續蒐集行為資料；即時提供個人化回饋</td>
+          <td><div class="td-en">Smartphone as primary delivery mode; wearable sensors for continuous behavior monitoring; real-time personalized feedback</div></td>
+        </tr>
+        <tr>
+          <td><strong>遊戲化 Gamification</strong></td>
+          <td class="td-zh">整合積分、成就與健康遊戲機制，提升青少年的參與度、動機與依從性</td>
+          <td><div class="td-en">Integrate points, achievements &amp; health game mechanics to boost engagement, motivation &amp; adherence in teenagers</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══ 10. CONCLUSIONS ══ -->
+<section class="section" id="conclusion">
+  <div class="sec-header">
+    <div class="sec-num">10</div>
+    <div class="sec-title">
+      <h2>結論</h2>
+      <div class="en-sub">Conclusions</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>本章核心總結 / Key Takeaways</h4>
+    <p>在脈絡中理解目標行為，是有效健康行為改變介入的設計基礎。混合方法取向結合 BCW（COM-B 模型）與以人為本取向，共同提供了一套系統性的介入設計指引。行動科技為青少年族群提供了前所未有的個人化、可擴充介入可能性。</p>
+    <div class="en-quote-w">"Understanding the target behavior in context is the foundation. Mixed-methods approaches combined with the BCW (COM-B) and the Person-Based Approach guide intervention design. Addressing the three A's — Acceptance, Accessibility, Adherence — is essential. Mobile technologies offer scalable, tailored interventions for adolescents." — Condon &amp; Coulson (2017)</div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card" style="border-top:4px solid var(--blue)">
+      <div style="font-size:1.6rem;margin-bottom:8px">&#128270;</div>
+      <h3 style="margin-top:0">前置理解<br><span class="en" style="font-size:.78rem;font-weight:400">Formative Understanding</span></h3>
+      <p style="font-size:.88rem">系統性文獻綜述 + 原始實證資料（焦點團體、訪談）= 充分的行為診斷。BCW 的使用前提是對 COM-B 各成分的詳細分析。</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--purple)">
+      <div style="font-size:1.6rem;margin-bottom:8px">&#127775;</div>
+      <h3 style="margin-top:0">使用者中心設計<br><span class="en" style="font-size:.78rem;font-weight:400">User-Centred Design</span></h3>
+      <p style="font-size:.88rem">PCA 強調從早期就納入目標族群的觀點，透過迭代式測試不斷改善設計，提升接受度、可及性與依從性。</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--green)">
+      <div style="font-size:1.6rem;margin-bottom:8px">&#128241;</div>
+      <h3 style="margin-top:0">行動科技的潛力<br><span class="en" style="font-size:.78rem;font-weight:400">Mobile Technology Potential</span></h3>
+      <p style="font-size:.88rem">mHealth 使即時、個人化、大規模的介入成為可能。對青少年而言，整合遊戲化與社交功能的智慧型手機介入尤具吸引力。</p>
+    </div>
+  </div>
+
+  <div class="hl green">
+    <p>&#128204; <strong>方法論的平衡：</strong>雖然本章介紹了多種框架（BCW、COM-B、PCA、PRIME 理論），但研究者不必也不應強行套用所有框架。關鍵是根據研究問題、目標族群特質與資源限制，靈活組合最適切的理論工具，並始終以充分的前置研究為設計基礎。</p>
+  </div>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section class="section" id="quiz">
+  <div class="qhead">
+    <h2>&#128221; 隨堂練習 Practice Quiz</h2>
+    <p>每次從題庫隨機抽出 5 題，作答後點「提交答案」即可看到解析。點「重新出題」可換一組新題目。</p>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="qactions">
+    <button class="btn btn-p" onclick="submitQuiz()">&#10004; 提交答案 Submit</button>
+    <button class="btn btn-o" onclick="generateQuiz()">&#128256; 重新出題 New Quiz</button>
+  </div>
+  <div class="scorebox" id="scorebox">
+    <div class="score-s" id="sc-stars"></div>
+    <div class="score-n" id="sc-num"></div>
+    <div class="score-l">/ 5 題正確</div>
+    <div class="score-m" id="sc-msg"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copyright">
+    <strong>版權所有 &copy; 葉欲禾（Gary Yu-Ho Yen）</strong><br>
+    本互動教材依原著內容製作，僅供學術教學用途。All rights reserved for academic use only.
+  </div>
+  <div class="ref">
+    Source: Little, L., Sillence, E., &amp; Joinson, A. (Eds.). (2017). <em>Behavior Change Research and Theory: Psychological and Technological Perspectives</em>. Academic Press / Elsevier.<br>
+    Chapter 2: Condon, L.A., &amp; Coulson, N.S. — Designing and Delivering Interventions for Health Behavior Change in Adolescents Using Multitechnology Systems. University of Nottingham.
+  </div>
+</footer>
+
+<script>
+const QB = [
+  {
+    q:"在設計健康行為改變介入（<em>HBCI</em>）之前，研究者必須理解哪三個層面？",
+    opts:[
+      "目標行為、目標族群特質、以及實施因素（包括行為模式、環境、社會脈絡與可用資源）",
+      "理論框架選擇、統計分析方法、以及倫理審查流程",
+      "介入預算、推行時程、以及成效評估指標",
+      "科技平台選擇、內容設計風格、以及行銷傳播策略"
+    ],
+    correct:0,
+    feedback:"Condon &amp; Coulson 明確指出，在設計任何 HBCI 之前，研究者必須理解：<strong>(1) 目標行為本身、(2) 目標族群的特質，以及 (3) 實施因素</strong>——包括行為模式、行為發生的環境、社會脈絡，以及可用資源（預算、時間、人力）。這三個層面相互交織，缺乏任一面向的理解均可能導致介入失敗。"
+  },
+  {
+    q:"<em>COM-B 模型</em>（Michie et al., 2011）位於行為改變輪（BCW）的哪一層？三個字母分別代表什麼？",
+    opts:[
+      "外圈（政策類別），代表 Control（控制）、Obedience（服從）、Management（管理）",
+      "中圈（介入功能），代表 Compliance（依從）、Outcomes（成效）、Behavior（行為）",
+      "內圈（行為來源），代表 Capability（能力）、Opportunity（機會）、Motivation（動機），三者共同決定 Behaviour（行為）",
+      "外圈（政策類別），代表 Community（社群）、Organization（組織）、Media（媒體）"
+    ],
+    correct:2,
+    feedback:"<strong>COM-B 模型</strong>位於行為改變輪（BCW）的<strong>最內圈（行為來源）</strong>，是整個框架的核心分析工具。C = <strong>Capability（能力）</strong>（心理 + 身體）、O = <strong>Opportunity（機會）</strong>（物理 + 社會）、M = <strong>Motivation（動機）</strong>（反思性 + 自動化），三者相互作用共同決定 B = <strong>Behaviour（行為）</strong>是否發生。"
+  },
+  {
+    q:"<em>Person-Based Approach（PCA）</em>（Yardley et al., 2015）的核心理念是什麼？它特別適用於哪類介入？",
+    opts:[
+      "以理論驅動設計，在介入完成後才進行使用者測試；適用於藥物臨床試驗",
+      "以使用介入的人們的觀點與體驗為設計中心，透過迭代式質性研究改善設計；特別為數位介入設計而發展",
+      "以系統性文獻綜述為唯一設計基礎，無需蒐集原始資料；適用於大規模公共衛生政策",
+      "以成本效益分析為中心，優先考量介入的經濟效益；適用於醫療資源分配"
+    ],
+    correct:1,
+    feedback:"PCA 的核心理念是：<strong>介入設計應以使用介入的人們的觀點與體驗為中心</strong>，而非以研究者或理論為中心。PCA 採用迭代式質性研究設計，從早期就持續納入目標族群的聲音。PCA <strong>特別為數位介入（digital interventions）</strong>設計而發展，旨在提升介入的使用率（uptake）、依從性（adherence）與成效（outcomes）。"
+  },
+  {
+    q:"本章提到「<em>social desirability response bias</em>（社會期許回應偏誤）」在身體活動與飲食研究中特別值得關注。請問 Lalwani 等人（2006）的研究指出，這種偏誤的程度與什麼因素有關？",
+    opts:[
+      "受試者的年齡與性別——青少年比成年人更容易出現社會期許偏誤",
+      "研究設計——面對面訪談比線上問卷更容易引發社會期許偏誤",
+      "文化背景——來自集體主義文化（collectivist cultures）的受試者，可能比來自個人主義文化（individualist cultures）者更傾向回報符合社會期許的行為",
+      "介入的複雜程度——越複雜的介入越容易引發社會期許偏誤"
+    ],
+    correct:2,
+    feedback:"Lalwani 等人（2006）指出，<strong>社會期許偏誤的程度因文化背景而異</strong>。來自<strong>集體主義文化（collectivist cultures）</strong>的受試者，因重視群體和諧與對外展示一致性，可能更傾向回報符合社會期許的行為；而來自<strong>個人主義文化（individualist cultures）</strong>者，這種偏誤相對較低。這對跨國研究設計與跨文化資料比較具有重要方法論意涵。"
+  },
+  {
+    q:"Kreuter 等人（1999）如何定義介入中的「<em>tailoring</em>（個人化）」？電腦化個人化介入（<em>computer-tailoring</em>）如何運作？",
+    opts:[
+      "Tailoring 指對整個族群提供統一化內容；電腦化介入透過大量廣播訊息觸及最多人",
+      "Tailoring 指根據個人特質，對特定個體採用的策略；電腦化客製透過演算法評估 COM-B 成分，並從訊息庫中觸發個人化回饋",
+      "Tailoring 指依照社會經濟背景分組，對不同群體提供差異化內容；電腦化介入依收入水準分組遞送訊息",
+      "Tailoring 指依照年齡階段設計不同版本；電腦化介入依照使用者出生年份自動切換版本"
+    ],
+    correct:1,
+    feedback:"Kreuter 等人（1999）將<strong>tailoring（個人化）</strong>定義為：根據個人特質，對<strong>特定個體</strong>採用的策略（strategies applied to a specific person based on personal characteristics）。<strong>電腦化客製（computer-tailoring）</strong>透過演算法（algorithms）評估使用者在 COM-B 各成分上的狀態，並從預先建立的<strong>訊息庫（message repository）</strong>中，選取並觸發最適合該使用者當下狀態的個人化回饋與建議。"
+  },
+  {
+    q:"<em>PEGASO 計畫</em>（EU FP7）的主要目標是什麼？其設計流程第一步是什麼？",
+    opts:[
+      "開發一套多科技系統，優化歐洲青少年的飲食與運動行為，預防肥胖；設計流程第一步是由跨領域專家共識確認 10 項優先目標健康行為",
+      "開發一款智慧型手機遊戲，幫助成年人戒菸；設計流程第一步是招募使用者測試員",
+      "建立一個歐洲青少年健康資料庫，用於流行病學研究；設計流程第一步是向各國政府申請資料存取許可",
+      "設計一套學校課程，教導青少年健康知識；設計流程第一步是與教育部協商課程標準"
+    ],
+    correct:0,
+    feedback:"PEGASO 計畫的主要目標是<strong>開發一套多科技系統（multitechnology system），以優化歐洲青少年的飲食與運動行為，預防青少年肥胖及其成年後的相關疾病</strong>。其設計流程的第一步，是由跨領域專家（公共衛生、運動科學、營養學、心理學、科技設計）透過<strong>共識流程確認 10 項優先目標健康行為</strong>，作為後續介入的焦點。"
+  },
+  {
+    q:"<em>混合方法取向（mixed-methods approach）</em>（Creswell, 2014）在健康行為研究中提供哪三大優勢？",
+    opts:[
+      "降低研究成本、縮短研究時程、提高統計檢定力",
+      "三角檢證（triangulation）、核實（verification）、偏誤稀釋（dilution of biases）",
+      "增加樣本數量、強化隨機化、控制混淆變項",
+      "提升研究者資歷、擴大研究發表機會、強化跨學科合作"
+    ],
+    correct:1,
+    feedback:"Creswell（2014）指出混合方法取向的三大優勢：<strong>Triangulation（三角檢證）</strong>——以多種方法互相驗證結論；<strong>Verification（核實）</strong>——確認質性發現是否獲得量化資料支持；<strong>Dilution of biases（偏誤稀釋）</strong>——各方法的限制可互相補足，降低單一方法的偏誤影響。這使得混合方法成為健康行為研究（尤其在青少年族群）中廣受推薦的方法論取向。"
+  },
+  {
+    q:"PEGASO 計畫在義大利、西班牙、英國進行焦點團體後，發現青少年最希望健康科技介入具備哪些特徵？",
+    opts:[
+      "詳盡的文字說明、嚴謹的科學資訊、學術參考文獻",
+      "不令人疲乏的視覺呈現、多媒體內容與圖像、有趣的應用程式功能、遊戲化元素",
+      "高安全性資料加密、匿名使用功能、與醫療系統的整合介面",
+      "大量的每日通知提醒、強制完成任務機制、家長監控功能"
+    ],
+    correct:1,
+    feedback:"PEGASO 跨國焦點團體揭示，青少年希望健康科技介入具備：<strong>不令人疲乏的視覺呈現（non-tiring display）、多媒體內容與圖像（multimedia and images）、有趣的應用程式功能（interesting apps）、以及遊戲化元素（gamification）</strong>——包括積分、成就與排行榜。這些發現直接指導了 PEGASO 系統的功能設計，包括互動式視覺回饋、健康遊戲積分、使用者自主目標設定等。"
+  },
+  {
+    q:"「三個 A（Three A's）」中的<em>Adherence（依從性）</em>，主要受哪些因素影響？",
+    opts:[
+      "介入的科學嚴謹度與理論基礎強度",
+      "研究資金來源與機構聲譽",
+      "動機的個別差異（individual differences in motivation）、自我效能（self-efficacy）以及介入的使用者負擔（user burden）",
+      "介入的媒體曝光量與公眾知名度"
+    ],
+    correct:2,
+    feedback:"本章指出，<strong>依從性（Adherence）</strong>主要受以下因素影響：<strong>動機的個別差異</strong>——動機較高者更可能持續參與介入；<strong>自我效能（self-efficacy）</strong>——對自身改變能力缺乏信心者往往較早退出；以及<strong>介入的使用者負擔（user burden）</strong>——設計複雜、使用繁瑣的介入依從性較低。電腦化個人化介入（computer-tailoring）可透過提供更具相關性的內容，部分緩解低動機者的依從性問題。"
+  },
+  {
+    q:"Intille（2004）提出的「<em>just-in-time adaptive interventions</em>（即時適應性介入）」概念，其核心優勢是什麼？",
+    opts:[
+      "可以在一次性的團體衛教課程中，傳遞大量標準化健康資訊給所有參與者",
+      "系統能偵測個體在特定時刻面臨的情境風險，在最恰當的時機提供個人化支持，針對行為的前因脈絡精準介入",
+      "可以完全取代醫療專業人員的角色，提供全面的健康照護服務",
+      "能在介入結束後長達數年持續追蹤受試者的行為變化，無需任何人工干預"
+    ],
+    correct:1,
+    feedback:"Intille（2004）的<strong>即時適應性介入（just-in-time adaptive interventions）</strong>的核心優勢在於：<strong>系統能偵測個體在特定時刻面臨的情境風險</strong>（如即將進食前的高熱量誘惑、運動動機低落的時刻），並在<strong>最恰當的時機</strong>提供個人化的支持訊息。這種針對<strong>行為前因脈絡</strong>精準介入（而非事後補救）的方式，理論上能達到更好的行為改變效果，且因與情境脈絡高度相關而降低使用者負擔。"
+  },
+  {
+    q:"本章指出，健康行為並非孤立發生，而是彼此交互影響形成「<em>behavioral clusters</em>（行為叢）」。這對介入設計有什麼重要意涵？",
+    opts:[
+      "研究者只需聚焦於單一最重要的目標行為，忽略其他行為可節省資源",
+      "必須同時研究多個相關目標行為的互動，否則可能導致介入效果不佳，甚至出現針對其他行為的意外副作用",
+      "行為叢的存在意味著介入必須採用藥物治療，行為取向的介入效果有限",
+      "研究者應讓參與者自由選擇哪種行為是他們個人最想改變的，研究者不應主動確認目標行為"
+    ],
+    correct:1,
+    feedback:"本章特別強調，<strong>健康行為並非孤立發生</strong>——飲食、身體活動、睡眠、螢幕使用時間等行為彼此交互影響，形成複雜的<strong>行為叢（behavioral clusters）</strong>。這意味著：若設計者只關注單一目標行為而忽視其與其他行為的互動關係，介入效果可能不佳，甚至出現<strong>意外副作用</strong>（如減少螢幕時間可能意外增加進食時間）。PEGASO 計畫即透過專家共識確認多項相互關聯的目標行為，以整體性視角設計介入。"
+  },
+  {
+    q:"在 BCW（行為改變輪）的三層結構中，<em>intervention functions（介入功能）</em>位於哪一層？請舉出兩個介入功能的例子。",
+    opts:[
+      "最內層（行為來源），例子：能力訓練與機會創造",
+      "中間層，位於行為來源（COM-B）與政策類別之間，例子：教育（Education）與賦能（Enablement）",
+      "最外層（政策類別），例子：立法（Legislation）與服務提供（Service Provision）",
+      "介入功能不在 BCW 三層結構中，而是獨立於 BCW 之外的另一個框架"
+    ],
+    correct:1,
+    feedback:"在 BCW 的三層同心圓結構中，<strong>介入功能（intervention functions）</strong>位於<strong>中間層</strong>，介於最內層的行為來源（COM-B 模型）與最外層的政策類別之間。介入功能包括九種：<strong>教育（Education）、說服（Persuasion）、激勵（Incentivisation）、強制（Coercion）、訓練（Training）、限制（Restriction）、環境重構（Environmental Restructuring）、示範（Modelling）、賦能（Enablement）</strong>。研究者在 COM-B 分析辨識行為障礙後，即對應選擇最適切的介入功能。"
+  }
+];
+
+let cur=[], done=false;
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+function generateQuiz(){
+  done=false;
+  cur=shuffle(QB).slice(0,5);
+  const c=document.getElementById('quiz-container');
+  c.innerHTML='';
+  cur.forEach((q,qi)=>{
+    const opts=shuffle(q.opts.map((o,i)=>({t:o,orig:i})));
+    const corr=opts.findIndex(o=>o.orig===q.correct);
+    const html=opts.map((o,i)=>`<li>
+      <input type="radio" name="q${qi}" id="q${qi}o${i}" value="${i}" data-c="${corr}">
+      <label for="q${qi}o${i}"><span class="olet">${['A','B','C','D'][i]}</span>${o.t}</label>
+    </li>`).join('');
+    const d=document.createElement('div');
+    d.className='qcard';d.id=`qc${qi}`;
+    d.innerHTML=`<div class="qnum">${qi+1}</div><div class="qtext">${q.q}</div><ul class="opts">${html}</ul><div class="fb" id="fb${qi}"></div>`;
+    c.appendChild(d);
+  });
+  document.getElementById('scorebox').classList.remove('show');
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+
+function submitQuiz(){
+  if(done)return;done=true;
+  let sc=0;
+  cur.forEach((q,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb=document.getElementById(`fb${qi}`);
+    const labs=document.querySelectorAll(`#qc${qi} label`);
+    const inps=document.querySelectorAll(`input[name="q${qi}"]`);
+    const corr=parseInt(inps[0].dataset.c);
+    labs[corr].classList.add('correct');
+    if(sel){
+      const si=parseInt(sel.value);
+      if(si===corr){sc++;fb.innerHTML=`&#9989; <strong>答對了！</strong> ${q.feedback}`;fb.className='fb correct show';}
+      else{labs[si].classList.add('wrong');fb.innerHTML=`&#10060; <strong>答錯了。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    }else{fb.innerHTML=`&#9888; <strong>未作答。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    inps.forEach(i=>i.disabled=true);
+  });
+  const stars=['','&#11088;','&#11088;&#11088;','&#11088;&#11088;&#11088;','&#11088;&#11088;&#11088;&#11088;','&#11088;&#11088;&#11088;&#11088;&#11088;'];
+  const msgs=['繼續加油！請重新回顧 COM-B 模型與三個 A 的概念。','有進步！特別複習 BCW 框架與 PEGASO 案例。','不錯！再複習 Person-Based Approach 與個人化介入。','非常好！已掌握大部分核心概念。','滿分！完美掌握第二章所有核心概念！'];
+  document.getElementById('sc-num').textContent=`${sc}/5`;
+  document.getElementById('sc-stars').innerHTML=stars[sc]||'';
+  document.getElementById('sc-msg').textContent=msgs[sc-1]||msgs[0];
+  const box=document.getElementById('scorebox');
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+document.addEventListener('DOMContentLoaded',generateQuiz);
+window.addEventListener('scroll',()=>{
+  const secs=document.querySelectorAll('.section');
+  let id='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-90)id=s.id;});
+  document.querySelectorAll('.toc-link').forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+});
+</script>
+</body>
+</html>
