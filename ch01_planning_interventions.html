@@ -3,942 +3,816 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 1: Planning Interventions to Change Behavior</title>
+<title>Chapter 1: Planning Interventions to Change Behavior｜規劃行為改變介入</title>
 <style>
-  :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --secondary: #7c3aed;
-    --accent: #0891b2;
-    --success: #059669;
-    --warning: #d97706;
-    --danger: #dc2626;
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 4px 24px rgba(0,0,0,0.08);
-    --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    font-size: 16px;
-  }
+:root{
+  --blue:#2563eb;--blue-d:#1d4ed8;--purple:#7c3aed;
+  --green:#059669;--amber:#d97706;--red:#dc2626;
+  --bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --border:#e2e8f0;--sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 8px 32px rgba(0,0,0,.14);--r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px}
 
-  /* ── Hero ── */
-  .hero {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
-    color: #fff;
-    padding: 72px 24px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-    animation: pulse 8s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
-  .hero-tag {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 4px 16px; border-radius: 20px;
-    font-size: 13px; letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 20px;
-  }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 800; line-height: 1.2;
-    margin-bottom: 12px;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  }
-  .hero-subtitle {
-    font-size: 1.1rem; opacity: 0.85;
-    max-width: 620px; margin: 0 auto 28px;
-  }
-  .hero-meta {
-    display: flex; justify-content: center;
-    gap: 24px; flex-wrap: wrap;
-    font-size: 0.9rem; opacity: 0.8;
-  }
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#1e3a5f,#2563eb 50%,#7c3aed);color:#fff;padding:72px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hero h1 small{display:block;font-size:.52em;font-weight:500;opacity:.85;margin-top:4px}
+.hero-sub{font-size:1rem;opacity:.82;max-width:640px;margin:10px auto 26px}
+.hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:.88rem;opacity:.8}
 
-  /* ── Sticky Nav ── */
-  .toc-bar {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 100;
-    padding: 0 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .toc-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: flex; gap: 4px;
-    overflow-x: auto; scrollbar-width: none;
-  }
-  .toc-inner::-webkit-scrollbar { display: none; }
-  .toc-link {
-    display: block; padding: 16px 14px;
-    font-size: 13px; font-weight: 500;
-    color: var(--text-muted); text-decoration: none;
-    white-space: nowrap;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-  }
-  .toc-link:hover, .toc-link.active {
-    color: var(--primary); border-bottom-color: var(--primary);
-  }
+/* ── Nav ── */
+.toc-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toc-inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{display:block;padding:15px 13px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.toc-link:hover,.toc-link.active{color:var(--blue);border-bottom-color:var(--blue)}
 
-  /* ── Layout ── */
-  .main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 64px; }
+/* ── Main ── */
+.main{max-width:1120px;margin:0 auto;padding:48px 24px 64px}
 
-  /* ── Sections ── */
-  .section { margin-bottom: 64px; scroll-margin-top: 72px; }
-  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
-  .section-number {
-    width: 48px; height: 48px; background: var(--primary); color: #fff;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; font-weight: 700; flex-shrink: 0;
-  }
-  .section h2 { font-size: 1.75rem; font-weight: 700; }
-  .section h3 { font-size: 1.2rem; font-weight: 600; color: var(--primary-dark); margin: 28px 0 12px; }
-  p { margin-bottom: 16px; }
+/* ── Section ── */
+.section{margin-bottom:64px;scroll-margin-top:68px}
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;flex-shrink:0}
+.sec-title h2{font-size:1.45rem;font-weight:800;color:var(--text);line-height:1.2}
+.sec-title .en-sub{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:2px}
+.section h3{font-size:1.12rem;font-weight:700;color:var(--blue-d);margin:28px 0 12px}
+.section h3 .en{font-size:.82rem;font-weight:500;color:var(--muted);margin-left:6px}
 
-  /* ── Cards ── */
-  .card {
-    background: var(--card); border-radius: var(--radius);
-    padding: 28px; box-shadow: var(--shadow); margin-bottom: 24px;
-    border: 1px solid var(--border); transition: box-shadow 0.2s;
-  }
-  .card:hover { box-shadow: var(--shadow-hover); }
+/* ── Bilingual para ── */
+p{margin-bottom:16px}
+.en{color:#1d4ed8;font-style:italic;font-weight:600}   /* inline EN term */
+.zh-block{font-size:.97rem;line-height:1.8;margin-bottom:12px}
+/* English quote block */
+.en-quote{background:#f0f7ff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 var(--rs) var(--rs) 0;margin:8px 0 4px;font-size:.9rem;color:#1e40af;font-style:italic;line-height:1.7}
+.zh-note{background:#fff;border-left:4px solid #93c5fd;padding:10px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:0 0 16px;font-size:.88rem;color:var(--muted);line-height:1.6}
 
-  /* ── Highlight Boxes ── */
-  .highlight {
-    border-left: 4px solid var(--primary);
-    background: #eff6ff;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: 18px 20px; margin: 20px 0;
-  }
-  .highlight.green { border-color: var(--success); background: #f0fdf4; }
-  .highlight.purple { border-color: var(--secondary); background: #faf5ff; }
-  .highlight.amber { border-color: var(--warning); background: #fffbeb; }
-  .highlight p:last-child { margin-bottom: 0; }
+/* ── Cards & Grid ── */
+.card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:20px;border:1px solid var(--border);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh2)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:18px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
 
-  /* ── Grid ── */
-  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 20px; margin: 20px 0; }
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; margin: 20px 0; }
+/* ── Highlight ── */
+.hl{border-left:4px solid var(--blue);background:#eff6ff;border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:18px 0}
+.hl.green{border-color:var(--green);background:#f0fdf4}
+.hl.amber{border-color:var(--amber);background:#fffbeb}
+.hl.purple{border-color:var(--purple);background:#faf5ff}
+.hl p:last-child{margin-bottom:0}
 
-  /* ── Tags ── */
-  .tag {
-    display: inline-block; padding: 3px 12px; border-radius: 20px;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin: 2px;
-  }
-  .tag-blue { background: #dbeafe; color: #1d4ed8; }
-  .tag-purple { background: #ede9fe; color: #6d28d9; }
-  .tag-green { background: #d1fae5; color: #065f46; }
-  .tag-amber { background: #fef3c7; color: #92400e; }
+/* ── Tag ── */
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;margin:2px}
+.tb{background:#dbeafe;color:#1d4ed8}.tp{background:#ede9fe;color:#6d28d9}
+.tg{background:#d1fae5;color:#065f46}.ta{background:#fef3c7;color:#92400e}
 
-  /* ── Model Box ── */
-  .model-box {
-    background: linear-gradient(135deg, #eff6ff, #f5f3ff);
-    border: 2px solid #c7d2fe; border-radius: var(--radius);
-    padding: 28px; text-align: center; margin: 24px 0;
-  }
-  .model-box h4 { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 20px; }
-  .model-flow {
-    display: flex; align-items: center; justify-content: center;
-    flex-wrap: wrap; gap: 8px;
-  }
-  .model-node {
-    background: var(--primary); color: #fff;
-    padding: 12px 20px; border-radius: var(--radius-sm);
-    font-weight: 600; font-size: 0.9rem; text-align: center; line-height: 1.4;
-  }
-  .model-node.purple { background: var(--secondary); }
-  .model-node.green { background: var(--success); }
-  .model-arrow { font-size: 1.4rem; color: var(--text-muted); }
+/* ── Concept callout ── */
+.callout{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:22px 26px;margin:22px 0}
+.callout h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.callout p{margin:0;opacity:.9;font-size:.93rem}
+.callout .en-quote-w{background:rgba(255,255,255,.12);border-left:3px solid rgba(255,255,255,.5);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:10px;font-size:.88rem;font-style:italic;opacity:.9}
 
-  /* ── Numbered Steps ── */
-  .steps { counter-reset: step; list-style: none; padding: 0; }
-  .steps li {
-    display: flex; gap: 16px; margin-bottom: 20px;
-    counter-increment: step; align-items: flex-start;
-  }
-  .steps li::before {
-    content: counter(step);
-    min-width: 36px; height: 36px; background: var(--primary); color: #fff;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.9rem; flex-shrink: 0; margin-top: 2px;
-  }
-  .steps li .step-content strong { display: block; font-size: 1rem; margin-bottom: 4px; color: var(--primary-dark); }
-  .steps li .step-content span { color: var(--text-muted); font-size: 0.93rem; }
+/* ── Framework grid ── */
+.fw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0}
+.fw-item{border-radius:var(--rs);padding:18px 12px;text-align:center;transition:transform .2s;cursor:default}
+.fw-item:hover{transform:translateY(-4px)}
+.fw-item .letter{font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:6px}
+.fw-item .word-en{font-size:.9rem;font-weight:700;margin-bottom:3px}
+.fw-item .word-zh{font-size:.82rem;font-weight:600;opacity:.8;margin-bottom:6px}
+.fw-item .desc{font-size:.76rem;line-height:1.45;opacity:.82}
 
-  /* ── Table ── */
-  .table-wrapper { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
-  table { width: 100%; border-collapse: collapse; background: #fff; }
-  th {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff; padding: 14px 18px; text-align: left; font-size: 0.9rem; font-weight: 600;
-  }
-  td { padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 0.92rem; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: #f8fafc; }
+/* ── Dual process ── */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+.proc{border-radius:var(--r);padding:22px;border:2px solid}
+.proc.ref{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.proc.imp{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-color:#d8b4fe}
+.proc h4{font-size:1rem;font-weight:700;margin-bottom:12px;text-align:center}
+.proc.ref h4{color:#1d4ed8}.proc.imp h4{color:#7c3aed}
+.proc ul{list-style:none;padding:0}
+.proc ul li{padding:5px 0;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px}
+.proc ul li:last-child{border:none}
+.proc ul li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:1px}
+.proc.ref ul li::before{color:#2563eb}.proc.imp ul li::before{color:#7c3aed}
+.proc ul li .zh{display:block;font-size:.82rem;color:var(--muted)}
 
-  /* ── Framework Box ── */
-  .framework {
-    display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
-    gap: 12px; margin: 20px 0;
-  }
-  .framework-item {
-    border-radius: var(--radius-sm); padding: 20px 14px;
-    text-align: center; transition: transform 0.2s;
-  }
-  .framework-item:hover { transform: translateY(-4px); }
-  .framework-item .letter { font-size: 2.4rem; font-weight: 900; line-height: 1; margin-bottom: 8px; }
-  .framework-item .word { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
-  .framework-item .desc { font-size: 0.8rem; line-height: 1.4; opacity: 0.85; }
+/* ── Model flow ── */
+.model-box{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:2px solid #c7d2fe;border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.model-box h4{font-size:1rem;font-weight:700;color:var(--blue-d);margin-bottom:16px}
+.model-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px}
+.mnode{background:var(--blue);color:#fff;padding:10px 16px;border-radius:var(--rs);font-weight:600;font-size:.85rem;text-align:center;line-height:1.4}
+.mnode.p{background:var(--purple)}.mnode.g{background:var(--green)}
+.marrow{font-size:1.3rem;color:var(--muted)}
 
-  /* ── Dual Process ── */
-  .dual-process { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
-  .process-box { border-radius: var(--radius); padding: 24px; border: 2px solid; }
-  .process-box.reflective { background: linear-gradient(135deg,#eff6ff,#dbeafe); border-color: #93c5fd; }
-  .process-box.impulsive { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); border-color: #d8b4fe; }
-  .process-box h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; text-align: center; }
-  .process-box.reflective h4 { color: #1d4ed8; }
-  .process-box.impulsive h4 { color: #7c3aed; }
-  .process-box ul { list-style: none; padding: 0; }
-  .process-box ul li {
-    padding: 6px 0; font-size: 0.9rem;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    display: flex; align-items: flex-start; gap: 8px;
-  }
-  .process-box ul li:last-child { border-bottom: none; }
-  .process-box ul li::before { content: '→'; font-weight: 700; margin-top: 1px; flex-shrink: 0; }
-  .process-box.reflective ul li::before { color: #2563eb; }
-  .process-box.impulsive ul li::before { color: #7c3aed; }
+/* ── Numbered steps ── */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{display:flex;gap:14px;margin-bottom:18px;counter-increment:s;align-items:flex-start}
+.steps li::before{content:counter(s);min-width:34px;height:34px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex-shrink:0;margin-top:2px}
+.steps li .sc strong{display:block;font-size:.97rem;margin-bottom:2px;color:var(--blue-d)}
+.steps li .sc .zh{font-size:.92rem;margin-bottom:2px}
+.steps li .sc .en-label{font-size:.8rem;color:var(--muted);font-style:italic}
 
-  /* ── IMB Grid ── */
-  .imb-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 24px 0; }
-  .imb-card { border-radius: var(--radius); padding: 24px 20px; text-align: center; }
-  .imb-card.info { background: linear-gradient(135deg,#eff6ff,#dbeafe); border: 2px solid #bfdbfe; }
-  .imb-card.motiv { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); border: 2px solid #ddd6fe; }
-  .imb-card.skills { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border: 2px solid #a7f3d0; }
-  .imb-card .icon { font-size: 2.4rem; margin-bottom: 10px; }
-  .imb-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
-  .imb-card.info h4 { color: #1d4ed8; }
-  .imb-card.motiv h4 { color: #7c3aed; }
-  .imb-card.skills h4 { color: #059669; }
-  .imb-card p { font-size: 0.88rem; color: var(--text); line-height: 1.5; margin: 0; }
+/* ── Table ── */
+.tw{overflow-x:auto;margin:18px 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:12px 16px;text-align:left;font-size:.88rem;font-weight:600}
+td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:top}
+tr:last-child td{border:none}
+tr:nth-child(even) td{background:#f8fafc}
+.td-zh{font-weight:600;color:var(--text)}
+.td-en{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:2px}
 
-  /* ── SMART ── */
-  .smart-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin: 20px 0; }
-  .smart-item { border-radius: var(--radius-sm); padding: 16px 12px; text-align: center; }
-  .smart-item .s-letter { font-size: 2rem; font-weight: 900; line-height: 1; margin-bottom: 6px; }
-  .smart-item .s-word { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
-  .smart-item .s-desc { font-size: 0.75rem; line-height: 1.4; opacity: 0.8; }
+/* ── IMB ── */
+.imb{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.imbc{border-radius:var(--r);padding:22px 18px;text-align:center}
+.imbc.i1{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #bfdbfe}
+.imbc.i2{background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border:2px solid #ddd6fe}
+.imbc.i3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #a7f3d0}
+.imbc .icon{font-size:2.2rem;margin-bottom:8px}
+.imbc h4{font-size:1rem;font-weight:700;margin-bottom:4px}
+.imbc .en-name{font-size:.8rem;font-style:italic;margin-bottom:10px;opacity:.7}
+.imbc.i1 h4{color:#1d4ed8}.imbc.i2 h4{color:#7c3aed}.imbc.i3 h4{color:#059669}
+.imbc p{font-size:.86rem;color:var(--text);margin:0;line-height:1.55}
 
-  /* ── RE-AIM ── */
-  .reaim-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 14px; margin: 20px 0; }
-  .reaim-item {
-    border-radius: var(--radius-sm); padding: 20px 16px; text-align: center;
-    border: 1px solid var(--border); background: #fff;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .reaim-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-  .reaim-item .r-letter { font-size: 2rem; font-weight: 900; color: var(--primary); }
-  .reaim-item .r-word { font-size: 0.95rem; font-weight: 700; margin: 6px 0; }
-  .reaim-item .r-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+/* ── SMART ── */
+.smart{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.smart-i{border-radius:var(--rs);padding:14px 10px;text-align:center}
+.smart-i .sl{font-size:2rem;font-weight:900;line-height:1;margin-bottom:5px}
+.smart-i .sw{font-size:.82rem;font-weight:700;margin-bottom:2px}
+.smart-i .sz{font-size:.78rem;font-weight:600;opacity:.8;margin-bottom:4px}
+.smart-i .sd{font-size:.73rem;opacity:.75;line-height:1.35}
 
-  /* ── Callout ── */
-  .concept-callout {
-    background: linear-gradient(135deg, #1e3a5f, #2563eb);
-    color: #fff; border-radius: var(--radius);
-    padding: 24px 28px; margin: 24px 0;
-  }
-  .concept-callout h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-  .concept-callout p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
+/* ── REAIM ── */
+.reaim{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.reaim-i{border-radius:var(--rs);padding:18px 14px;text-align:center;border:1px solid var(--border);background:#fff;transition:transform .2s,box-shadow .2s}
+.reaim-i:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+.reaim-i .rl{font-size:1.9rem;font-weight:900;color:var(--blue)}
+.reaim-i .ren{font-size:.9rem;font-weight:700;margin:5px 0 2px}
+.reaim-i .rzh{font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:6px}
+.reaim-i .rd{font-size:.78rem;color:var(--muted);line-height:1.4}
 
-  /* ── Divider ── */
-  .divider {
-    border: none; height: 2px;
-    background: linear-gradient(to right, transparent, var(--border), transparent);
-    margin: 40px 0;
-  }
+/* ── Divider ── */
+.div{border:none;height:2px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:40px 0}
 
-  /* ── Quiz ── */
-  #quiz {
-    background: linear-gradient(135deg, #f8fafc, #eff6ff);
-    border-radius: 20px; padding: 48px 36px;
-    border: 2px solid #bfdbfe; margin-top: 64px;
-  }
-  .quiz-header { text-align: center; margin-bottom: 40px; }
-  .quiz-header h2 { font-size: 2rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
-  .quiz-header p { color: var(--text-muted); }
+/* ── QUIZ ── */
+#quiz{background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:20px;padding:44px 34px;border:2px solid #bfdbfe;margin-top:60px}
+.qhead{text-align:center;margin-bottom:36px}
+.qhead h2{font-size:1.9rem;font-weight:800;color:var(--blue-d);margin-bottom:6px}
+.qhead p{color:var(--muted)}
+.qcard{background:#fff;border-radius:var(--r);padding:26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid var(--border)}
+.qnum{width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin-bottom:12px}
+.qtext{font-size:1rem;font-weight:600;line-height:1.55;margin-bottom:18px}
+.opts{list-style:none;padding:0}
+.opts li{margin-bottom:9px}
+.opts label{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;font-size:.93rem;line-height:1.5}
+.opts label:hover{border-color:var(--blue);background:#eff6ff}
+.opts input[type=radio]{display:none}
+.opts input:checked+label{border-color:var(--blue);background:#eff6ff;font-weight:500}
+.opts label.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#065f46;font-weight:600}
+.opts label.wrong{border-color:var(--red)!important;background:#fef2f2!important;color:#991b1b}
+.olet{min-width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;flex-shrink:0;transition:background .2s}
+.opts input:checked+label .olet{background:var(--blue);color:#fff}
+.opts label.correct .olet{background:var(--green);color:#fff}
+.opts label.wrong .olet{background:var(--red);color:#fff}
+.fb{margin-top:14px;padding:13px 16px;border-radius:var(--rs);font-size:.88rem;line-height:1.6;display:none}
+.fb.show{display:block}
+.fb.correct{background:#f0fdf4;color:#065f46;border:1px solid #a7f3d0}
+.fb.wrong{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.qactions{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.btn{padding:13px 28px;border:none;border-radius:8px;font-size:.97rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.btn-o{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-o:hover{background:#eff6ff}
+.scorebox{display:none;text-align:center;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border-radius:var(--r);padding:32px;margin-top:28px}
+.scorebox.show{display:block}
+.score-n{font-size:3.6rem;font-weight:900;line-height:1;margin-bottom:6px}
+.score-l{font-size:1rem;opacity:.9;margin-bottom:6px}
+.score-s{font-size:1.8rem;margin-bottom:10px}
+.score-m{font-size:.95rem;opacity:.85}
 
-  .question-card {
-    background: #fff; border-radius: var(--radius);
-    padding: 28px; margin-bottom: 24px;
-    box-shadow: var(--shadow); border: 1px solid var(--border);
-  }
-  .q-number {
-    width: 32px; height: 32px; background: var(--primary); color: #fff;
-    border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.85rem; margin-bottom: 14px;
-  }
-  .q-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
-  .options { list-style: none; padding: 0; }
-  .options li { margin-bottom: 10px; }
-  .options label {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 18px; border: 2px solid var(--border);
-    border-radius: var(--radius-sm); cursor: pointer;
-    transition: all 0.2s; font-size: 0.95rem; line-height: 1.5;
-  }
-  .options label:hover { border-color: var(--primary); background: #eff6ff; }
-  .options input[type="radio"] { display: none; }
-  .options input[type="radio"]:checked + label { border-color: var(--primary); background: #eff6ff; font-weight: 500; }
-  .options label.correct { border-color: var(--success) !important; background: #f0fdf4 !important; color: #065f46; font-weight: 600; }
-  .options label.wrong { border-color: var(--danger) !important; background: #fef2f2 !important; color: #991b1b; }
-  .option-letter {
-    min-width: 26px; height: 26px; border-radius: 50%; background: var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 700; flex-shrink: 0; transition: background 0.2s;
-  }
-  .options input[type="radio"]:checked + label .option-letter { background: var(--primary); color: #fff; }
-  .options label.correct .option-letter { background: var(--success); color: #fff; }
-  .options label.wrong .option-letter { background: var(--danger); color: #fff; }
+/* ── Footer ── */
+footer{background:#1e293b;color:#94a3b8;text-align:center;padding:38px 24px}
+footer strong{color:#f1f5f9;font-size:1.02rem}
+footer .ref{font-size:.8rem;margin-top:10px;opacity:.55}
 
-  .feedback {
-    margin-top: 16px; padding: 14px 18px; border-radius: var(--radius-sm);
-    font-size: 0.9rem; line-height: 1.6; display: none;
-  }
-  .feedback.show { display: block; }
-  .feedback.correct { background: #f0fdf4; color: #065f46; border: 1px solid #a7f3d0; }
-  .feedback.wrong { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
-
-  .quiz-actions { display: flex; gap: 12px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
-  .btn {
-    padding: 14px 32px; border: none; border-radius: 8px;
-    font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
-  .btn-outline { background: #fff; color: var(--primary); border: 2px solid var(--primary); }
-  .btn-outline:hover { background: #eff6ff; }
-
-  .score-box {
-    display: none; text-align: center;
-    background: linear-gradient(135deg, #1e3a5f, #2563eb);
-    color: #fff; border-radius: var(--radius); padding: 36px; margin-top: 32px;
-  }
-  .score-box.show { display: block; }
-  .score-number { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 8px; }
-  .score-label { font-size: 1.1rem; opacity: 0.9; margin-bottom: 8px; }
-  .score-stars { font-size: 2rem; margin-bottom: 12px; }
-  .score-msg { font-size: 1rem; opacity: 0.85; }
-
-  /* ── Footer ── */
-  footer {
-    background: #1e293b; color: #94a3b8;
-    text-align: center; padding: 40px 24px;
-  }
-  footer .copyright { font-size: 0.95rem; line-height: 1.8; }
-  footer .copyright strong { color: #f1f5f9; font-size: 1.05rem; }
-  footer .book-ref { font-size: 0.82rem; margin-top: 10px; opacity: 0.6; }
-
-  /* ── Responsive ── */
-  @media (max-width: 640px) {
-    .dual-process { grid-template-columns: 1fr; }
-    .imb-grid { grid-template-columns: 1fr; }
-    .smart-grid { grid-template-columns: repeat(3,1fr); }
-    #quiz { padding: 28px 20px; }
-  }
+/* ── Responsive ── */
+@media(max-width:640px){
+  .dual{grid-template-columns:1fr}
+  .imb{grid-template-columns:1fr}
+  .smart{grid-template-columns:repeat(3,1fr)}
+  #quiz{padding:26px 18px}
+}
 </style>
 </head>
 <body>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">Behavior Change Research &amp; Theory &nbsp;·&nbsp; Chapter 1</div>
-  <h1>Planning Interventions<br>to Change Behavior</h1>
-  <p class="hero-subtitle">Intervention Mapping · Dual-Process Theory · IMB Model · NUDGE · RE-AIM Evaluation</p>
+  <div class="hero-tag">Behavior Change Research &amp; Theory · Chapter 1</div>
+  <h1>規劃行為改變介入
+    <small>Planning Interventions to Change Behavior</small>
+  </h1>
+  <p class="hero-sub">介入映射法 · 雙歷程理論 · IMB 技能模型 · NUDGE · RE-AIM 評估<br>
+  <em style="font-size:.92em;opacity:.8">Intervention Mapping · Dual-Process · IMB Model · NUDGE · RE-AIM</em></p>
   <div class="hero-meta">
     <span>📚 Abraham &amp; Denford</span>
     <span>🎓 University of Exeter</span>
-    <span>⏱ ~25 min read</span>
-    <span>✅ 5-question quiz included</span>
+    <span>⏱ 約 25 分鐘</span>
+    <span>✅ 五題隨機測驗</span>
   </div>
 </div>
 
-<!-- STICKY NAV -->
+<!-- NAV -->
 <nav class="toc-bar">
   <div class="toc-inner">
-    <a class="toc-link" href="#intro">Introduction</a>
-    <a class="toc-link" href="#change-possible">Change is Possible</a>
-    <a class="toc-link" href="#ind-env">Individual vs Environment</a>
-    <a class="toc-link" href="#nudge">NUDGE &amp; EAST</a>
-    <a class="toc-link" href="#im">Intervention Mapping</a>
-    <a class="toc-link" href="#habit">Choice &amp; Habit</a>
-    <a class="toc-link" href="#imb">IMB Model</a>
-    <a class="toc-link" href="#impulsive">Impulsive Processes</a>
-    <a class="toc-link" href="#evaluation">Evaluation</a>
-    <a class="toc-link" href="#quiz">📝 Quiz</a>
+    <a class="toc-link" href="#intro">導論</a>
+    <a class="toc-link" href="#possible">改變是可能的</a>
+    <a class="toc-link" href="#indenv">個人 vs 環境</a>
+    <a class="toc-link" href="#nudge">NUDGE / EAST</a>
+    <a class="toc-link" href="#im">介入映射法 IM</a>
+    <a class="toc-link" href="#habit">選擇 vs 習慣</a>
+    <a class="toc-link" href="#imb">IMB 模型</a>
+    <a class="toc-link" href="#impulse">改變衝動歷程</a>
+    <a class="toc-link" href="#eval">評估</a>
+    <a class="toc-link" href="#quiz">📝 測驗</a>
   </div>
 </nav>
 
 <main class="main">
 
-<!-- ───── 1. INTRODUCTION ───── -->
+<!-- ══ 1. INTRO ══ -->
 <section class="section" id="intro">
-  <div class="section-header">
-    <div class="section-number">1</div>
-    <h2>Introduction: Why Behavior Change?</h2>
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">
+      <h2>導論：為何需要行為改變？</h2>
+      <div class="en-sub">Introduction: Why Behavior Change?</div>
+    </div>
   </div>
 
-  <p>Population-level behavior change research has become especially topical because patterns of behavior shared across populations are key determinants of health and well-being. Decades of epidemiological research demonstrate a clear link between everyday lifestyle behaviors and long-term health outcomes.</p>
+  <p class="zh-block">在群體層次上，人們共享的行為模式是決定健康與福祉的關鍵因素。兩項里程碑式的研究為本章奠定實證基礎：</p>
 
   <div class="grid-2">
     <div class="card">
-      <h3 style="margin-top:0">📊 The Alameda County Study (Belloc &amp; Breslow, 1972)</h3>
-      <p>Followed <strong>7,000 people over 10 years</strong> and showed that sleep, exercise, alcohol consumption, and eating habits significantly predicted mortality — among the earliest studies to empirically connect everyday behaviors to life expectancy.</p>
+      <h3 style="margin-top:0">📊 阿拉米達郡研究
+        <span class="en" style="font-size:.82rem;font-weight:500">Alameda County Study</span>
+      </h3>
+      <div class="en-quote">"Sleep, exercise, alcohol consumption, and eating habits predicted mortality." — Belloc &amp; Breslow (1972)</div>
+      <div class="zh-note">睡眠、運動、飲酒量與飲食習慣能預測死亡率。追蹤 7,000 人長達 10 年。</div>
     </div>
     <div class="card">
-      <h3 style="margin-top:0">📉 Mortality Risk (Kvaavik et al., 2010)</h3>
-      <p>Among 4,886 individuals, those who smoked, consumed fewer than 3 fruit/vegetable portions daily, did less than 2 h physical activity/week, and drank more than 14 alcohol units had an all-cause mortality risk equivalent to being <strong>12 years older</strong>.</p>
+      <h3 style="margin-top:0">📉 全因死亡風險研究
+        <span class="en" style="font-size:.82rem;font-weight:500">All-Cause Mortality</span>
+      </h3>
+      <div class="en-quote">"Those who smoked, consumed less than 3 portions of fruit and vegetables daily, did less than 2 h of physical activity per week, and consumed more than 14 units of alcohol had a mortality risk equivalent to being 12 years older." — Kvaavik et al. (2010)</div>
+      <div class="zh-note">四項不健康行為同時存在，等同於在生理年齡上老了 <strong>12 歲</strong>。</div>
     </div>
   </div>
 
-  <div class="highlight amber">
-    <p>🌍 <strong>The Scale of the Problem:</strong> In England, more than <strong>60% of the population is overweight or obese</strong>, associated with type 2 diabetes, coronary heart disease, hypertension, osteoarthritis, and cancer — costing an estimated <strong>£5 billion annually</strong> (Department of Health, 2013). Engaging people in self-management and behavior change is critical to health service sustainability.</p>
+  <div class="hl amber">
+    <p>🌍 <strong>規模有多大？</strong>英國超過 <strong>60%</strong> 的人口過重或肥胖，相關健康問題（第二型糖尿病、冠心病、高血壓等）每年額外耗費 <strong>50 億英鎊</strong>（Department of Health, 2013）。</p>
   </div>
 
-  <p>Despite the clear motivation for change, <em>understanding how to bring about that change</em> is far more complex. A review by Michie et al. (2008) identified at least <strong>137 individual behavior change techniques</strong>, concluding that a "one-size-fits-all" approach cannot be adopted — techniques must be carefully matched to the specific antecedents of the target behavior and the target population.</p>
+  <p class="zh-block">儘管改變的<em>動機</em>顯而易見，<em>如何</em>促成改變卻複雜得多。Michie 等人（2008）的文獻回顧找出至少 <strong>137 種</strong>個別行為改變技術（<span class="en">behavior change techniques</span>），並指出「一體適用」（<span class="en">one-size-fits-all</span>）的做法不可行——技術必須根據特定行為的前因（<span class="en">antecedents</span>）來選擇。</p>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 2. CHANGE IS POSSIBLE ───── -->
-<section class="section" id="change-possible">
-  <div class="section-header">
-    <div class="section-number">2</div>
-    <h2>Change is Possible: The Neurological Foundation</h2>
+<!-- ══ 2. CHANGE IS POSSIBLE ══ -->
+<section class="section" id="possible">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">
+      <h2>改變是可能的：神經可塑性基礎</h2>
+      <div class="en-sub">Change is Possible: The Neurological Foundation</div>
+    </div>
   </div>
 
-  <div class="concept-callout">
-    <h4>Brain Plasticity as the Basis for Change</h4>
-    <p>The human brain — approximately <strong>86 billion neurons</strong> — has the capacity, over time, to rewrite the processes that direct what we think, feel, and do (Maslin &amp; Christensen, 2007; Herculano-Houzel, 2009). Activities that once seem difficult or strange can, through practice, become automatic and everyday.</p>
+  <div class="callout">
+    <h4>🧠 關鍵原理：腦部可塑性（Brain Plasticity）</h4>
+    <p>人類大腦約有 <strong>860 億個神經元</strong>，具有重新「編寫」思考、感受與行動的能力（Maslin &amp; Christensen, 2007）。練習新的行為模式，可以自動重塑我們的感知、情緒、思維與技能。</p>
+    <div class="en-quote-w">"Our reprogrammable brains … consisting of approximately 86 billion neurons has the capacity, over time, to rewrite the processes that direct what we think, what we feel, and what we do." (Herculano-Houzel, 2009)</div>
   </div>
 
-  <p>The challenge for behavior change scientists is to <strong>model, explain, and then harness</strong> the cognitive, emotional, and behavioral dynamism of our regulatory control systems (Reynolds &amp; Branscombe, 2015) — and to develop interventions that help people accelerate and consolidate behavior change processes.</p>
+  <p class="zh-block">行為改變科學的挑戰，在於如何建立模型、解釋並善用我們調節控制系統（<span class="en">regulatory control systems</span>）的認知、情感與行為動態性（Reynolds &amp; Branscombe, 2015），進而設計出能加速並鞏固改變的介入方案。</p>
 
-  <div class="highlight green">
-    <p>✅ <strong>Evidence That Change Works:</strong> Reductions in smoking and unsafe sexual behavior; increases in physical activity, healthy diets, self-care, and health screening have all been observed following specific interventions. A NICE-commissioned review of <strong>103 systematic reviews</strong> found that overall, interventions were successful in changing behavior patterns (Jepson et al., 2010; Johnson et al., 2010).</p>
+  <div class="hl green">
+    <p>✅ <strong>介入有效的證據</strong>：NICE 委託的回顧研究涵蓋 <strong>103 篇系統性綜述</strong>，結果顯示介入方案整體上能成功改變行為模式（Jepson et al., 2010; Johnson et al., 2010）。然而，效果大小因族群及介入設計而異——這正是本章強調「系統性規劃」的原因。</p>
   </div>
-
-  <p>However, effectiveness is not guaranteed. Careful modeling of <strong>modifiable regulatory processes</strong> (behavioral determinants) and matched selection of proven change techniques is a prerequisite to success. Poorly designed interventions may not only be ineffective — they may produce <em>negative</em> effects.</p>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 3. INDIVIDUAL VS ENVIRONMENT ───── -->
-<section class="section" id="ind-env">
-  <div class="section-header">
-    <div class="section-number">3</div>
-    <h2>Changing Individuals vs. Changing Environments</h2>
+<!-- ══ 3. INDIVIDUAL vs ENVIRONMENT ══ -->
+<section class="section" id="indenv">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">
+      <h2>改變個人 vs. 改變環境</h2>
+      <div class="en-sub">Changing Individuals vs. Changing Environments</div>
+    </div>
   </div>
 
-  <p>Understanding how to help people reprogram themselves is important, but <strong>environmental changes may provide more powerful levers of change</strong>. Changes in the physical, commercial, and social environment can prompt widespread behavior change without requiring persuasion of individuals.</p>
+  <p class="zh-block">幫助人「重新編程」自己固然重要，但<strong>環境改變往往提供更強大的改變槓桿</strong>——不需要說服個人，便能在群體層次促成廣泛的行為改變。</p>
 
   <div class="grid-2">
     <div class="card">
-      <div style="font-size:2rem;margin-bottom:10px">👤</div>
-      <h3 style="margin-top:0;color:#1d4ed8">Individual-Level Approaches</h3>
-      <p>Target intrapersonal regulatory processes or psychological "determinants" — changing what people believe, feel, and are motivated to do. If effective and widely applied, individual change can have population-wide effects.</p>
-      <div style="margin-top:12px">
-        <span class="tag tag-blue">Attitude change</span>
-        <span class="tag tag-blue">Self-efficacy</span>
-        <span class="tag tag-blue">Skill training</span>
-        <span class="tag tag-blue">Planning</span>
-      </div>
+      <div style="font-size:1.8rem;margin-bottom:10px">👤</div>
+      <h3 style="margin-top:0;color:var(--blue-d)">個人層次介入
+        <span class="en" style="font-weight:400;font-size:.82rem">Individual-Level</span>
+      </h3>
+      <p style="font-size:.9rem">針對個體內在的調節歷程（<span class="en">intrapersonal regulatory processes</span>）或心理「決定因素」（<span class="en">psychological determinants</span>）。若有效且廣泛應用，個人改變可以產生群體層次的效果。</p>
+      <div style="margin-top:10px"><span class="tag tb">態度改變</span><span class="tag tb">自我效能</span><span class="tag tb">技能訓練</span><span class="tag tb">行動計畫</span></div>
     </div>
     <div class="card">
-      <div style="font-size:2rem;margin-bottom:10px">🏙️</div>
-      <h3 style="margin-top:0;color:#7c3aed">Environmental / Structural Approaches</h3>
-      <p>Target the <em>context</em> in which choices are made — changing the physical, commercial, legal, or social environment rather than individual cognitions.</p>
-      <div style="margin-top:12px">
-        <span class="tag tag-purple">Food taxes</span>
-        <span class="tag tag-purple">Default systems</span>
-        <span class="tag tag-purple">Legislation</span>
-        <span class="tag tag-purple">Urban design</span>
-      </div>
+      <div style="font-size:1.8rem;margin-bottom:10px">🏙️</div>
+      <h3 style="margin-top:0;color:var(--purple)">環境 / 結構層次
+        <span class="en" style="font-weight:400;font-size:.82rem">Environmental/Structural</span>
+      </h3>
+      <p style="font-size:.9rem">針對人們做選擇的<em>脈絡</em>（<span class="en">context of choice</span>）——改變物理、商業或法律環境，而非個別認知。</p>
+      <div style="margin-top:10px"><span class="tag tp">食品稅</span><span class="tag tp">預設選項</span><span class="tag tp">立法</span><span class="tag tp">城市設計</span></div>
     </div>
   </div>
 
-  <div class="highlight amber">
-    <p>⚠️ <strong>Whole-System Thinking Required:</strong> For complex problems like obesity prevention, individual approaches alone are insufficient. A <em>whole-system approach</em> targeting multiple processes simultaneously is needed. Organizational change matters too: Haslam et al. (2014) found that residents who redesigned their own care home environment showed significantly greater cognitive improvements than those whose environment was redesigned for them.</p>
+  <div class="hl amber">
+    <p>⚠️ <strong>需要全系統觀點（Whole-System Approach）：</strong>面對複雜問題（如肥胖預防），單靠個人介入不足。Haslam 等人（2014）發現：讓<em>居民自己</em>重新設計安養院環境的組別，認知功能和公共空間使用顯著優於由工作人員代為設計的組別——說明組織與環境歷程的重要性。</p>
   </div>
 
-  <h3>Legislative Change</h3>
-  <p>Legislation can have profound behavioral effects. The UK smoking ban in public places (2007) was followed by significant reductions in myocardial infarction hospital admissions. A parallel US study (Sargent et al., 2004) found a significant drop during a 6-month smoking ban in Montana, while surrounding areas without a ban experienced a non-significant increase.</p>
+  <h3>立法改變的影響 <span class="en">Legislative Change</span></h3>
+  <p class="zh-block">英國 2007 年禁止在公共場所吸菸後，心肌梗塞住院率顯著下降。美國蒙大拿州的類似研究（Sargent et al., 2004）也發現，禁菸令實施的 6 個月內住院率顯著降低，而周圍未禁菸地區則呈現微幅上升趨勢。</p>
+
+  <div class="en-quote">"Legislative change can also have important effects on behavior change and on health benefits." — Abraham &amp; Denford (2017, p.4)</div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 4. NUDGE & EAST ───── -->
+<!-- ══ 4. NUDGE & EAST ══ -->
 <section class="section" id="nudge">
-  <div class="section-header">
-    <div class="section-number">4</div>
-    <h2>Policy Frameworks: NUDGE &amp; EAST</h2>
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">
+      <h2>政策框架：NUDGE 與 EAST</h2>
+      <div class="en-sub">Policy Frameworks: NUDGE &amp; EAST</div>
+    </div>
   </div>
 
-  <p>Both the UK and US governments use accessible frameworks to guide behavior change policy. These approaches favor <em>low-friction</em> design — making desired behaviors easier without banning alternatives.</p>
+  <h3>NUDGE 框架 <span class="en">Thaler &amp; Sunstein, 2008</span></h3>
+  <div class="callout">
+    <h4>核心定義</h4>
+    <p>NUDGE 是一種改變「選擇架構」（<span class="en" style="color:#93c5fd">choice architecture</span>）的介入，在不禁止選項、也不顯著改變經濟誘因的前提下影響行為。</p>
+    <div class="en-quote-w">"Putting fruit at eye level counts as a nudge. Banning junk food does not." — Thaler &amp; Sunstein (2008)</div>
+  </div>
 
-  <h3>The NUDGE Framework (Thaler &amp; Sunstein, 2008)</h3>
-  <p>A NUDGE alters choice architecture "without forbidding options or significantly changing economic incentives" — changes that are "easy and cheap to avoid." Putting fruit at eye level counts as a nudge; banning junk food does not.</p>
-
-  <div class="framework">
-    <div class="framework-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+  <div class="fw-grid">
+    <div class="fw-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
       <div class="letter">N</div>
-      <div class="word">iNcentives</div>
-      <div class="desc">Use rewards &amp; financial reinforcement to shape behavioral responses</div>
+      <div class="word-en">iNcentives</div><div class="word-zh">誘因</div>
+      <div class="desc">以獎勵或財務誘因塑造行為反應</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#065f46">
+    <div class="fw-item" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#065f46">
       <div class="letter">U</div>
-      <div class="word">Understand mappings</div>
-      <div class="desc">Help people link actions to outcomes</div>
+      <div class="word-en">Understand mappings</div><div class="word-zh">理解因果對應</div>
+      <div class="desc">幫助人們理解行動與結果之間的連結</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
+    <div class="fw-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
       <div class="letter">D</div>
-      <div class="word">Defaults</div>
-      <div class="desc">Design opt-in/opt-out systems that make the desired behavior the path of least resistance</div>
+      <div class="word-en">Defaults</div><div class="word-zh">預設選項</div>
+      <div class="desc">將期望行為設定為「最省力的選項」（如器官捐贈預設同意）</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+    <div class="fw-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
       <div class="letter">G</div>
-      <div class="word">Give feedback</div>
-      <div class="desc">Provide real-time information about current behavior and its effects</div>
+      <div class="word-en">Give feedback</div><div class="word-zh">提供回饋</div>
+      <div class="desc">即時提供有關當前行為及其影響的資訊</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
+    <div class="fw-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
       <div class="letter">E</div>
-      <div class="word">Expect errors</div>
-      <div class="desc">Design for human fallibility; make it easy to recover from mistakes</div>
+      <div class="word-en">Expect errors</div><div class="word-zh">預期錯誤</div>
+      <div class="desc">以人類的易錯性為設計前提，使錯誤容易復原</div>
     </div>
   </div>
 
-  <div class="highlight green">
-    <p>💡 <strong>The Default Effect (Organ Donation):</strong> Countries with opt-<em>out</em> (assumed consent) systems show donation rates above <strong>99%</strong>; countries like the UK using opt-<em>in</em> systems show only ~<strong>17%</strong> (Johnson &amp; Goldstein, 2003). Shepherd et al. (2014) confirmed that opt-out countries have significantly higher total transplants. This illustrates the enormous behavioral power of default architecture.</p>
+  <div class="hl green">
+    <p>💡 <strong>預設效應典型案例——器官捐贈：</strong>採「預設同意」（<span class="en">opt-out</span>）制度的國家捐贈率超過 <strong>99%</strong>；英國採「主動表態」（<span class="en">opt-in</span>）制度僅約 <strong>17%</strong>（Johnson &amp; Goldstein, 2003）。Shepherd 等人（2014）確認，採 opt-out 國家的腎臟與肝臟移植總量均顯著較高。</p>
   </div>
 
-  <div class="highlight purple">
-    <p>💡 <strong>Financial Incentives:</strong> Pregnant women paid to abstain from smoking showed <strong>24% cessation</strong> at 12-week postpartum follow-up vs. only <strong>3%</strong> in the control group (Heil et al., 2008). Key question: can incentive-based interventions generate <em>intrinsic</em> motivation that sustains change after incentives are withdrawn?</p>
+  <div class="hl purple">
+    <p>💡 <strong>財務誘因（Financial Incentives）：</strong>獲得財務獎勵的孕婦戒菸率在產後 12 週追蹤時達 <strong>24%</strong>，控制組僅 <strong>3%</strong>（Heil et al., 2008）。關鍵問題：誘因移除後，改變能否持續？即：是否觸發了內在動機（<span class="en">intrinsic motivation</span>）？</p>
   </div>
 
-  <h3>The EAST Framework (Behavioural Insights Team, 2014)</h3>
-  <p>Designed for busy policy makers: to encourage any behavior, make it:</p>
+  <h3>EAST 框架 <span class="en">Behavioural Insights Team, 2014</span></h3>
+  <p class="zh-block">專為繁忙政策制定者設計的簡易版框架：讓目標行為變得——</p>
 
-  <div class="framework">
-    <div class="framework-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
-      <div class="letter">E</div><div class="word">Easy</div>
-      <div class="desc">Reduce friction; simplify processes and decisions</div>
+  <div class="fw-grid">
+    <div class="fw-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="letter">E</div><div class="word-en">Easy</div><div class="word-zh">容易</div>
+      <div class="desc">降低摩擦力，簡化流程與決策</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#fde68a,#fef3c7);color:#78350f">
-      <div class="letter">A</div><div class="word">Attractive</div>
-      <div class="desc">Use salience and incentives to draw interest</div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#fde68a,#fef3c7);color:#78350f">
+      <div class="letter">A</div><div class="word-en">Attractive</div><div class="word-zh">吸引人</div>
+      <div class="desc">利用顯著性與誘因吸引注意</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#064e3b">
-      <div class="letter">S</div><div class="word">Social</div>
-      <div class="desc">Harness social norms, networks, and peer influence</div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#064e3b">
+      <div class="letter">S</div><div class="word-en">Social</div><div class="word-zh">社會性</div>
+      <div class="desc">善用社會規範、社群網絡與同儕影響</div>
     </div>
-    <div class="framework-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
-      <div class="letter">T</div><div class="word">Timely</div>
-      <div class="desc">Intervene when people are most receptive to change</div>
+    <div class="fw-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="letter">T</div><div class="word-en">Timely</div><div class="word-zh">時機恰當</div>
+      <div class="desc">在人們最易接受改變的時刻進行介入</div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 5. INTERVENTION MAPPING ───── -->
+<!-- ══ 5. INTERVENTION MAPPING ══ -->
 <section class="section" id="im">
-  <div class="section-header">
-    <div class="section-number">5</div>
-    <h2>Intervention Mapping (IM): Systematic Planning</h2>
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">
+      <h2>介入映射法：系統性規劃框架</h2>
+      <div class="en-sub">Intervention Mapping (IM): A Systematic Planning Framework</div>
+    </div>
   </div>
 
-  <p>Effective behavior change interventions require careful, systematic design. The <strong>Intervention Mapping (IM) approach</strong> (Bartholomew et al., 2011; <a href="http://www.interventionmapping.com" target="_blank">interventionmapping.com</a>) provides a comprehensive and practical guide, ensuring that change techniques are evidence-based and precisely matched to the regulatory processes driving the target behavior.</p>
+  <p class="zh-block"><span class="en">Intervention Mapping (IM)</span>（Bartholomew et al., 2011）提供一套全面且實用的介入設計與評估指引，確保所選用的改變技術具有實證基礎，並能精確對應驅動目標行為的調節歷程。</p>
 
-  <div class="highlight">
-    <p>📌 <strong>Why IM Matters:</strong> Without systematic planning, interventions may fail to incorporate the detailed tailoring on which effectiveness depends. "Bland, off-the-peg interventions" lack the versatility to match techniques to specific behavior change challenges — and so fail to progress a science of behavior change.</p>
+  <div class="hl">
+    <p>📌 <strong>核心精神：</strong>缺乏系統性規劃的介入，往往無法融入決定有效性的精細調整（<span class="en">detailed tailoring</span>）。「現成的、一般化介入方案」（<span class="en">bland, off-the-peg interventions</span>）缺乏彈性，無法匹配特定行為改變挑戰的需求。</p>
   </div>
 
-  <h3>The 6 Stages of Intervention Mapping</h3>
+  <h3>IM 的六個規劃階段 <span class="en">6 Stages of IM</span></h3>
   <ol class="steps">
     <li>
-      <div class="step-content">
-        <strong>Needs Assessment</strong>
-        <span>Identify the problem caused by specified behavior patterns through literature reviews and stakeholder consultation. A thorough needs assessment can prevent wasting time on unnecessary or ineffectual interventions — it may reveal that dissemination of best practice, rather than a new intervention, is the optimal response.</span>
+      <div class="sc">
+        <strong>需求評估 <em class="en-label">Needs Assessment</em></strong>
+        <span class="zh">透過文獻回顧與利害關係人諮詢，釐清特定行為模式所造成的問題。充分的需求評估可避免在不必要或無效的介入上浪費資源——有時最佳回應只是推廣現有最佳實踐，而非設計新介入。</span>
       </div>
     </li>
     <li>
-      <div class="step-content">
-        <strong>Defining Intervention Objectives</strong>
-        <span>Precisely define the behavior changes required. For example, a sexual health intervention might target condom acquisition, carrying, negotiation, and correct use — each a distinct behavioral target requiring separate analysis (corresponding to Characteristic 1 in Table 1.1).</span>
+      <div class="sc">
+        <strong>定義介入目標 <em class="en-label">Defining Intervention Objectives</em></strong>
+        <span class="zh">精確定義所需的行為改變。例如，性健康介入可能需要分別針對：取得保險套、隨身攜帶、協商使用、正確使用等不同行為目標進行分析。</span>
       </div>
     </li>
     <li>
-      <div class="step-content">
-        <strong>Identifying Regulatory Processes &amp; Change Techniques</strong>
-        <span>Identify which modifiable mechanisms maintain the current (unwanted) behavior, then select evidence-based change techniques capable of altering those mechanisms. If designers make incorrect assumptions about key behavioral drivers, they will employ suboptimal or even counterproductive techniques (e.g., using fear appeals with an already-motivated audience).</span>
+      <div class="sc">
+        <strong>確認調節歷程與改變技術 <em class="en-label">Regulatory Processes &amp; Change Techniques</em></strong>
+        <span class="zh">找出維持現有（不良）行為的可修改機制，並選擇有實證支持、能改變這些機制的技術。若設計者對行為驅動因素的假設有誤，便可能選用次佳甚至有害的技術（例如：對已有動機的族群使用恐懼訴求，可能引發防禦反應）。</span>
       </div>
     </li>
     <li>
-      <div class="step-content">
-        <strong>Assembling the Intervention</strong>
-        <span>Develop practical delivery formats and assemble the intervention components. Decisions include delivery mode (face-to-face, digital, print), setting (school, worksite, community), and the fit between components and the cultural/practical context.</span>
+      <div class="sc">
+        <strong>組裝介入方案 <em class="en-label">Assembling the Intervention</em></strong>
+        <span class="zh">發展實際的遞送形式並組合介入元素，包括決定遞送模式（面對面、數位、印刷品）、場域（學校、職場、社區），以及方案元素與文化脈絡的適配性。</span>
       </div>
     </li>
     <li>
-      <div class="step-content">
-        <strong>Planning Delivery &amp; Implementation in Context</strong>
-        <span>Anticipate how the intervention will be used in everyday settings. Is it engaging, acceptable, practical, and sustainable? Pilot testing and co-creation with recipients is critical. Competent delivery may require additional training — e.g., a review of motivational interviewing training found only 2 of 11 studies reported 75%+ clinician proficiency (Hall et al., 2015).</span>
+      <div class="sc">
+        <strong>規劃實際情境中的推行 <em class="en-label">Planning Delivery &amp; Implementation</em></strong>
+        <span class="zh">預想介入在真實日常情境中如何被使用。方案是否有吸引力、可接受、實用且可持續？需進行試驗（<span class="en">pilot testing</span>）並與接受者共同設計（<span class="en">co-creation</span>）。</span>
       </div>
     </li>
     <li>
-      <div class="step-content">
-        <strong>Planning Intervention Evaluation</strong>
-        <span>Define outcome, process, and economic evaluation measures from the outset. When behavior changes are defined in Stage 2, simultaneously identify how to measure those changes. When regulatory mechanisms are identified in Stage 3, select measures to assess the change processes by which the intervention is hypothesized to work.</span>
+      <div class="sc">
+        <strong>規劃介入評估 <em class="en-label">Planning Intervention Evaluation</em></strong>
+        <span class="zh">從一開始就定義結果指標、歷程指標與經濟評估。評估規劃不能是事後補救——必須在定義介入目標（第二階段）時同步思考如何測量。</span>
       </div>
     </li>
   </ol>
 
-  <h3>12 Characteristics of Any Behavior Change Intervention (Abraham et al., 2016)</h3>
-  <div class="table-wrapper">
+  <h3>行為改變介入的 12 項特徵 <span class="en">12 Characteristics (Abraham et al., 2016)</span></h3>
+  <div class="tw">
     <table>
-      <thead><tr><th>#</th><th>Characteristic</th></tr></thead>
+      <thead><tr><th>#</th><th>中文</th><th>English</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Specific behavior change(s) targeted</td></tr>
-        <tr><td>2</td><td>Modifiable processes (mechanisms) at different levels that regulate relevant behavior patterns</td></tr>
-        <tr><td>3</td><td>Change techniques known to alter the identified regulatory mechanisms</td></tr>
-        <tr><td>4</td><td>Delivery methods or formats (face-to-face, telephone, interactive online, leaflets, etc.)</td></tr>
-        <tr><td>5</td><td>Intervention components — the collection of materials and methods employed</td></tr>
-        <tr><td>6</td><td>The setting in which the intervention will be delivered (worksite, school, clinic, etc.)</td></tr>
-        <tr><td>7</td><td>Fit between intervention components and the cultural/practical context</td></tr>
-        <tr><td>8</td><td>Characteristics, qualifications, and training of those delivering the intervention</td></tr>
-        <tr><td>9</td><td>Intensity (contact time per session)</td></tr>
-        <tr><td>10</td><td>Duration (number of sessions; overall period)</td></tr>
-        <tr><td>11</td><td>Fidelity of delivery — was the intervention delivered as designed?</td></tr>
-        <tr><td>12</td><td>Evaluation: outcome, process, and economic evaluations</td></tr>
+        <tr><td>1</td><td class="td-zh">目標行為改變</td><td><div class="td-en">Specific behavior change(s) targeted</div></td></tr>
+        <tr><td>2</td><td class="td-zh">可修改的調節歷程（機制）</td><td><div class="td-en">Modifiable processes (mechanisms) regulating behavior</div></td></tr>
+        <tr><td>3</td><td class="td-zh">能改變已辨識機制的改變技術</td><td><div class="td-en">Change techniques targeting identified mechanisms</div></td></tr>
+        <tr><td>4</td><td class="td-zh">遞送方式與格式</td><td><div class="td-en">Delivery methods (face-to-face, online, leaflets…)</div></td></tr>
+        <tr><td>5</td><td class="td-zh">介入元素（材料與方法集合）</td><td><div class="td-en">Intervention components</div></td></tr>
+        <tr><td>6</td><td class="td-zh">推行場域</td><td><div class="td-en">Setting (worksite, school, clinic…)</div></td></tr>
+        <tr><td>7</td><td class="td-zh">元素與文化/實際脈絡的適配性</td><td><div class="td-en">Fit with cultural and practical context</div></td></tr>
+        <tr><td>8</td><td class="td-zh">介入推行者的特質與訓練</td><td><div class="td-en">Characteristics, qualifications &amp; training of deliverers</div></td></tr>
+        <tr><td>9</td><td class="td-zh">強度（每次接觸時間）</td><td><div class="td-en">Intensity (contact time per session)</div></td></tr>
+        <tr><td>10</td><td class="td-zh">持續時間（次數與總期間）</td><td><div class="td-en">Duration (sessions &amp; overall period)</div></td></tr>
+        <tr><td>11</td><td class="td-zh">推行保真度（是否依設計執行）</td><td><div class="td-en">Fidelity of delivery</div></td></tr>
+        <tr><td>12</td><td class="td-zh">評估（結果、歷程、經濟評估）</td><td><div class="td-en">Evaluation: outcome, process &amp; economic</div></td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 6. CHOICE OR HABIT ───── -->
+<!-- ══ 6. CHOICE OR HABIT ══ -->
 <section class="section" id="habit">
-  <div class="section-header">
-    <div class="section-number">6</div>
-    <h2>Choice or Habit? Dual-Process Models of Behavior</h2>
-  </div>
-
-  <p>Behavior change is often framed as helping people make the right <em>choices</em> — implying deliberate, rational decision-making. Yet many problematic behavior patterns are enacted <strong>without conscious deliberation</strong>. They are automatic and habitual, triggered by environmental cues. Changing the context may be more effective than changing the mind.</p>
-
-  <div class="concept-callout">
-    <h4>Dual-Process Theory: Two Regulatory Systems</h4>
-    <p>A series of dual-process models (Borland, 2014; Kahneman, 2011; Strack &amp; Deutsch, 2004) characterize two distinct regulatory systems operating in parallel on a moment-to-moment basis — one conscious and deliberative, the other automatic and impulsive.</p>
-  </div>
-
-  <div class="dual-process">
-    <div class="process-box reflective">
-      <h4>🧠 Reflective System</h4>
-      <ul>
-        <li>Conscious, deliberative control of action</li>
-        <li>Rational weighing of pros and cons</li>
-        <li>Goal-directed and effortful processing</li>
-        <li>Susceptible to cognitive depletion (ego depletion; Baumeister et al., 1998)</li>
-        <li>Responds to verbal instructions &amp; planning prompts</li>
-        <li>Can consciously monitor and modify routine behavior</li>
-      </ul>
-    </div>
-    <div class="process-box impulsive">
-      <h4>⚡ Impulsive System</h4>
-      <ul>
-        <li>Automatic, habitual, fast responses</li>
-        <li>Operates with low conscious awareness</li>
-        <li>Triggered by environmental cues via conditioning</li>
-        <li>Built through repetition (operant conditioning)</li>
-        <li>Difficult to modify through willpower alone</li>
-        <li>Produces subjective "urges" and "cravings"</li>
-      </ul>
+  <div class="sec-header">
+    <div class="sec-num">6</div>
+    <div class="sec-title">
+      <h2>選擇還是習慣？雙歷程模型</h2>
+      <div class="en-sub">Choice or Habit? Dual-Process Models of Behavior</div>
     </div>
   </div>
 
-  <h3>The Reflective-Impulsive Model (RIM; Strack &amp; Deutsch, 2004)</h3>
-  <p>The RIM, elaborated by Borland (2014) as the <strong>Context, Executive and Operational Systems (CEOS)</strong> model, proposes that the two systems operate in parallel. The reflective system can become <em>aware</em> of the impulsive system's operation — perceiving "urges" and "cravings" — and this awareness is critical to regaining reflective control over otherwise automatic behavior patterns.</p>
+  <p class="zh-block">行為改變常被理解為幫助人們做出「正確選擇」——暗示著理性、深思熟慮的決策歷程。然而，許多問題行為模式是<strong>無需意識思考便自動發生的</strong>，由環境線索（<span class="en">environmental cues</span>）觸發。改變脈絡，有時比改變心態更有效。</p>
+
+  <div class="callout">
+    <h4>雙歷程理論：兩套調節系統 <span style="font-weight:400;font-size:.88rem;opacity:.8">Dual-Process Theory</span></h4>
+    <p>一系列雙歷程模型（Borland, 2014; Kahneman, 2011; Strack &amp; Deutsch, 2004）描述兩套不同的調節系統在每個當下並行運作——一套意識且深思，另一套自動且衝動。</p>
+    <div class="en-quote-w">"The same behavioral sequence may involve one or both systems in different contexts." — Abraham &amp; Denford (2017)</div>
+  </div>
+
+  <div class="dual">
+    <div class="proc ref">
+      <h4>🧠 反思系統 <em style="font-size:.82rem;font-weight:500">Reflective System</em></h4>
+      <ul>
+        <li>有意識、深思熟慮的行動控制<span class="zh">Conscious, deliberative control of action</span></li>
+        <li>理性權衡利弊<span class="zh">Rational weighing of pros and cons</span></li>
+        <li>目標導向、需要認知資源<span class="zh">Goal-directed, cognitively effortful</span></li>
+        <li>容易因認知耗盡而失效<span class="zh">Vulnerable to ego depletion (Baumeister et al., 1998)</span></li>
+        <li>回應語言指令與計畫提示<span class="zh">Responsive to verbal prompts &amp; planning</span></li>
+      </ul>
+    </div>
+    <div class="proc imp">
+      <h4>⚡ 衝動系統 <em style="font-size:.82rem;font-weight:500">Impulsive System</em></h4>
+      <ul>
+        <li>自動、習慣、快速的反應<span class="zh">Automatic, habitual, fast responses</span></li>
+        <li>低意識覺知下運作<span class="zh">Operates with low conscious awareness</span></li>
+        <li>由環境線索透過制約觸發<span class="zh">Triggered by cues via conditioning</span></li>
+        <li>透過重複建立，難以靠意志力修改<span class="zh">Built through repetition; hard to override by willpower</span></li>
+        <li>產生主觀「衝動」與「渴望」<span class="zh">Produces subjective urges &amp; cravings</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>反思—衝動模型（RIM） <span class="en">Reflective-Impulsive Model, Strack &amp; Deutsch (2004)</span></h3>
+  <p class="zh-block">RIM 由 Borland（2014）進一步延伸為<span class="en">情境—執行—操作系統模型（CEOS）</span>。兩套系統並行運作，反思系統能察覺衝動系統的活動（即體驗到「衝動」或「渴望」）——這種覺察是重新獲得對自動行為控制的關鍵。</p>
 
   <div class="model-box">
-    <h4>RIM: How the Two Systems Interact</h4>
+    <h4>RIM：兩系統的互動 / Interaction Between Systems</h4>
     <div class="model-flow">
-      <div class="model-node">Environmental Cue</div>
-      <div class="model-arrow">→</div>
-      <div class="model-node purple">Impulsive System<br><small>(automatic urge)</small></div>
-      <div class="model-arrow">↕</div>
-      <div class="model-node" style="background:#1d4ed8">Reflective System<br><small>(conscious awareness)</small></div>
-      <div class="model-arrow">→</div>
-      <div class="model-node green">Behavioral Response<br><small>(habitual or new)</small></div>
+      <div class="mnode">環境線索<br><small>Environmental Cue</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode p">衝動系統<br><small>Impulsive System</small></div>
+      <div class="marrow">↕</div>
+      <div class="mnode" style="background:#1d4ed8">反思系統<br><small>Reflective System</small></div>
+      <div class="marrow">→</div>
+      <div class="mnode g">行為反應<br><small>Behavioral Response</small></div>
     </div>
   </div>
 
-  <div class="highlight amber">
-    <p>⚠️ <strong>Mindless Eating (Wansink, 2007):</strong> Eating is rarely consciously monitored — each eating episode can be initiated by internal impulses or external cues with little deliberation. A highly motivated person may still find themselves consuming more calories than intended, because the impulsive system governs action independently of reflective intentions.</p>
+  <div class="hl amber">
+    <p>⚠️ <strong>「無意識飲食」問題（Wansink, 2007）：</strong>每一次進食很少被仔細監控——進食行為可由內在衝動或外部線索觸發，幾乎不需要深思熟慮。結果：一個動機強烈的人仍可能發現自己攝取了超過預期的熱量，因為衝動系統獨立於反思意圖而運作。</p>
   </div>
 
-  <div class="highlight">
-    <p>💡 <strong>Practical Application — Self-Monitoring:</strong> A food diary completed immediately after eating deliberately activates the reflective system, disrupting mindless consumption. This illustrates how a change technique can be <em>selected</em> through understanding the underlying regulatory processes (Abraham &amp; Michie, 2008). However, conscious self-monitoring is cognitively taxing. Sustainable change ultimately requires making <strong>new behavioral routines automatic</strong> — breaking unwanted habits and building new ones (Dean, 2013).</p>
+  <div class="hl">
+    <p>💡 <strong>實務應用——自我監控（Self-Monitoring）：</strong>每次進食後立即記錄飲食日誌，主動啟動反思系統，打斷無意識進食。然而，持續依賴意識控制在認知上消耗巨大（<span class="en">cognitively taxing</span>）。可持續的行為改變最終需要讓<strong>新的行為例程自動化</strong>——打破舊習慣，建立新習慣（Dean, 2013）。</p>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 7. IMB MODEL ───── -->
+<!-- ══ 7. IMB MODEL ══ -->
 <section class="section" id="imb">
-  <div class="section-header">
-    <div class="section-number">7</div>
-    <h2>The IMB Skills Model: Targeting Reflective Processes</h2>
+  <div class="sec-header">
+    <div class="sec-num">7</div>
+    <div class="sec-title">
+      <h2>IMB 技能模型：針對反思歷程的介入</h2>
+      <div class="en-sub">The Information-Motivation-Behavioral Skills (IMB) Model</div>
+    </div>
   </div>
 
-  <p>The <strong>Information-Motivation-Behavioral Skills (IMB) model</strong> (Fisher &amp; Fisher, 1992) is a well-tested framework for designing individual-level interventions targeting the reflective system. The model proposes that changes in the reflective system occur when three conditions are met:</p>
+  <p class="zh-block"><strong>資訊—動機—行為技能（IMB）模型</strong>（Fisher &amp; Fisher, 1992）是針對個體層次介入、以反思系統為目標的成熟框架。模型主張，當個人同時具備以下三項條件時，反思系統的改變最可能發生：</p>
 
-  <div class="imb-grid">
-    <div class="imb-card info">
+  <div class="imb">
+    <div class="imbc i1">
       <div class="icon">📖</div>
-      <h4>Information</h4>
-      <p>Relevant, accurate knowledge about behavior and its consequences. Critical when motivated, skilled people lack awareness of health risks or behavioral options (e.g., calorie content, STI transmission routes).</p>
+      <h4>資訊 <span style="font-size:.75em;font-weight:500;display:block">Information</span></h4>
+      <p>關於行為及其後果的正確知識。當有動機且有技能的人，僅僅缺乏對健康風險或行為選項的認識時，提供資訊是第一步。</p>
     </div>
-    <div class="imb-card motiv">
+    <div class="imbc i2">
       <div class="icon">🔥</div>
-      <h4>Motivation</h4>
-      <p>The willingness and intent to perform the behavior. Information provision alone is insufficient for unmotivated audiences — motivational processes must be directly targeted through specific techniques.</p>
+      <h4>動機 <span style="font-size:.75em;font-weight:500;display:block">Motivation</span></h4>
+      <p>執行行為的意願與意圖。對於缺乏動機的族群，單純提供資訊是不夠的——必須直接以特定技術針對動機歷程。</p>
     </div>
-    <div class="imb-card skills">
+    <div class="imbc i3">
       <div class="icon">🛠️</div>
-      <h4>Behavioral Skills</h4>
-      <p>The practical capabilities to execute and sustain the behavior. Motivated, informed people can still fail to change if they lack skills to translate intention into action or to manage the social challenges of change.</p>
+      <h4>行為技能 <span style="font-size:.75em;font-weight:500;display:block">Behavioral Skills</span></h4>
+      <p>執行並維持行為所需的實際能力。即使有動機又有資訊，若缺乏將意圖轉化為行動或管理改變過程中社交挑戰的技能，行為改變仍會失敗。</p>
     </div>
   </div>
 
-  <h3>Five Key Determinants of Motivation (Fishbein et al., 2001)</h3>
+  <div class="en-quote">"Intervention designers should assess which informational, motivational, or skill antecedents are lacking in a target population and address these in interventions designed to change behavior patterns within that population." — Abraham &amp; Denford (2017, p.13)</div>
+  <div class="zh-note">介入設計者應評估目標族群中哪一項前因（資訊、動機、技能）有所欠缺，並在介入設計中針對性地加以補強。</div>
+
+  <h3>動機的五項關鍵決定因素 <span class="en">Fishbein et al. (2001)</span></h3>
   <div class="card">
     <ol class="steps">
-      <li><div class="step-content"><strong>Outcome Expectancies</strong><span>Belief that the advantages of changing behavior outweigh the disadvantages</span></div></li>
-      <li><div class="step-content"><strong>Anticipated Positive Affect</strong><span>Expectation that behavior change will lead to a positive emotional reaction (pride, satisfaction)</span></div></li>
-      <li><div class="step-content"><strong>Social Norms</strong><span>Belief that significant others will approve of the proposed change</span></div></li>
-      <li><div class="step-content"><strong>Identity / Self-Image</strong><span>Belief that the behavior change is consistent with who the person is or aspires to be</span></div></li>
-      <li><div class="step-content"><strong>Self-Efficacy (Bandura, 1997)</strong><span>Belief that one is capable of successfully performing the required behavior. High self-efficacy leads to more challenging goals, more effort, more flexible problem-solving, and greater persistence.</span></div></li>
+      <li><div class="sc"><strong>結果預期 <em class="en-label">Outcome Expectancies</em></strong><span class="zh">相信改變行為的好處大於代價</span></div></li>
+      <li><div class="sc"><strong>預期正向情緒反應 <em class="en-label">Anticipated Positive Affect</em></strong><span class="zh">預期行為改變會帶來正向情緒（驕傲、滿足感）</span></div></li>
+      <li><div class="sc"><strong>社會規範 <em class="en-label">Social Norms</em></strong><span class="zh">相信重要他人會支持或認可這項改變</span></div></li>
+      <li><div class="sc"><strong>自我認同一致性 <em class="en-label">Identity / Self-Image</em></strong><span class="zh">相信行為改變符合自己的身分認同或理想自我形象</span></div></li>
+      <li><div class="sc"><strong>自我效能 <em class="en-label">Self-Efficacy (Bandura, 1997)</em></strong><span class="zh">相信自己有能力成功執行所需行為。高自我效能帶來更高挑戰的目標設定、更多努力、更靈活的問題解決策略，以及更強的堅持力。</span></div></li>
     </ol>
   </div>
 
-  <h3>Three Classes of Behavioral Skills</h3>
+  <h3>三類行為技能 <span class="en">Three Classes of Behavioral Skills</span></h3>
   <div class="grid-3">
     <div class="card">
-      <div style="font-size:1.8rem;margin-bottom:10px">🎯</div>
-      <h3 style="margin-top:0">Self-Regulatory Skills</h3>
-      <p style="font-size:0.9rem">Goal-setting, self-monitoring, and planning. Based on <strong>Control Theory</strong> (Carver &amp; Scheier, 1982): set goals → monitor current behavior → take action → monitor progress → re-set goals. Includes SMART goal-setting (Doran, 1981).</p>
+      <div style="font-size:1.7rem;margin-bottom:8px">🎯</div>
+      <h3 style="margin-top:0">自我調節技能<br><span class="en" style="font-size:.78rem;font-weight:400">Self-Regulatory Skills</span></h3>
+      <p style="font-size:.88rem">目標設定、自我監控、行動計畫。以<span class="en">控制理論（Control Theory, Carver &amp; Scheier, 1982）</span>為基礎：設定目標→監控現狀→採取行動→監控進展→重設目標。</p>
     </div>
     <div class="card">
-      <div style="font-size:1.8rem;margin-bottom:10px">💪</div>
-      <h3 style="margin-top:0">Motor Skills</h3>
-      <p style="font-size:0.9rem">Physical capabilities required for the behavior (e.g., correct inhaler use, handwashing technique, safe injection practice). May require modeling, guided practice, and feedback on performance.</p>
+      <div style="font-size:1.7rem;margin-bottom:8px">💪</div>
+      <h3 style="margin-top:0">動作技能<br><span class="en" style="font-size:.78rem;font-weight:400">Motor Skills</span></h3>
+      <p style="font-size:.88rem">行為所需的身體能力（如正確使用吸入器、洗手技術、注射技巧）。可能需要示範、練習與操作回饋。</p>
     </div>
     <div class="card">
-      <div style="font-size:1.8rem;margin-bottom:10px">🤝</div>
-      <h3 style="margin-top:0">Social Skills</h3>
-      <p style="font-size:0.9rem">Interpersonal capabilities to negotiate change with others (condom negotiation, refusal of alcohol, assertiveness). Role play with modeling and video feedback is highly effective (Video Interaction Guidance; Kennedy et al., 2011).</p>
+      <div style="font-size:1.7rem;margin-bottom:8px">🤝</div>
+      <h3 style="margin-top:0">社交技能<br><span class="en" style="font-size:.78rem;font-weight:400">Social Skills</span></h3>
+      <p style="font-size:.88rem">與他人協商改變的人際能力（如保險套協商、拒絕飲酒、自我主張）。角色扮演（<span class="en">role play</span>）搭配影像回饋是有效訓練方式。</p>
     </div>
   </div>
 
-  <h3>SMART Goal-Setting (Doran, 1981)</h3>
-  <div class="smart-grid">
-    <div class="smart-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
-      <div class="s-letter">S</div><div class="s-word">Specific</div>
-      <div class="s-desc">Particular actions in particular contexts</div>
+  <h3>SMART 目標設定 <span class="en">Doran (1981)</span></h3>
+  <div class="smart">
+    <div class="smart-i" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="sl">S</div><div class="sw">Specific</div><div class="sz">具體</div><div class="sd">明確指出特定情境中的特定行動</div>
     </div>
-    <div class="smart-item" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46">
-      <div class="s-letter">M</div><div class="s-word">Measurable</div>
-      <div class="s-desc">Can test whether the goal has been attained</div>
+    <div class="smart-i" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46">
+      <div class="sl">M</div><div class="sw">Measurable</div><div class="sz">可測量</div><div class="sd">能夠檢驗目標是否已達成</div>
     </div>
-    <div class="smart-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
-      <div class="s-letter">A</div><div class="s-word">Assignable</div>
-      <div class="s-desc">Clear who will take action (also: Attainable)</div>
+    <div class="smart-i" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
+      <div class="sl">A</div><div class="sw">Assignable</div><div class="sz">可指派</div><div class="sd">明確誰將採取行動（亦可為 Attainable 可達成）</div>
     </div>
-    <div class="smart-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
-      <div class="s-letter">R</div><div class="s-word">Realistic</div>
-      <div class="s-desc">Attainable within current skill set and environment</div>
+    <div class="smart-i" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="sl">R</div><div class="sw">Realistic</div><div class="sz">務實</div><div class="sd">在個人現有技能與環境下可達成</div>
     </div>
-    <div class="smart-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
-      <div class="s-letter">T</div><div class="s-word">Time-specified</div>
-      <div class="s-desc">When or by what date action will be taken</div>
+    <div class="smart-i" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
+      <div class="sl">T</div><div class="sw">Time-specified</div><div class="sz">有時限</div><div class="sd">明確何時或在什麼期限前採取行動</div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 8. IMPULSIVE PROCESSES ───── -->
-<section class="section" id="impulsive">
-  <div class="section-header">
-    <div class="section-number">8</div>
-    <h2>Changing Impulsive Processes: Breaking &amp; Making Habits</h2>
+<!-- ══ 8. IMPULSIVE PROCESSES ══ -->
+<section class="section" id="impulse">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">
+      <h2>改變衝動歷程：打破與建立習慣</h2>
+      <div class="en-sub">Changing Impulsive Processes: Breaking &amp; Making Habits</div>
+    </div>
   </div>
 
-  <p>Skinner's (1938) work on operant conditioning systematically explained how environments shape automatic behavior: stimuli associated with rewarding experiences become cues that automatically trigger approach responses, building complex impulsively regulated behavior patterns over time.</p>
+  <p class="zh-block">Skinner（1938）的操作制約（<span class="en">operant conditioning</span>）研究系統性地解釋了環境如何塑造行為：過去與獎勵連結的刺激，會成為自動觸發趨近反應的線索，隨時間積累為複雜的衝動調節行為模式。</p>
 
   <div class="grid-2">
     <div class="card">
-      <h3 style="margin-top:0">🔄 Inhibition Training (Go/No-Go Paradigm)</h3>
-      <p>Pictures of desired stimuli (e.g., unhealthy foods) are repeatedly paired with "stop" signals. Over many pairings, the established impulse to approach becomes inhibited — making it easier to resist automatic approach responses in real-world settings.</p>
-      <p style="margin-bottom:0">A meta-analysis of 19 experiments (Allom et al., 2015) suggests inhibition training may effectively change health behavior patterns.</p>
+      <h3 style="margin-top:0">🔄 抑制訓練（Go/No-Go 典範）
+        <span class="en" style="font-size:.78rem;font-weight:400">Inhibition Training</span>
+      </h3>
+      <p style="font-size:.9rem">目標刺激（如不健康食物圖片）反覆與「停止」信號配對。經多次配對後，趨近的衝動系統反應被抑制，使人在真實世界中更容易抵抗自動化的趨近反應。</p>
+      <div class="en-quote" style="font-size:.82rem">"Pairing a desired object … with a stop signal can help recipients ignore or reject the approach stimuli." — Abraham &amp; Denford (2017)</div>
+      <p style="font-size:.85rem;margin-top:8px;margin-bottom:0">19 項實驗的統合分析（Allom et al., 2015）顯示此方法可能有效地改變健康行為模式。</p>
     </div>
     <div class="card">
-      <h3 style="margin-top:0">📋 If-Then Planning (Implementation Intentions)</h3>
-      <p>Formulating "if situation X, then I will do Y" plans. Gollwitzer &amp; Sheeran (2006) show these help motivated people <strong>translate intentions into action</strong>.</p>
-      <p style="margin-bottom:0"><strong>Example:</strong> Adding one if-then planning session to a weight-loss program led participants to lose <strong>twice as much weight</strong> over 2 months (Luszczynska et al., 2007). Mediation analysis confirmed the hypothesized mechanism.</p>
+      <h3 style="margin-top:0">📋 如果—那麼計畫（執行意圖）
+        <span class="en" style="font-size:.78rem;font-weight:400">If-Then Planning / Implementation Intentions</span>
+      </h3>
+      <p style="font-size:.9rem">制訂「如果情況 X 出現，我就做 Y」的計畫（Gollwitzer &amp; Sheeran, 2006），幫助有動機的人將<em>意圖</em>轉化為<em>行動</em>。</p>
+      <div class="en-quote" style="font-size:.82rem">"Implementation intention formation … has proved promising as a technique type that can help motivated people to translate their intentions into action."</div>
+      <p style="font-size:.85rem;margin-top:8px;margin-bottom:0"><strong>實例：</strong>在減重方案中加入一次 if-then 計畫訓練，受試者在 2 個月後的體重減少量達對照組的<strong>兩倍</strong>（Luszczynska et al., 2007）。</p>
     </div>
   </div>
 
-  <div class="concept-callout">
-    <h4>Why If-Then Planning Bridges Both Systems</h4>
-    <p>The plan is formulated using the <em>reflective</em> system, but the pairing of a cue ("if") with an imagined response ("then") has the capacity to alter the <em>impulsive</em> system — so that when the cue is encountered later, a new automatic response is prompted without requiring conscious deliberation at that moment.</p>
+  <div class="callout">
+    <h4>為何 If-Then 計畫同時連結兩套系統</h4>
+    <p>計畫的制訂啟動了<em>反思系統</em>，但將線索（「如果」）與想像的反應（「那麼」）配對，具有改變<em>衝動系統</em>的能力——當日後遇到該線索時，新的自動反應便被觸發，不再需要當場的意識思考。</p>
+    <div class="en-quote-w">"If-then planning is an interesting category of change technique in that these techniques involve both the reflective and impulsive systems." — Abraham &amp; Denford (2017)</div>
   </div>
 
-  <h3>Habit Reversal &amp; Food Rehabilitation</h3>
+  <h3>習慣逆轉療法與飲食復健 <span class="en">Habit Reversal &amp; Food Rehabilitation</span></h3>
   <div class="grid-2">
     <div class="card">
-      <h3 style="margin-top:0">Habit Reversal Therapy (Dean, 2013)</h3>
-      <p>Originally for Tourette's syndrome — intensive (10+ h of contact): (1) build awareness of unwanted behavioral tics and their triggers, (2) practice a competing behavior whenever the urge arises. McGuire et al. (2014) confirm effectiveness of this intensive approach.</p>
+      <h3 style="margin-top:0">習慣逆轉療法 <em style="font-size:.82rem;font-weight:400;color:var(--muted)">Habit Reversal Therapy (Dean, 2013)</em></h3>
+      <p style="font-size:.9rem">原用於妥瑞症（Tourette's syndrome）的密集療法（10+ 小時接觸時間）：①建立對不良行為抽動及其觸發情境的覺察；②在衝動出現時練習競爭行為（<span class="en">competing behavior</span>）取代之。</p>
     </div>
     <div class="card">
-      <h3 style="margin-top:0">Food Rehabilitation (Kessler, 2009)</h3>
-      <p>Parallels habit reversal for unhealthy eating: (1) identify environmental cues and "premonitionary urges," (2) specify competing behaviors (e.g., taking a different route past a bakery), (3) cognitive-emotional reconstruction — reshaping how food cues are mentally represented to reduce their pull.</p>
+      <h3 style="margin-top:0">飲食復健 <em style="font-size:.82rem;font-weight:400;color:var(--muted)">Food Rehabilitation (Kessler, 2009)</em></h3>
+      <p style="font-size:.9rem">與習慣逆轉療法類似：①辨識環境線索與「前驅衝動」（<span class="en">premonitionary urges</span>）；②指定並練習競爭行為（如繞過甜點店）；③認知與情緒重建——重塑對食物線索的心理表徵，以削弱其吸引力。</p>
     </div>
   </div>
 
-  <h3>Detailed Tailoring: The Same Technique, Different Applications</h3>
-  <p>Even within one technique category, precise tailoring to the specific barrier is critical:</p>
+  <h3>精細調整的重要性：同一技術類別，不同應用 <span class="en">The Importance of Detailed Tailoring</span></h3>
   <div class="grid-2">
-    <div class="highlight green">
-      <p><strong>Sheeran &amp; Orbell (2000):</strong> A planning prompt asking women to specify <em>when and where</em> to make a cervical screening appointment increased attendance from <strong>67% → 92%</strong>. The barrier was failure to initiate action — so action planning worked.</p>
+    <div class="hl green">
+      <p><strong>Sheeran &amp; Orbell（2000）：</strong>問卷中加入規劃提示，請女性具體寫下<em>何時、何地</em>預約子宮頸抹片，出席率從 <strong>67% → 92%</strong>。障礙：缺乏行動啟動——→ 需要行動計畫。</p>
     </div>
-    <div class="highlight" style="border-color:#2563eb;background:#eff6ff">
-      <p><strong>Sheeran et al. (2007):</strong> Advised anxious psychotherapy patients to use self-talk when appointment worries arose. Attendance rose from <strong>63% → 75%</strong>. The barrier here was cognitive elaboration of anxiety — so a thought-regulation technique was needed instead.</p>
+    <div class="hl" style="border-color:#2563eb;background:#eff6ff">
+      <p><strong>Sheeran et al.（2007）：</strong>請有預約焦慮的心理治療患者，在擔憂出現時使用自我對話：「我一感到擔憂，就忽略它並告訴自己這完全正常。」出席率從 <strong>63% → 75%</strong>。障礙：認知反芻焦慮——→ 需要思維調節技術。</p>
     </div>
   </div>
+  <p class="zh-block">兩個研究說明：「如果—那麼計畫」是一個<em>技術類別</em>，而非單一技術。不進行精細的需求評估，套用一般化的版本可能根本無效——再次強調 IM 第三階段詳細分析的必要性。</p>
 </section>
 
-<hr class="divider">
+<hr class="div">
 
-<!-- ───── 9. EVALUATION ───── -->
-<section class="section" id="evaluation">
-  <div class="section-header">
-    <div class="section-number">9</div>
-    <h2>Evaluation of Behavior Change Interventions</h2>
+<!-- ══ 9. EVALUATION ══ -->
+<section class="section" id="eval">
+  <div class="sec-header">
+    <div class="sec-num">9</div>
+    <div class="sec-title">
+      <h2>行為改變介入的評估</h2>
+      <div class="en-sub">Evaluation of Behavior Change Interventions</div>
+    </div>
   </div>
 
-  <p>The final stage of IM is evaluation planning. Although listed last, it must be anticipated <strong>from the outset</strong>. When intervention objectives are defined in Stage 2, designers should simultaneously identify how to measure them. Three broad evaluation types are distinguished:</p>
+  <p class="zh-block">IM 的最後一個階段是評估規劃。雖然排在最後，但必須<strong>從一開始就預先思考</strong>——在第二階段定義介入目標時，同步決定如何測量那些改變。共有三類評估：</p>
 
   <div class="grid-3">
-    <div class="card" style="border-top:4px solid #2563eb">
-      <div style="font-size:1.8rem;margin-bottom:10px">📊</div>
-      <h3 style="margin-top:0">Outcome Evaluation</h3>
-      <p style="font-size:0.9rem"><em>Did the intervention change the target behavior?</em> May include both behavioral measures (e.g., physical activity, smoking) and health outcomes (e.g., weight, disease incidence).</p>
+    <div class="card" style="border-top:4px solid var(--blue)">
+      <div style="font-size:1.7rem;margin-bottom:8px">📊</div>
+      <h3 style="margin-top:0">結果評估<br><span class="en" style="font-size:.78rem;font-weight:400">Outcome Evaluation</span></h3>
+      <p style="font-size:.88rem">介入是否改變了<em>目標行為</em>？可包含行為指標（如身體活動量、吸菸率）與健康結果（如體重、疾病發生率）。</p>
     </div>
-    <div class="card" style="border-top:4px solid #7c3aed">
-      <div style="font-size:1.8rem;margin-bottom:10px">🔬</div>
-      <h3 style="margin-top:0">Process Evaluation</h3>
-      <p style="font-size:0.9rem"><em>How did the intervention work?</em> Did it change the targeted mechanisms (e.g., attitudes, self-efficacy, planning)? Mediation analyses test the intervention's logic model (Moore et al., 2014).</p>
+    <div class="card" style="border-top:4px solid var(--purple)">
+      <div style="font-size:1.7rem;margin-bottom:8px">🔬</div>
+      <h3 style="margin-top:0">歷程評估<br><span class="en" style="font-size:.78rem;font-weight:400">Process Evaluation</span></h3>
+      <p style="font-size:.88rem">介入<em>如何</em>運作？是否改變了目標機制（態度、自我效能、計畫）？透過中介分析（<span class="en">mediation analysis</span>）檢驗邏輯模型（<span class="en">logic model</span>）。</p>
     </div>
-    <div class="card" style="border-top:4px solid #059669">
-      <div style="font-size:1.8rem;margin-bottom:10px">💰</div>
-      <h3 style="margin-top:0">Economic Evaluation</h3>
-      <p style="font-size:0.9rem"><em>How much does the intervention cost per unit of effectiveness?</em> Preventive interventions are often highly cost-effective — e.g., HIV prevention vs. lifetime US treatment cost of ~$240,000+.</p>
-    </div>
-  </div>
-
-  <h3>The RE-AIM Framework (Glasgow et al., 2002; Green &amp; Glasgow, 2006)</h3>
-  <p>A comprehensive model for evaluating real-world delivery and implementation impact:</p>
-
-  <div class="reaim-grid">
-    <div class="reaim-item">
-      <div class="r-letter">R</div>
-      <div class="r-word">Reach</div>
-      <div class="r-desc">How many of the target population participated, and how representative were they?</div>
-    </div>
-    <div class="reaim-item">
-      <div class="r-letter">E</div>
-      <div class="r-word">Effectiveness</div>
-      <div class="r-desc">Range of effects, including intended outcomes, quality of life, and unintended consequences</div>
-    </div>
-    <div class="reaim-item">
-      <div class="r-letter">A</div>
-      <div class="r-word">Adoption</div>
-      <div class="r-desc">Were end-users (nurses, teachers, managers, public) persuaded to use the intervention? Depends on ease, value, cost, and goal compatibility</div>
-    </div>
-    <div class="reaim-item">
-      <div class="r-letter">I</div>
-      <div class="r-word">Implementation</div>
-      <div class="r-desc">Was it delivered as designed? Fidelity of delivery — did recipients receive adequate "dose"?</div>
-    </div>
-    <div class="reaim-item">
-      <div class="r-letter">M</div>
-      <div class="r-word">Maintenance</div>
-      <div class="r-desc">Is the intervention sustained in real-world settings long-term? Can the organization resource ongoing delivery?</div>
+    <div class="card" style="border-top:4px solid var(--green)">
+      <div style="font-size:1.7rem;margin-bottom:8px">💰</div>
+      <h3 style="margin-top:0">經濟評估<br><span class="en" style="font-size:.78rem;font-weight:400">Economic Evaluation</span></h3>
+      <p style="font-size:.88rem">每單位效果的成本是多少？預防性介入往往高度符合成本效益（如愛滋病預防 vs. 終身治療成本超過 24 萬美元）。</p>
     </div>
   </div>
 
-  <div class="highlight green">
-    <p>✅ <strong>Key Insight:</strong> Even the most efficacious intervention has <strong>no public health impact if it is not adopted and translated into practice</strong> (Rogers, 2003). Understanding adoption and diffusion processes is as critical as the intervention design itself.</p>
+  <h3>RE-AIM 框架 <span class="en">Glasgow et al. (2002); Green &amp; Glasgow (2006)</span></h3>
+  <p class="zh-block">提供評估真實世界推行與影響的全面模型：</p>
+
+  <div class="reaim">
+    <div class="reaim-i">
+      <div class="rl">R</div>
+      <div class="ren">Reach</div><div class="rzh">觸及</div>
+      <div class="rd">有多少目標族群參與？他們有代表性嗎？</div>
+    </div>
+    <div class="reaim-i">
+      <div class="rl">E</div>
+      <div class="ren">Effectiveness</div><div class="rzh">效果</div>
+      <div class="rd">效果的範圍：目標結果、生活品質、是否有意外後果？</div>
+    </div>
+    <div class="reaim-i">
+      <div class="rl">A</div>
+      <div class="ren">Adoption</div><div class="rzh">採用</div>
+      <div class="rd">推行者（護理師、教師、管理者等）是否認可並實際使用了介入？</div>
+    </div>
+    <div class="reaim-i">
+      <div class="rl">I</div>
+      <div class="ren">Implementation</div><div class="rzh">執行</div>
+      <div class="rd">是否依設計推行？保真度（fidelity）如何？接受者是否獲得足夠「劑量」？</div>
+    </div>
+    <div class="reaim-i">
+      <div class="rl">M</div>
+      <div class="ren">Maintenance</div><div class="rzh">維持</div>
+      <div class="rd">介入能在真實情境中長期持續嗎？組織有足夠資源持續推行嗎？</div>
+    </div>
   </div>
 
-  <h3>Conclusions</h3>
-  <div class="concept-callout">
-    <h4>Towards a Science of Behavior Change</h4>
-    <p>We know a great deal about behavior change intervention design. By carefully following systematic planning procedures — understanding the detail of regulatory processes, tailoring techniques precisely, and rigorously evaluating both outcomes and processes — we can optimize effectiveness. Simplified "off-the-peg" approaches may sometimes generate results but lack the versatility to match techniques to specific challenges. Behavior change science advances project by project through careful planning and rigorous process evaluation.</p>
+  <div class="hl green">
+    <p>✅ <strong>核心洞見：</strong>即使效果最好的介入，若未被採用、無法轉化為實務，對公共衛生的影響仍是零（Rogers, 2003）。理解採用與擴散（<span class="en">adoption and diffusion</span>）的歷程，與介入設計本身同等重要。</p>
+  </div>
+
+  <h3>結論 <span class="en">Conclusions</span></h3>
+  <div class="callout">
+    <h4>邁向行為改變科學 <span style="font-weight:400;font-size:.88rem;opacity:.8">Towards a Science of Behavior Change</span></h4>
+    <p>我們已知曉許多介入設計知識。透過系統性規劃、理解調節歷程的細節、精確的技術選配，以及嚴謹的歷程與結果評估，可以最佳化介入效果。行為改變科學仍在發展中，但每一個精心設計並嚴格評估的專案，都在為這門科學積累知識。</p>
+    <div class="en-quote-w">"Careful planning and rigorous evaluation, including process evaluation, advances our science project by project." — Abraham &amp; Denford (2017, p.22)</div>
   </div>
 </section>
 
-<!-- ═══════════ QUIZ ═══════════ -->
+<!-- ══ QUIZ ══ -->
 <section class="section" id="quiz">
-  <div class="quiz-header">
-    <h2>📝 Practice Quiz</h2>
-    <p>5 questions are randomly drawn from the question bank each time. Test your understanding, then click <strong>New Random Quiz</strong> for a fresh set!</p>
+  <div class="qhead">
+    <h2>📝 隨堂練習 Practice Quiz</h2>
+    <p>每次從題庫隨機抽出 5 題，作答後點「提交答案」即可看到解析。點「重新出題」可換一組新題目。</p>
   </div>
-
   <div id="quiz-container"></div>
-
-  <div class="quiz-actions">
-    <button class="btn btn-primary" onclick="submitQuiz()">✔ Submit Answers</button>
-    <button class="btn btn-outline" onclick="generateQuiz()">🔀 New Random Quiz</button>
+  <div class="qactions">
+    <button class="btn btn-p" onclick="submitQuiz()">✔ 提交答案 Submit</button>
+    <button class="btn btn-o" onclick="generateQuiz()">🔀 重新出題 New Quiz</button>
   </div>
-
-  <div class="score-box" id="score-box">
-    <div class="score-stars" id="score-stars"></div>
-    <div class="score-number" id="score-number"></div>
-    <div class="score-label">out of 5 correct</div>
-    <div class="score-msg" id="score-msg"></div>
+  <div class="scorebox" id="scorebox">
+    <div class="score-s" id="sc-stars"></div>
+    <div class="score-n" id="sc-num"></div>
+    <div class="score-l">/ 5 題正確</div>
+    <div class="score-m" id="sc-msg"></div>
   </div>
 </section>
 
@@ -948,255 +822,207 @@
 <footer>
   <div class="copyright">
     <strong>版權所有 &copy; 葉欲禾（Gary Yu-Ho Yen）</strong><br>
-    本教學素材依據原著內容製作，僅供學術教學用途。
+    本互動教材依原著內容製作，僅供學術教學用途。All rights reserved for academic use only.
   </div>
-  <div class="book-ref">
+  <div class="ref">
     Source: Little, L., Sillence, E., &amp; Joinson, A. (Eds.). (2017). <em>Behavior Change Research and Theory: Psychological and Technological Perspectives</em>. Academic Press / Elsevier.<br>
     Chapter 1: Abraham, C., &amp; Denford, S. — Planning Interventions to Change Behavior.
   </div>
 </footer>
 
 <script>
-const allQuestions = [
+const QB = [
   {
-    q: "According to the NUDGE framework (Thaler &amp; Sunstein, 2008), what does the letter 'D' stand for, and what is the key example discussed in the chapter?",
-    opts: [
-      "Determinants — identifying psychological determinants of behavior prior to intervention design",
-      "Defaults — designing systems that make the desired behavior the least-effort option (e.g., assumed-consent organ donation)",
-      "Delivery — the method used to provide intervention content to target participants",
-      "Denial — a psychological defense mechanism that reduces willingness to change"
+    q:"NUDGE 框架（Thaler &amp; Sunstein, 2008）中，字母「D」代表什麼？並請說明本章討論的典型案例。",
+    opts:[
+      "決定因素（Determinants）——在設計前辨識行為的心理決定因素",
+      "預設選項（Defaults）——設計讓期望行為成為最省力選項的系統（如預設器官捐贈同意制度）",
+      "遞送方式（Delivery）——將介入內容傳遞給參與者的方法",
+      "否認（Denial）——降低改變意願的心理防衛機制"
     ],
-    correct: 1,
-    feedback: "The 'D' stands for <strong>Defaults</strong> — constructing opt-in/opt-out systems that encourage the path of least resistance. Johnson &amp; Goldstein (2003) showed that countries using assumed-consent (opt-out) organ donation systems have rates above 99%, versus only ~17% in opt-in countries like the UK — demonstrating the enormous behavioral power of default architecture."
+    correct:1,
+    feedback:"「D」代表 <strong>Defaults（預設選項）</strong>——設計鼓勵最省力選項的系統，例如自動扣稅或預設器官捐贈同意。Johnson &amp; Goldstein（2003）發現，採「預設同意」（opt-out）制度的國家器官捐贈率超過 99%，而採「主動表態」（opt-in）制度的英國僅約 17%——充分展示了預設架構的強大行為影響力。"
   },
   {
-    q: "The IMB model (Fisher &amp; Fisher, 1992) proposes that changes in the reflective regulatory system occur when which three conditions are simultaneously met?",
-    opts: [
-      "Individuals are well-informed, highly motivated, and possess the behavioral skills necessary to perform the desired behavior",
-      "Financial incentives are available, social support is provided, and professional counseling is received",
-      "The environment is changed, habit reversal occurs, and impulsive processes are extinguished through conditioning",
-      "SMART goals are set, self-monitoring is practiced, and the target behavior is regularly reinforced"
+    q:"IMB 模型（Fisher &amp; Fisher, 1992）主張，反思系統的改變最可能發生於哪三個條件同時達成時？",
+    opts:[
+      "個人具備充分資訊（information）、高度動機（motivation），以及執行期望行為所需的行為技能（behavioral skills）",
+      "財務誘因可取得、社會支持充分，且接受過專業諮詢",
+      "環境已被改變、習慣逆轉已完成，且衝動歷程已透過制約消除",
+      "SMART 目標已設定、自我監控已實踐，且目標行為受到定期強化"
     ],
-    correct: 0,
-    feedback: "The IMB model proposes behavior change is most likely when individuals are <strong>well-informed, highly motivated, and have the behavioral skills</strong> necessary for the desired behavior. Intervention designers should use elicitation research to identify which of these three elements is lacking in the target population, then specifically address those deficits."
+    correct:0,
+    feedback:"IMB 模型主張，當個人同時具備<strong>充分資訊、高度動機，以及執行行為所需的行為技能</strong>時，行為改變最可能發生。介入設計者應透過引發式研究（elicitation research）辨識目標族群缺乏哪一項前因，並針對性地加以補強。"
   },
   {
-    q: "In the Intervention Mapping (IM) approach, what is the primary purpose of Stage 3?",
-    opts: [
-      "To recruit and screen participants and obtain ethical approval for the study",
-      "To identify modifiable regulatory processes that maintain behavior and select evidence-based techniques capable of altering those processes",
-      "To pilot-test the assembled intervention with a small sample of the target population",
-      "To calculate the cost-effectiveness ratio of the proposed intervention package"
+    q:"在介入映射法（IM）的第三階段，其主要目的為何？",
+    opts:[
+      "招募參與者並取得研究倫理審查委員會的核准",
+      "辨識維持目標行為的可修改調節歷程，並選擇有實證支持、能改變這些歷程的技術",
+      "以目標族群的小樣本試驗已組裝完成的介入方案",
+      "計算所提出介入方案的成本效益比"
     ],
-    correct: 1,
-    feedback: "Stage 3 of IM focuses on <strong>identifying the modifiable processes regulating the target behavior</strong> (behavioral determinants) and selecting change techniques proven to alter them. Incorrect assumptions at this stage lead to suboptimal or counterproductive interventions — for example, applying fear appeals to an already-motivated audience, which may trigger defensive responses rather than behavior change."
+    correct:1,
+    feedback:"IM 第三階段聚焦於<strong>理解目標行為如何被調節</strong>（行為決定因素），並選擇能改變這些機制的改變技術。若設計者對行為驅動因素的假設有誤，便可能使用次佳甚至有害的技術——例如，對已有動機的族群使用恐懼訴求（fear appeals）可能引發防禦反應（Das et al., 2003）。"
   },
   {
-    q: "According to the Reflective-Impulsive Model (Strack &amp; Deutsch, 2004), why is sustainable behavior change particularly challenging?",
-    opts: [
-      "Because financial incentives are unavailable for most health behaviors in public health settings",
-      "Because the reflective system cannot be consciously activated to override the impulsive system",
-      "Because conscious reflective control is cognitively taxing and unsustainable; lasting change requires new automatic habits to be formed through practice",
-      "Because environmental factors are impossible to modify without legislative change"
+    q:"根據反思—衝動模型（RIM；Strack &amp; Deutsch, 2004），為何可持續的行為改變特別具有挑戰性？",
+    opts:[
+      "因為財務誘因在多數公共衛生行為中無法取得",
+      "因為反思系統無法被有意識地啟動以覆蓋衝動系統",
+      "因為持續依賴意識反思控制在認知上消耗巨大且不可持續；可持續的改變需要透過練習形成新的自動習慣",
+      "因為若無立法改變，環境因素無法被修改"
     ],
-    correct: 2,
-    feedback: "While activating the reflective system is critical to <em>initiating</em> change, relying on it to continuously override the impulsive system is cognitively demanding and unsustainable (Baumeister et al., 1998). Sustainable change requires that <strong>new behavioral routines eventually become automatic</strong> — meaning new habits must be built through repeated practice in relevant contexts, not just willpower."
+    correct:2,
+    feedback:"啟動反思系統對於<em>啟動</em>改變至關重要，但持續依賴它壓制衝動系統在認知上消耗巨大且不可持續（Baumeister et al., 1998）。可持續的行為改變需要讓<strong>新的行為例程最終自動化</strong>——也就是說，必須透過情境中的反覆練習建立新習慣，而非單靠意志力。"
   },
   {
-    q: "In the RE-AIM evaluation framework (Glasgow et al., 2002), what does 'Adoption' specifically refer to?",
-    opts: [
-      "Whether the intervention changed the target behavior in the study participants",
-      "Whether end-users who deliver the intervention (nurses, teachers, managers, etc.) found it useful and actually implemented it in their practice",
-      "The economic cost per unit of behavioral improvement produced by the intervention",
-      "Whether the intervention reached a representative and adequately sized sample of the target population"
+    q:"RE-AIM 評估框架（Glasgow et al., 2002）中，「採用（Adoption）」具體指涉什麼？",
+    opts:[
+      "介入是否改變了研究參與者的目標行為",
+      "推行介入的終端使用者（護理師、教師、管理者等）是否認可其價值並在實務中實際使用了介入",
+      "介入每單位行為改善的經濟成本",
+      "介入是否觸及足夠數量且具代表性的目標族群樣本"
     ],
-    correct: 1,
-    feedback: "'Adoption' in RE-AIM refers to whether <strong>the practitioners and organizations who would deliver the intervention</strong> found it useful, acceptable, easy to implement, affordable, and compatible with their main goals (Paulussen et al., 1994). A highly efficacious intervention has zero public health impact if practitioners never adopt it — understanding this diffusion process (Rogers, 2003) is as critical as the design itself."
+    correct:1,
+    feedback:"「採用」指的是<strong>介入推行者（如護理師、教師、社區工作者等）是否認為介入有用、可接受、易於執行、負擔得起，且符合其主要目標</strong>（Paulussen et al., 1994）。即使效果再好的介入，若從業人員不採用，對公共衛生的影響仍是零——理解採用與擴散歷程（Rogers, 2003）與介入設計本身同等重要。"
   },
   {
-    q: "Sheeran &amp; Orbell (2000) found that adding a brief planning prompt to a questionnaire increased cervical cancer screening attendance from 67% to 92%. This result best illustrates which behavior change technique?",
-    opts: [
-      "Inhibition training (go/no-go paradigm targeting the impulsive system)",
-      "Implementation intentions (if-then planning) targeting action initiation in motivated individuals",
-      "Motivational interviewing to resolve ambivalence toward the screening behavior",
-      "Social norms messaging leveraging descriptive peer-group norms"
+    q:"Sheeran &amp; Orbell（2000）發現，在問卷中加入簡短規劃提示，使子宮頸癌篩查出席率從 67% 提升至 92%。這最能說明哪種行為改變技術？",
+    opts:[
+      "抑制訓練（go/no-go 典範，針對衝動系統）",
+      "執行意圖（if-then 計畫），針對有動機但尚未採取行動的個人的行動啟動障礙",
+      "動機式訪談，以消解對篩查行為的矛盾心理",
+      "描述性社會規範訊息，利用同儕群體規範的影響力"
     ],
-    correct: 1,
-    feedback: "This is a classic demonstration of <strong>implementation intentions (if-then planning)</strong>. Motivated women who had not yet made an appointment were prompted to specify 'when, where, and how' they would make one — targeting the specific barrier of failing to translate intention into action. 92% attended vs. 67% in controls, despite equivalent motivation across both groups (Gollwitzer &amp; Sheeran, 2006)."
+    correct:1,
+    feedback:"這是<strong>執行意圖（if-then 計畫）</strong>的經典示範。有動機但尚未預約的女性被提示具體寫下「何時、何地、如何」預約篩查——針對的正是「未能將意圖轉化為行動」這個特定障礙。結果 92% 出席，對照組 67%，兩組的動機水準相當（Gollwitzer &amp; Sheeran, 2006）。"
   },
   {
-    q: "Which of the following best describes 'choice architecture' as discussed in the chapter?",
-    opts: [
-      "A formal architectural design style developed specifically for healthcare environments to promote patient well-being",
-      "The structured physical and social environment that frames available options and shapes what people perceive, think about, and choose",
-      "A cognitive model explaining how people make fully rational, utility-maximizing economic decisions",
-      "A therapeutic technique that trains individuals to consciously evaluate all available behavioral alternatives"
+    q:"本章如何定義「選擇架構（choice architecture）」，以及它與行為改變有何關聯？",
+    opts:[
+      "一種專為醫療環境設計的正式建築風格，旨在促進患者福祉",
+      "呈現可用選項的方式所構成的結構化環境，影響人們的感知、思考與選擇，而不明確限制選項",
+      "一種認知模型，解釋人們如何做出充分理性、效用最大化的經濟決策",
+      "一種訓練個人有意識評估所有可用行為替代方案的治療技術"
     ],
-    correct: 1,
-    feedback: "'Choice architecture' refers to <strong>the design of environments that frame available options</strong> — influencing what people see, think about, and choose, without explicitly restricting choices. Governments, retailers, and commercial organizations can all structure choice architecture to promote (or undermine) desired behaviors. Effective structuring raises important ethical and regulatory questions about manipulation vs. facilitation."
+    correct:1,
+    feedback:"「選擇架構」指的是<strong>框定可用選項的環境設計方式</strong>——影響人們看到什麼、思考什麼、選擇什麼，但不明確禁止選項。政府、零售商與商業組織都能透過建構選擇架構來促進（或破壞）期望行為。有效的選擇架構工程也引發了關於操控vs.促進的重要倫理與監管問題。"
   },
   {
-    q: "Fishbein et al. (2001) identified five key determinants of motivation to change behavior. Which of the following is NOT among the five?",
-    opts: [
-      "Belief that behavior change is consistent with one's self-image or personal identity",
-      "Belief that one is physiologically or biologically ready to change (biological preparedness)",
-      "Belief that changing behavior will lead to a positive emotional reaction (anticipated affect)",
-      "Belief that significant others will approve of the proposed change (social norms)"
+    q:"Fishbein 等人（2001）指出動機的五項關鍵決定因素。以下哪一項<em>不</em>在其中？",
+    opts:[
+      "相信行為改變符合自己的自我形象或個人認同",
+      "相信自己在生理或生物層次上已準備好改變（生理準備度）",
+      "相信改變行為將帶來正向情緒反應（預期情感）",
+      "相信重要他人會認可這項改變（社會規範）"
     ],
-    correct: 1,
-    feedback: "Fishbein et al.'s five determinants are: (1) advantages outweigh disadvantages, (2) anticipated positive emotional reaction, (3) social norms / others' approval, (4) consistency with self-image/identity, and (5) self-efficacy. <strong>Physiological/biological readiness</strong> is not among them. Self-efficacy — the belief in one's <em>capability</em> to perform the behavior — is, which is conceptually distinct from biological capacity."
+    correct:1,
+    feedback:"Fishbein 等人的五項動機決定因素為：①好處大於代價；②預期正向情緒反應；③社會規範（他人認可）；④自我認同一致性；⑤自我效能（Bandura, 1997）。<strong>「生理準備度」並不在其中</strong>。自我效能——對自己<em>能力</em>的信念——是其中之一，這在概念上有別於生物層次的能力。"
   },
   {
-    q: "The EAST framework (Behavioural Insights Team, 2014) was designed for which primary audience, and what does each letter represent?",
-    opts: [
-      "For academic researchers; stands for Evidence, Analysis, Synthesis, Translation",
-      "For busy policy makers; stands for Easy, Attractive, Social, Timely",
-      "For clinical practitioners; stands for Engage, Assess, Support, Track",
-      "For behavior change scientists; stands for Experiment, Apply, Scale, Test"
+    q:"EAST 框架（Behavioural Insights Team, 2014）主要為哪類對象設計，四個字母各代表什麼？",
+    opts:[
+      "學術研究者；代表 Evidence（實證）、Analysis（分析）、Synthesis（整合）、Translation（轉化）",
+      "繁忙的政策制定者；代表 Easy（容易）、Attractive（吸引人）、Social（社會性）、Timely（時機恰當）",
+      "臨床從業人員；代表 Engage（投入）、Assess（評估）、Support（支持）、Track（追蹤）",
+      "行為改變科學家；代表 Experiment（實驗）、Apply（應用）、Scale（規模化）、Test（測試）"
     ],
-    correct: 1,
-    feedback: "EAST was designed for <strong>busy policy makers</strong> as an accessible, practical guide. It stands for <strong>Easy, Attractive, Social, Timely</strong> — if you want to encourage a behavior, reduce friction to make it easy, use salience to make it attractive, leverage social norms, and intervene at the most receptive moment."
+    correct:1,
+    feedback:"EAST 框架為<strong>繁忙的政策制定者</strong>設計，代表 <strong>Easy（容易）、Attractive（吸引人）、Social（社會性）、Timely（時機恰當）</strong>。核心訊息：若要鼓勵某行為，就讓它變得容易做、值得選、社會認可，並在最恰當的時機介入。"
   },
   {
-    q: "The Alameda County Study (Belloc &amp; Breslow, 1972) and Kvaavik et al. (2010) together provide the empirical foundation for which central argument of Chapter 1?",
-    opts: [
-      "That genetic and hereditary factors are the primary determinants of individual health outcomes",
-      "That pharmaceutical and medical treatments are more effective than behavioral interventions for improving population health",
-      "That patterns of everyday behavior shared across populations are key determinants of health and longevity, making population-level behavior change a critical public health priority",
-      "That individual choice is largely irrelevant since health outcomes are primarily determined by socioeconomic and structural factors"
+    q:"本章透過比較 Sheeran &amp; Orbell（2000）與 Sheeran 等人（2007）兩項研究，傳達了什麼核心教訓？",
+    opts:[
+      "面對面遞送比問卷式遞送在 if-then 計畫方面更有效",
+      "If-then 計畫對健康篩查行為的效果優於心理治療出席行為",
+      "「如果—那麼計畫」是一個技術<em>類別</em>，而非單一技術——必須根據需求評估找出的特定障礙精確調整其具體實施方式",
+      "財務誘因應加入 if-then 計畫以最大化效果"
     ],
-    correct: 2,
-    feedback: "Both studies provide foundational evidence that <strong>everyday lifestyle behaviors</strong> — sleep, diet, exercise, smoking, alcohol — are powerful, modifiable predictors of mortality. Kvaavik et al. (2010) found that four combined unhealthy behaviors were associated with mortality risk equivalent to being 12 years older. Together they justify the chapter's core argument that population-level behavior change is a major public health opportunity."
+    correct:2,
+    feedback:"兩項研究說明：「如果—那麼計畫」是一個<strong>技術類別</strong>，而非單一固定的介入。Sheeran &amp; Orbell 針對「未啟動行動」（具體化預約的時地），Sheeran 等人則針對「預約焦慮」（思維調節）。在沒有精細需求評估的情況下套用一般化版本，可能根本無效——再次強調 IM 第一至第三階段詳細分析的不可或缺性。"
   },
   {
-    q: "The chapter contrasts two if-then planning studies (Sheeran &amp; Orbell, 2000; Sheeran et al., 2007). What is the primary lesson from comparing these two studies?",
-    opts: [
-      "Face-to-face delivery is more effective than written questionnaire-based delivery for if-then planning",
-      "If-then planning works better for health screening behaviors than for psychotherapy attendance",
-      "If-then planning is a category of techniques, not a single technique — and the specific implementation must be precisely tailored to the particular barrier identified in needs assessment",
-      "Financial incentives should be added to if-then planning to maximize its effectiveness"
+    q:"本章為何指出恐懼訴求（fear appeals）有時可能無效甚至產生反效果？",
+    opts:[
+      "因為一般人對健康風險缺乏認識，在威脅訊息有效前需要更基礎的資訊",
+      "因為恐懼訴求在群體層次設計與散布的成本過於高昂",
+      "因為認為威脅與己無關的人可能防禦性地忽視訊息；而自我效能低的人可能以心理自我保護代替行為改變",
+      "因為恐懼本質上降低動機，讓人不願嘗試任何改變"
     ],
-    correct: 2,
-    feedback: "The two studies illustrate that '<strong>if-then planning</strong>' is a <em>category</em> of techniques, not a single fixed intervention. Sheeran &amp; Orbell addressed <em>failure to initiate action</em> (specify when/where to book), while Sheeran et al. addressed <em>appointment anxiety</em> (thought regulation). Without detailed needs assessment and tailoring, bland off-the-peg applications of the technique category may fail — highlighting the importance of IM Stages 1–3."
+    correct:2,
+    feedback:"恐懼訴求可能透過兩種途徑失敗：①認為威脅與自己無關的人可能<strong>防禦性地忽視訊息</strong>；②承認威脅但<strong>自我效能低</strong>的人可能以防禦性認知反應（否認訊息的相關性）代替行為改變（Ruiter et al., 2001; Witte &amp; Allen, 2000）。Das 等人（2003）顯示，恐懼訴求在參與者感受到威脅易感性時效果最佳；恐懼訴求應搭配強化自我效能的內容一起使用。"
   },
   {
-    q: "According to the chapter, why may fear appeals (messages emphasizing health risks or threats) sometimes fail or produce negative effects?",
-    opts: [
-      "Because people are generally unaware of health risks and require more basic information before threats become motivating",
-      "Because fear appeals are prohibitively expensive to design and distribute at the population level",
-      "Because people who perceive low personal susceptibility may defensively dismiss the message, and those with low self-efficacy may engage in psychological self-protection rather than behavior change",
-      "Because fear inherently reduces motivation, making people unwilling to attempt any behavior change"
+    q:"阿拉米達郡研究（Belloc &amp; Breslow, 1972）與 Kvaavik 等人（2010）的研究，共同支持本章哪項核心論點？",
+    opts:[
+      "遺傳與遺傳因素是個人健康結果的主要決定因素",
+      "藥物與醫療治療在改善群體健康方面比行為介入更有效",
+      "群體中共享的日常行為模式是健康與壽命的關鍵決定因素，使群體層次的行為改變成為重要的公共衛生優先項目",
+      "個人選擇基本上無關緊要，因為健康結果主要由社經與結構因素決定"
     ],
-    correct: 2,
-    feedback: "Fear appeals can fail via two routes: (1) individuals who feel the threat is not personally relevant may <strong>defensively dismiss the message</strong>; (2) those who acknowledge the threat but have <strong>low self-efficacy</strong> may protect themselves psychologically (rejecting the message's relevance) rather than acting (Ruiter et al., 2001; Witte &amp; Allen, 2000). Das et al. (2003) showed that fear appeals work best when combined with susceptibility cues; they should always be paired with self-efficacy-enhancing content."
+    correct:2,
+    feedback:"兩項研究共同提供了基礎實證，說明<strong>日常生活行為——睡眠、飲食、運動、吸菸、飲酒——是強而有力且可修改的死亡率預測因子</strong>。Kvaavik 等人（2010）發現四項同時存在的不健康行為等同於死亡風險上老了 12 歲。這些發現支持本章的核心主張：群體層次的行為改變是重大的公共衛生機會。"
   }
 ];
 
-let currentQuestions = [];
-let submitted = false;
+let cur=[], done=false;
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+function generateQuiz(){
+  done=false;
+  cur=shuffle(QB).slice(0,5);
+  const c=document.getElementById('quiz-container');
+  c.innerHTML='';
+  cur.forEach((q,qi)=>{
+    const opts=shuffle(q.opts.map((o,i)=>({t:o,orig:i})));
+    const corr=opts.findIndex(o=>o.orig===q.correct);
+    const html=opts.map((o,i)=>`<li>
+      <input type="radio" name="q${qi}" id="q${qi}o${i}" value="${i}" data-c="${corr}">
+      <label for="q${qi}o${i}"><span class="olet">${['A','B','C','D'][i]}</span>${o.t}</label>
+    </li>`).join('');
+    const d=document.createElement('div');
+    d.className='qcard';d.id=`qc${qi}`;
+    d.innerHTML=`<div class="qnum">${qi+1}</div><div class="qtext">${q.q}</div><ul class="opts">${html}</ul><div class="fb" id="fb${qi}"></div>`;
+    c.appendChild(d);
+  });
+  document.getElementById('scorebox').classList.remove('show');
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
 }
 
-function generateQuiz() {
-  submitted = false;
-  currentQuestions = shuffle(allQuestions).slice(0, 5);
-  const container = document.getElementById('quiz-container');
-  container.innerHTML = '';
-
-  currentQuestions.forEach((q, qi) => {
-    const opts = shuffle(q.opts.map((o, i) => ({ text: o, origIdx: i })));
-    const correctShuffled = opts.findIndex(o => o.origIdx === q.correct);
-
-    const optsHTML = opts.map((o, i) => {
-      const letter = ['A','B','C','D'][i];
-      return `<li>
-        <input type="radio" name="q${qi}" id="q${qi}o${i}" value="${i}" data-correct="${correctShuffled}">
-        <label for="q${qi}o${i}">
-          <span class="option-letter">${letter}</span>${o.text}
-        </label>
-      </li>`;
-    }).join('');
-
-    const card = document.createElement('div');
-    card.className = 'question-card';
-    card.id = `qcard-${qi}`;
-    card.innerHTML = `
-      <div class="q-number">${qi + 1}</div>
-      <div class="q-text">${q.q}</div>
-      <ul class="options">${optsHTML}</ul>
-      <div class="feedback" id="fb-${qi}"></div>`;
-    container.appendChild(card);
+function submitQuiz(){
+  if(done)return;done=true;
+  let sc=0;
+  cur.forEach((q,qi)=>{
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb=document.getElementById(`fb${qi}`);
+    const labs=document.querySelectorAll(`#qc${qi} label`);
+    const inps=document.querySelectorAll(`input[name="q${qi}"]`);
+    const corr=parseInt(inps[0].dataset.c);
+    labs[corr].classList.add('correct');
+    if(sel){
+      const si=parseInt(sel.value);
+      if(si===corr){sc++;fb.innerHTML=`✅ <strong>答對了！</strong> ${q.feedback}`;fb.className='fb correct show';}
+      else{labs[si].classList.add('wrong');fb.innerHTML=`❌ <strong>答錯了。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    }else{fb.innerHTML=`⚠️ <strong>未作答。</strong> ${q.feedback}`;fb.className='fb wrong show';}
+    inps.forEach(i=>i.disabled=true);
   });
-
-  document.getElementById('score-box').classList.remove('show');
-  document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-}
-
-function submitQuiz() {
-  if (submitted) return;
-  submitted = true;
-  let score = 0;
-
-  currentQuestions.forEach((q, qi) => {
-    const selected = document.querySelector(`input[name="q${qi}"]:checked`);
-    const fb = document.getElementById(`fb-${qi}`);
-    const labels = document.querySelectorAll(`#qcard-${qi} label`);
-    const inputs = document.querySelectorAll(`input[name="q${qi}"]`);
-    const correctIdx = parseInt(inputs[0].dataset.correct);
-
-    labels[correctIdx].classList.add('correct');
-
-    if (selected) {
-      const selIdx = parseInt(selected.value);
-      if (selIdx === correctIdx) {
-        score++;
-        fb.innerHTML = `✅ <strong>Correct!</strong> ${q.feedback}`;
-        fb.className = 'feedback correct show';
-      } else {
-        labels[selIdx].classList.add('wrong');
-        fb.innerHTML = `❌ <strong>Incorrect.</strong> ${q.feedback}`;
-        fb.className = 'feedback wrong show';
-      }
-    } else {
-      fb.innerHTML = `⚠️ <strong>Not answered.</strong> ${q.feedback}`;
-      fb.className = 'feedback wrong show';
-    }
-    inputs.forEach(inp => inp.disabled = true);
-  });
-
-  const stars  = ['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
-  const msgs = [
-    'Keep reviewing — revisit the key theories and frameworks carefully.',
-    'A start! Focus on the IMB model, Intervention Mapping stages, and dual-process theory.',
-    'Good work! Review the NUDGE/EAST frameworks and RE-AIM evaluation criteria.',
-    'Excellent! You have a strong grasp of most core concepts.',
-    'Perfect score — outstanding mastery of all Chapter 1 concepts!'
-  ];
-
-  document.getElementById('score-number').textContent = `${score}/5`;
-  document.getElementById('score-stars').textContent = stars[score] || '';
-  document.getElementById('score-msg').textContent = msgs[score - 1] || msgs[0];
-  const box = document.getElementById('score-box');
+  const stars=['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
+  const msgs=['繼續加油！請重新回顧各理論框架。','有進步！特別複習 IMB 模型與 IM 六階段。','不錯！再複習雙歷程理論與 RE-AIM。','非常好！已掌握大部分核心概念。','滿分！完美掌握第一章所有核心概念！'];
+  document.getElementById('sc-num').textContent=`${sc}/5`;
+  document.getElementById('sc-stars').textContent=stars[sc]||'';
+  document.getElementById('sc-msg').textContent=msgs[sc-1]||msgs[0];
+  const box=document.getElementById('scorebox');
   box.classList.add('show');
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  box.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-document.addEventListener('DOMContentLoaded', generateQuiz);
-
-window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('.section');
-  let cur = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
-  document.querySelectorAll('.toc-link').forEach(l => {
-    l.classList.toggle('active', l.getAttribute('href') === '#' + cur);
-  });
+document.addEventListener('DOMContentLoaded',generateQuiz);
+window.addEventListener('scroll',()=>{
+  const secs=document.querySelectorAll('.section');
+  let id='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-90)id=s.id;});
+  document.querySelectorAll('.toc-link').forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
 });
 </script>
 </body>
