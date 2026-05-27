@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Planning Interventions to Change Behavior</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #7c3aed;
+    --accent: #0891b2;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
+    color: #fff;
+    padding: 72px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 16px; border-radius: 20px;
+    font-size: 13px; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800; line-height: 1.2;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; opacity: 0.85;
+    max-width: 620px; margin: 0 auto 28px;
+  }
+  .hero-meta {
+    display: flex; justify-content: center;
+    gap: 24px; flex-wrap: wrap;
+    font-size: 0.9rem; opacity: 0.8;
+  }
+
+  /* ── Sticky Nav ── */
+  .toc-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    padding: 0 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .toc-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 4px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .toc-inner::-webkit-scrollbar { display: none; }
+  .toc-link {
+    display: block; padding: 16px 14px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-muted); text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc-link:hover, .toc-link.active {
+    color: var(--primary); border-bottom-color: var(--primary);
+  }
+
+  /* ── Layout ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  /* ── Sections ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 72px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+  .section-number {
+    width: 48px; height: 48px; background: var(--primary); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 700; flex-shrink: 0;
+  }
+  .section h2 { font-size: 1.75rem; font-weight: 700; }
+  .section h3 { font-size: 1.2rem; font-weight: 600; color: var(--primary-dark); margin: 28px 0 12px; }
+  p { margin-bottom: 16px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 28px; box-shadow: var(--shadow); margin-bottom: 24px;
+    border: 1px solid var(--border); transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+
+  /* ── Highlight Boxes ── */
+  .highlight {
+    border-left: 4px solid var(--primary);
+    background: #eff6ff;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 18px 20px; margin: 20px 0;
+  }
+  .highlight.green { border-color: var(--success); background: #f0fdf4; }
+  .highlight.purple { border-color: var(--secondary); background: #faf5ff; }
+  .highlight.amber { border-color: var(--warning); background: #fffbeb; }
+  .highlight p:last-child { margin-bottom: 0; }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 20px; margin: 20px 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; margin: 20px 0; }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block; padding: 3px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin: 2px;
+  }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+  .tag-purple { background: #ede9fe; color: #6d28d9; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-amber { background: #fef3c7; color: #92400e; }
+
+  /* ── Model Box ── */
+  .model-box {
+    background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+    border: 2px solid #c7d2fe; border-radius: var(--radius);
+    padding: 28px; text-align: center; margin: 24px 0;
+  }
+  .model-box h4 { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 20px; }
+  .model-flow {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .model-node {
+    background: var(--primary); color: #fff;
+    padding: 12px 20px; border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 0.9rem; text-align: center; line-height: 1.4;
+  }
+  .model-node.purple { background: var(--secondary); }
+  .model-node.green { background: var(--success); }
+  .model-arrow { font-size: 1.4rem; color: var(--text-muted); }
+
+  /* ── Numbered Steps ── */
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li {
+    display: flex; gap: 16px; margin-bottom: 20px;
+    counter-increment: step; align-items: flex-start;
+  }
+  .steps li::before {
+    content: counter(step);
+    min-width: 36px; height: 36px; background: var(--primary); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .steps li .step-content strong { display: block; font-size: 1rem; margin-bottom: 4px; color: var(--primary-dark); }
+  .steps li .step-content span { color: var(--text-muted); font-size: 0.93rem; }
+
+  /* ── Table ── */
+  .table-wrapper { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; padding: 14px 18px; text-align: left; font-size: 0.9rem; font-weight: 600;
+  }
+  td { padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 0.92rem; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f8fafc; }
+
+  /* ── Framework Box ── */
+  .framework {
+    display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+    gap: 12px; margin: 20px 0;
+  }
+  .framework-item {
+    border-radius: var(--radius-sm); padding: 20px 14px;
+    text-align: center; transition: transform 0.2s;
+  }
+  .framework-item:hover { transform: translateY(-4px); }
+  .framework-item .letter { font-size: 2.4rem; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .framework-item .word { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .framework-item .desc { font-size: 0.8rem; line-height: 1.4; opacity: 0.85; }
+
+  /* ── Dual Process ── */
+  .dual-process { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .process-box { border-radius: var(--radius); padding: 24px; border: 2px solid; }
+  .process-box.reflective { background: linear-gradient(135deg,#eff6ff,#dbeafe); border-color: #93c5fd; }
+  .process-box.impulsive { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); border-color: #d8b4fe; }
+  .process-box h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; text-align: center; }
+  .process-box.reflective h4 { color: #1d4ed8; }
+  .process-box.impulsive h4 { color: #7c3aed; }
+  .process-box ul { list-style: none; padding: 0; }
+  .process-box ul li {
+    padding: 6px 0; font-size: 0.9rem;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .process-box ul li:last-child { border-bottom: none; }
+  .process-box ul li::before { content: '→'; font-weight: 700; margin-top: 1px; flex-shrink: 0; }
+  .process-box.reflective ul li::before { color: #2563eb; }
+  .process-box.impulsive ul li::before { color: #7c3aed; }
+
+  /* ── IMB Grid ── */
+  .imb-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 24px 0; }
+  .imb-card { border-radius: var(--radius); padding: 24px 20px; text-align: center; }
+  .imb-card.info { background: linear-gradient(135deg,#eff6ff,#dbeafe); border: 2px solid #bfdbfe; }
+  .imb-card.motiv { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); border: 2px solid #ddd6fe; }
+  .imb-card.skills { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border: 2px solid #a7f3d0; }
+  .imb-card .icon { font-size: 2.4rem; margin-bottom: 10px; }
+  .imb-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+  .imb-card.info h4 { color: #1d4ed8; }
+  .imb-card.motiv h4 { color: #7c3aed; }
+  .imb-card.skills h4 { color: #059669; }
+  .imb-card p { font-size: 0.88rem; color: var(--text); line-height: 1.5; margin: 0; }
+
+  /* ── SMART ── */
+  .smart-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin: 20px 0; }
+  .smart-item { border-radius: var(--radius-sm); padding: 16px 12px; text-align: center; }
+  .smart-item .s-letter { font-size: 2rem; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+  .smart-item .s-word { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .smart-item .s-desc { font-size: 0.75rem; line-height: 1.4; opacity: 0.8; }
+
+  /* ── RE-AIM ── */
+  .reaim-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 14px; margin: 20px 0; }
+  .reaim-item {
+    border-radius: var(--radius-sm); padding: 20px 16px; text-align: center;
+    border: 1px solid var(--border); background: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .reaim-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .reaim-item .r-letter { font-size: 2rem; font-weight: 900; color: var(--primary); }
+  .reaim-item .r-word { font-size: 0.95rem; font-weight: 700; margin: 6px 0; }
+  .reaim-item .r-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+  /* ── Callout ── */
+  .concept-callout {
+    background: linear-gradient(135deg, #1e3a5f, #2563eb);
+    color: #fff; border-radius: var(--radius);
+    padding: 24px 28px; margin: 24px 0;
+  }
+  .concept-callout h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .concept-callout p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
+
+  /* ── Divider ── */
+  .divider {
+    border: none; height: 2px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 40px 0;
+  }
+
+  /* ── Quiz ── */
+  #quiz {
+    background: linear-gradient(135deg, #f8fafc, #eff6ff);
+    border-radius: 20px; padding: 48px 36px;
+    border: 2px solid #bfdbfe; margin-top: 64px;
+  }
+  .quiz-header { text-align: center; margin-bottom: 40px; }
+  .quiz-header h2 { font-size: 2rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
+  .quiz-header p { color: var(--text-muted); }
+
+  .question-card {
+    background: #fff; border-radius: var(--radius);
+    padding: 28px; margin-bottom: 24px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .q-number {
+    width: 32px; height: 32px; background: var(--primary); color: #fff;
+    border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; margin-bottom: 14px;
+  }
+  .q-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+  .options { list-style: none; padding: 0; }
+  .options li { margin-bottom: 10px; }
+  .options label {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px; border: 2px solid var(--border);
+    border-radius: var(--radius-sm); cursor: pointer;
+    transition: all 0.2s; font-size: 0.95rem; line-height: 1.5;
+  }
+  .options label:hover { border-color: var(--primary); background: #eff6ff; }
+  .options input[type="radio"] { display: none; }
+  .options input[type="radio"]:checked + label { border-color: var(--primary); background: #eff6ff; font-weight: 500; }
+  .options label.correct { border-color: var(--success) !important; background: #f0fdf4 !important; color: #065f46; font-weight: 600; }
+  .options label.wrong { border-color: var(--danger) !important; background: #fef2f2 !important; color: #991b1b; }
+  .option-letter {
+    min-width: 26px; height: 26px; border-radius: 50%; background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700; flex-shrink: 0; transition: background 0.2s;
+  }
+  .options input[type="radio"]:checked + label .option-letter { background: var(--primary); color: #fff; }
+  .options label.correct .option-letter { background: var(--success); color: #fff; }
+  .options label.wrong .option-letter { background: var(--danger); color: #fff; }
+
+  .feedback {
+    margin-top: 16px; padding: 14px 18px; border-radius: var(--radius-sm);
+    font-size: 0.9rem; line-height: 1.6; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #f0fdf4; color: #065f46; border: 1px solid #a7f3d0; }
+  .feedback.wrong { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+  .quiz-actions { display: flex; gap: 12px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 32px; border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+  .btn-outline { background: #fff; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-outline:hover { background: #eff6ff; }
+
+  .score-box {
+    display: none; text-align: center;
+    background: linear-gradient(135deg, #1e3a5f, #2563eb);
+    color: #fff; border-radius: var(--radius); padding: 36px; margin-top: 32px;
+  }
+  .score-box.show { display: block; }
+  .score-number { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .score-label { font-size: 1.1rem; opacity: 0.9; margin-bottom: 8px; }
+  .score-stars { font-size: 2rem; margin-bottom: 12px; }
+  .score-msg { font-size: 1rem; opacity: 0.85; }
+
+  /* ── Footer ── */
+  footer {
+    background: #1e293b; color: #94a3b8;
+    text-align: center; padding: 40px 24px;
+  }
+  footer .copyright { font-size: 0.95rem; line-height: 1.8; }
+  footer .copyright strong { color: #f1f5f9; font-size: 1.05rem; }
+  footer .book-ref { font-size: 0.82rem; margin-top: 10px; opacity: 0.6; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .dual-process { grid-template-columns: 1fr; }
+    .imb-grid { grid-template-columns: 1fr; }
+    .smart-grid { grid-template-columns: repeat(3,1fr); }
+    #quiz { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Behavior Change Research &amp; Theory &nbsp;·&nbsp; Chapter 1</div>
+  <h1>Planning Interventions<br>to Change Behavior</h1>
+  <p class="hero-subtitle">Intervention Mapping · Dual-Process Theory · IMB Model · NUDGE · RE-AIM Evaluation</p>
+  <div class="hero-meta">
+    <span>📚 Abraham &amp; Denford</span>
+    <span>🎓 University of Exeter</span>
+    <span>⏱ ~25 min read</span>
+    <span>✅ 5-question quiz included</span>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#intro">Introduction</a>
+    <a class="toc-link" href="#change-possible">Change is Possible</a>
+    <a class="toc-link" href="#ind-env">Individual vs Environment</a>
+    <a class="toc-link" href="#nudge">NUDGE &amp; EAST</a>
+    <a class="toc-link" href="#im">Intervention Mapping</a>
+    <a class="toc-link" href="#habit">Choice &amp; Habit</a>
+    <a class="toc-link" href="#imb">IMB Model</a>
+    <a class="toc-link" href="#impulsive">Impulsive Processes</a>
+    <a class="toc-link" href="#evaluation">Evaluation</a>
+    <a class="toc-link" href="#quiz">📝 Quiz</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ───── 1. INTRODUCTION ───── -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>Introduction: Why Behavior Change?</h2>
+  </div>
+
+  <p>Population-level behavior change research has become especially topical because patterns of behavior shared across populations are key determinants of health and well-being. Decades of epidemiological research demonstrate a clear link between everyday lifestyle behaviors and long-term health outcomes.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">📊 The Alameda County Study (Belloc &amp; Breslow, 1972)</h3>
+      <p>Followed <strong>7,000 people over 10 years</strong> and showed that sleep, exercise, alcohol consumption, and eating habits significantly predicted mortality — among the earliest studies to empirically connect everyday behaviors to life expectancy.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">📉 Mortality Risk (Kvaavik et al., 2010)</h3>
+      <p>Among 4,886 individuals, those who smoked, consumed fewer than 3 fruit/vegetable portions daily, did less than 2 h physical activity/week, and drank more than 14 alcohol units had an all-cause mortality risk equivalent to being <strong>12 years older</strong>.</p>
+    </div>
+  </div>
+
+  <div class="highlight amber">
+    <p>🌍 <strong>The Scale of the Problem:</strong> In England, more than <strong>60% of the population is overweight or obese</strong>, associated with type 2 diabetes, coronary heart disease, hypertension, osteoarthritis, and cancer — costing an estimated <strong>£5 billion annually</strong> (Department of Health, 2013). Engaging people in self-management and behavior change is critical to health service sustainability.</p>
+  </div>
+
+  <p>Despite the clear motivation for change, <em>understanding how to bring about that change</em> is far more complex. A review by Michie et al. (2008) identified at least <strong>137 individual behavior change techniques</strong>, concluding that a "one-size-fits-all" approach cannot be adopted — techniques must be carefully matched to the specific antecedents of the target behavior and the target population.</p>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 2. CHANGE IS POSSIBLE ───── -->
+<section class="section" id="change-possible">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>Change is Possible: The Neurological Foundation</h2>
+  </div>
+
+  <div class="concept-callout">
+    <h4>Brain Plasticity as the Basis for Change</h4>
+    <p>The human brain — approximately <strong>86 billion neurons</strong> — has the capacity, over time, to rewrite the processes that direct what we think, feel, and do (Maslin &amp; Christensen, 2007; Herculano-Houzel, 2009). Activities that once seem difficult or strange can, through practice, become automatic and everyday.</p>
+  </div>
+
+  <p>The challenge for behavior change scientists is to <strong>model, explain, and then harness</strong> the cognitive, emotional, and behavioral dynamism of our regulatory control systems (Reynolds &amp; Branscombe, 2015) — and to develop interventions that help people accelerate and consolidate behavior change processes.</p>
+
+  <div class="highlight green">
+    <p>✅ <strong>Evidence That Change Works:</strong> Reductions in smoking and unsafe sexual behavior; increases in physical activity, healthy diets, self-care, and health screening have all been observed following specific interventions. A NICE-commissioned review of <strong>103 systematic reviews</strong> found that overall, interventions were successful in changing behavior patterns (Jepson et al., 2010; Johnson et al., 2010).</p>
+  </div>
+
+  <p>However, effectiveness is not guaranteed. Careful modeling of <strong>modifiable regulatory processes</strong> (behavioral determinants) and matched selection of proven change techniques is a prerequisite to success. Poorly designed interventions may not only be ineffective — they may produce <em>negative</em> effects.</p>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 3. INDIVIDUAL VS ENVIRONMENT ───── -->
+<section class="section" id="ind-env">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>Changing Individuals vs. Changing Environments</h2>
+  </div>
+
+  <p>Understanding how to help people reprogram themselves is important, but <strong>environmental changes may provide more powerful levers of change</strong>. Changes in the physical, commercial, and social environment can prompt widespread behavior change without requiring persuasion of individuals.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div style="font-size:2rem;margin-bottom:10px">👤</div>
+      <h3 style="margin-top:0;color:#1d4ed8">Individual-Level Approaches</h3>
+      <p>Target intrapersonal regulatory processes or psychological "determinants" — changing what people believe, feel, and are motivated to do. If effective and widely applied, individual change can have population-wide effects.</p>
+      <div style="margin-top:12px">
+        <span class="tag tag-blue">Attitude change</span>
+        <span class="tag tag-blue">Self-efficacy</span>
+        <span class="tag tag-blue">Skill training</span>
+        <span class="tag tag-blue">Planning</span>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:2rem;margin-bottom:10px">🏙️</div>
+      <h3 style="margin-top:0;color:#7c3aed">Environmental / Structural Approaches</h3>
+      <p>Target the <em>context</em> in which choices are made — changing the physical, commercial, legal, or social environment rather than individual cognitions.</p>
+      <div style="margin-top:12px">
+        <span class="tag tag-purple">Food taxes</span>
+        <span class="tag tag-purple">Default systems</span>
+        <span class="tag tag-purple">Legislation</span>
+        <span class="tag tag-purple">Urban design</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight amber">
+    <p>⚠️ <strong>Whole-System Thinking Required:</strong> For complex problems like obesity prevention, individual approaches alone are insufficient. A <em>whole-system approach</em> targeting multiple processes simultaneously is needed. Organizational change matters too: Haslam et al. (2014) found that residents who redesigned their own care home environment showed significantly greater cognitive improvements than those whose environment was redesigned for them.</p>
+  </div>
+
+  <h3>Legislative Change</h3>
+  <p>Legislation can have profound behavioral effects. The UK smoking ban in public places (2007) was followed by significant reductions in myocardial infarction hospital admissions. A parallel US study (Sargent et al., 2004) found a significant drop during a 6-month smoking ban in Montana, while surrounding areas without a ban experienced a non-significant increase.</p>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 4. NUDGE & EAST ───── -->
+<section class="section" id="nudge">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>Policy Frameworks: NUDGE &amp; EAST</h2>
+  </div>
+
+  <p>Both the UK and US governments use accessible frameworks to guide behavior change policy. These approaches favor <em>low-friction</em> design — making desired behaviors easier without banning alternatives.</p>
+
+  <h3>The NUDGE Framework (Thaler &amp; Sunstein, 2008)</h3>
+  <p>A NUDGE alters choice architecture "without forbidding options or significantly changing economic incentives" — changes that are "easy and cheap to avoid." Putting fruit at eye level counts as a nudge; banning junk food does not.</p>
+
+  <div class="framework">
+    <div class="framework-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="letter">N</div>
+      <div class="word">iNcentives</div>
+      <div class="desc">Use rewards &amp; financial reinforcement to shape behavioral responses</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#065f46">
+      <div class="letter">U</div>
+      <div class="word">Understand mappings</div>
+      <div class="desc">Help people link actions to outcomes</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
+      <div class="letter">D</div>
+      <div class="word">Defaults</div>
+      <div class="desc">Design opt-in/opt-out systems that make the desired behavior the path of least resistance</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="letter">G</div>
+      <div class="word">Give feedback</div>
+      <div class="desc">Provide real-time information about current behavior and its effects</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
+      <div class="letter">E</div>
+      <div class="word">Expect errors</div>
+      <div class="desc">Design for human fallibility; make it easy to recover from mistakes</div>
+    </div>
+  </div>
+
+  <div class="highlight green">
+    <p>💡 <strong>The Default Effect (Organ Donation):</strong> Countries with opt-<em>out</em> (assumed consent) systems show donation rates above <strong>99%</strong>; countries like the UK using opt-<em>in</em> systems show only ~<strong>17%</strong> (Johnson &amp; Goldstein, 2003). Shepherd et al. (2014) confirmed that opt-out countries have significantly higher total transplants. This illustrates the enormous behavioral power of default architecture.</p>
+  </div>
+
+  <div class="highlight purple">
+    <p>💡 <strong>Financial Incentives:</strong> Pregnant women paid to abstain from smoking showed <strong>24% cessation</strong> at 12-week postpartum follow-up vs. only <strong>3%</strong> in the control group (Heil et al., 2008). Key question: can incentive-based interventions generate <em>intrinsic</em> motivation that sustains change after incentives are withdrawn?</p>
+  </div>
+
+  <h3>The EAST Framework (Behavioural Insights Team, 2014)</h3>
+  <p>Designed for busy policy makers: to encourage any behavior, make it:</p>
+
+  <div class="framework">
+    <div class="framework-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="letter">E</div><div class="word">Easy</div>
+      <div class="desc">Reduce friction; simplify processes and decisions</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#fde68a,#fef3c7);color:#78350f">
+      <div class="letter">A</div><div class="word">Attractive</div>
+      <div class="desc">Use salience and incentives to draw interest</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#064e3b">
+      <div class="letter">S</div><div class="word">Social</div>
+      <div class="desc">Harness social norms, networks, and peer influence</div>
+    </div>
+    <div class="framework-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="letter">T</div><div class="word">Timely</div>
+      <div class="desc">Intervene when people are most receptive to change</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 5. INTERVENTION MAPPING ───── -->
+<section class="section" id="im">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>Intervention Mapping (IM): Systematic Planning</h2>
+  </div>
+
+  <p>Effective behavior change interventions require careful, systematic design. The <strong>Intervention Mapping (IM) approach</strong> (Bartholomew et al., 2011; <a href="http://www.interventionmapping.com" target="_blank">interventionmapping.com</a>) provides a comprehensive and practical guide, ensuring that change techniques are evidence-based and precisely matched to the regulatory processes driving the target behavior.</p>
+
+  <div class="highlight">
+    <p>📌 <strong>Why IM Matters:</strong> Without systematic planning, interventions may fail to incorporate the detailed tailoring on which effectiveness depends. "Bland, off-the-peg interventions" lack the versatility to match techniques to specific behavior change challenges — and so fail to progress a science of behavior change.</p>
+  </div>
+
+  <h3>The 6 Stages of Intervention Mapping</h3>
+  <ol class="steps">
+    <li>
+      <div class="step-content">
+        <strong>Needs Assessment</strong>
+        <span>Identify the problem caused by specified behavior patterns through literature reviews and stakeholder consultation. A thorough needs assessment can prevent wasting time on unnecessary or ineffectual interventions — it may reveal that dissemination of best practice, rather than a new intervention, is the optimal response.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-content">
+        <strong>Defining Intervention Objectives</strong>
+        <span>Precisely define the behavior changes required. For example, a sexual health intervention might target condom acquisition, carrying, negotiation, and correct use — each a distinct behavioral target requiring separate analysis (corresponding to Characteristic 1 in Table 1.1).</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-content">
+        <strong>Identifying Regulatory Processes &amp; Change Techniques</strong>
+        <span>Identify which modifiable mechanisms maintain the current (unwanted) behavior, then select evidence-based change techniques capable of altering those mechanisms. If designers make incorrect assumptions about key behavioral drivers, they will employ suboptimal or even counterproductive techniques (e.g., using fear appeals with an already-motivated audience).</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-content">
+        <strong>Assembling the Intervention</strong>
+        <span>Develop practical delivery formats and assemble the intervention components. Decisions include delivery mode (face-to-face, digital, print), setting (school, worksite, community), and the fit between components and the cultural/practical context.</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-content">
+        <strong>Planning Delivery &amp; Implementation in Context</strong>
+        <span>Anticipate how the intervention will be used in everyday settings. Is it engaging, acceptable, practical, and sustainable? Pilot testing and co-creation with recipients is critical. Competent delivery may require additional training — e.g., a review of motivational interviewing training found only 2 of 11 studies reported 75%+ clinician proficiency (Hall et al., 2015).</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-content">
+        <strong>Planning Intervention Evaluation</strong>
+        <span>Define outcome, process, and economic evaluation measures from the outset. When behavior changes are defined in Stage 2, simultaneously identify how to measure those changes. When regulatory mechanisms are identified in Stage 3, select measures to assess the change processes by which the intervention is hypothesized to work.</span>
+      </div>
+    </li>
+  </ol>
+
+  <h3>12 Characteristics of Any Behavior Change Intervention (Abraham et al., 2016)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>#</th><th>Characteristic</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Specific behavior change(s) targeted</td></tr>
+        <tr><td>2</td><td>Modifiable processes (mechanisms) at different levels that regulate relevant behavior patterns</td></tr>
+        <tr><td>3</td><td>Change techniques known to alter the identified regulatory mechanisms</td></tr>
+        <tr><td>4</td><td>Delivery methods or formats (face-to-face, telephone, interactive online, leaflets, etc.)</td></tr>
+        <tr><td>5</td><td>Intervention components — the collection of materials and methods employed</td></tr>
+        <tr><td>6</td><td>The setting in which the intervention will be delivered (worksite, school, clinic, etc.)</td></tr>
+        <tr><td>7</td><td>Fit between intervention components and the cultural/practical context</td></tr>
+        <tr><td>8</td><td>Characteristics, qualifications, and training of those delivering the intervention</td></tr>
+        <tr><td>9</td><td>Intensity (contact time per session)</td></tr>
+        <tr><td>10</td><td>Duration (number of sessions; overall period)</td></tr>
+        <tr><td>11</td><td>Fidelity of delivery — was the intervention delivered as designed?</td></tr>
+        <tr><td>12</td><td>Evaluation: outcome, process, and economic evaluations</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 6. CHOICE OR HABIT ───── -->
+<section class="section" id="habit">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>Choice or Habit? Dual-Process Models of Behavior</h2>
+  </div>
+
+  <p>Behavior change is often framed as helping people make the right <em>choices</em> — implying deliberate, rational decision-making. Yet many problematic behavior patterns are enacted <strong>without conscious deliberation</strong>. They are automatic and habitual, triggered by environmental cues. Changing the context may be more effective than changing the mind.</p>
+
+  <div class="concept-callout">
+    <h4>Dual-Process Theory: Two Regulatory Systems</h4>
+    <p>A series of dual-process models (Borland, 2014; Kahneman, 2011; Strack &amp; Deutsch, 2004) characterize two distinct regulatory systems operating in parallel on a moment-to-moment basis — one conscious and deliberative, the other automatic and impulsive.</p>
+  </div>
+
+  <div class="dual-process">
+    <div class="process-box reflective">
+      <h4>🧠 Reflective System</h4>
+      <ul>
+        <li>Conscious, deliberative control of action</li>
+        <li>Rational weighing of pros and cons</li>
+        <li>Goal-directed and effortful processing</li>
+        <li>Susceptible to cognitive depletion (ego depletion; Baumeister et al., 1998)</li>
+        <li>Responds to verbal instructions &amp; planning prompts</li>
+        <li>Can consciously monitor and modify routine behavior</li>
+      </ul>
+    </div>
+    <div class="process-box impulsive">
+      <h4>⚡ Impulsive System</h4>
+      <ul>
+        <li>Automatic, habitual, fast responses</li>
+        <li>Operates with low conscious awareness</li>
+        <li>Triggered by environmental cues via conditioning</li>
+        <li>Built through repetition (operant conditioning)</li>
+        <li>Difficult to modify through willpower alone</li>
+        <li>Produces subjective "urges" and "cravings"</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>The Reflective-Impulsive Model (RIM; Strack &amp; Deutsch, 2004)</h3>
+  <p>The RIM, elaborated by Borland (2014) as the <strong>Context, Executive and Operational Systems (CEOS)</strong> model, proposes that the two systems operate in parallel. The reflective system can become <em>aware</em> of the impulsive system's operation — perceiving "urges" and "cravings" — and this awareness is critical to regaining reflective control over otherwise automatic behavior patterns.</p>
+
+  <div class="model-box">
+    <h4>RIM: How the Two Systems Interact</h4>
+    <div class="model-flow">
+      <div class="model-node">Environmental Cue</div>
+      <div class="model-arrow">→</div>
+      <div class="model-node purple">Impulsive System<br><small>(automatic urge)</small></div>
+      <div class="model-arrow">↕</div>
+      <div class="model-node" style="background:#1d4ed8">Reflective System<br><small>(conscious awareness)</small></div>
+      <div class="model-arrow">→</div>
+      <div class="model-node green">Behavioral Response<br><small>(habitual or new)</small></div>
+    </div>
+  </div>
+
+  <div class="highlight amber">
+    <p>⚠️ <strong>Mindless Eating (Wansink, 2007):</strong> Eating is rarely consciously monitored — each eating episode can be initiated by internal impulses or external cues with little deliberation. A highly motivated person may still find themselves consuming more calories than intended, because the impulsive system governs action independently of reflective intentions.</p>
+  </div>
+
+  <div class="highlight">
+    <p>💡 <strong>Practical Application — Self-Monitoring:</strong> A food diary completed immediately after eating deliberately activates the reflective system, disrupting mindless consumption. This illustrates how a change technique can be <em>selected</em> through understanding the underlying regulatory processes (Abraham &amp; Michie, 2008). However, conscious self-monitoring is cognitively taxing. Sustainable change ultimately requires making <strong>new behavioral routines automatic</strong> — breaking unwanted habits and building new ones (Dean, 2013).</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 7. IMB MODEL ───── -->
+<section class="section" id="imb">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>The IMB Skills Model: Targeting Reflective Processes</h2>
+  </div>
+
+  <p>The <strong>Information-Motivation-Behavioral Skills (IMB) model</strong> (Fisher &amp; Fisher, 1992) is a well-tested framework for designing individual-level interventions targeting the reflective system. The model proposes that changes in the reflective system occur when three conditions are met:</p>
+
+  <div class="imb-grid">
+    <div class="imb-card info">
+      <div class="icon">📖</div>
+      <h4>Information</h4>
+      <p>Relevant, accurate knowledge about behavior and its consequences. Critical when motivated, skilled people lack awareness of health risks or behavioral options (e.g., calorie content, STI transmission routes).</p>
+    </div>
+    <div class="imb-card motiv">
+      <div class="icon">🔥</div>
+      <h4>Motivation</h4>
+      <p>The willingness and intent to perform the behavior. Information provision alone is insufficient for unmotivated audiences — motivational processes must be directly targeted through specific techniques.</p>
+    </div>
+    <div class="imb-card skills">
+      <div class="icon">🛠️</div>
+      <h4>Behavioral Skills</h4>
+      <p>The practical capabilities to execute and sustain the behavior. Motivated, informed people can still fail to change if they lack skills to translate intention into action or to manage the social challenges of change.</p>
+    </div>
+  </div>
+
+  <h3>Five Key Determinants of Motivation (Fishbein et al., 2001)</h3>
+  <div class="card">
+    <ol class="steps">
+      <li><div class="step-content"><strong>Outcome Expectancies</strong><span>Belief that the advantages of changing behavior outweigh the disadvantages</span></div></li>
+      <li><div class="step-content"><strong>Anticipated Positive Affect</strong><span>Expectation that behavior change will lead to a positive emotional reaction (pride, satisfaction)</span></div></li>
+      <li><div class="step-content"><strong>Social Norms</strong><span>Belief that significant others will approve of the proposed change</span></div></li>
+      <li><div class="step-content"><strong>Identity / Self-Image</strong><span>Belief that the behavior change is consistent with who the person is or aspires to be</span></div></li>
+      <li><div class="step-content"><strong>Self-Efficacy (Bandura, 1997)</strong><span>Belief that one is capable of successfully performing the required behavior. High self-efficacy leads to more challenging goals, more effort, more flexible problem-solving, and greater persistence.</span></div></li>
+    </ol>
+  </div>
+
+  <h3>Three Classes of Behavioral Skills</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:10px">🎯</div>
+      <h3 style="margin-top:0">Self-Regulatory Skills</h3>
+      <p style="font-size:0.9rem">Goal-setting, self-monitoring, and planning. Based on <strong>Control Theory</strong> (Carver &amp; Scheier, 1982): set goals → monitor current behavior → take action → monitor progress → re-set goals. Includes SMART goal-setting (Doran, 1981).</p>
+    </div>
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:10px">💪</div>
+      <h3 style="margin-top:0">Motor Skills</h3>
+      <p style="font-size:0.9rem">Physical capabilities required for the behavior (e.g., correct inhaler use, handwashing technique, safe injection practice). May require modeling, guided practice, and feedback on performance.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:1.8rem;margin-bottom:10px">🤝</div>
+      <h3 style="margin-top:0">Social Skills</h3>
+      <p style="font-size:0.9rem">Interpersonal capabilities to negotiate change with others (condom negotiation, refusal of alcohol, assertiveness). Role play with modeling and video feedback is highly effective (Video Interaction Guidance; Kennedy et al., 2011).</p>
+    </div>
+  </div>
+
+  <h3>SMART Goal-Setting (Doran, 1981)</h3>
+  <div class="smart-grid">
+    <div class="smart-item" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af">
+      <div class="s-letter">S</div><div class="s-word">Specific</div>
+      <div class="s-desc">Particular actions in particular contexts</div>
+    </div>
+    <div class="smart-item" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46">
+      <div class="s-letter">M</div><div class="s-word">Measurable</div>
+      <div class="s-desc">Can test whether the goal has been attained</div>
+    </div>
+    <div class="smart-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f">
+      <div class="s-letter">A</div><div class="s-word">Assignable</div>
+      <div class="s-desc">Clear who will take action (also: Attainable)</div>
+    </div>
+    <div class="smart-item" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);color:#5b21b6">
+      <div class="s-letter">R</div><div class="s-word">Realistic</div>
+      <div class="s-desc">Attainable within current skill set and environment</div>
+    </div>
+    <div class="smart-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#7f1d1d">
+      <div class="s-letter">T</div><div class="s-word">Time-specified</div>
+      <div class="s-desc">When or by what date action will be taken</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 8. IMPULSIVE PROCESSES ───── -->
+<section class="section" id="impulsive">
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <h2>Changing Impulsive Processes: Breaking &amp; Making Habits</h2>
+  </div>
+
+  <p>Skinner's (1938) work on operant conditioning systematically explained how environments shape automatic behavior: stimuli associated with rewarding experiences become cues that automatically trigger approach responses, building complex impulsively regulated behavior patterns over time.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">🔄 Inhibition Training (Go/No-Go Paradigm)</h3>
+      <p>Pictures of desired stimuli (e.g., unhealthy foods) are repeatedly paired with "stop" signals. Over many pairings, the established impulse to approach becomes inhibited — making it easier to resist automatic approach responses in real-world settings.</p>
+      <p style="margin-bottom:0">A meta-analysis of 19 experiments (Allom et al., 2015) suggests inhibition training may effectively change health behavior patterns.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">📋 If-Then Planning (Implementation Intentions)</h3>
+      <p>Formulating "if situation X, then I will do Y" plans. Gollwitzer &amp; Sheeran (2006) show these help motivated people <strong>translate intentions into action</strong>.</p>
+      <p style="margin-bottom:0"><strong>Example:</strong> Adding one if-then planning session to a weight-loss program led participants to lose <strong>twice as much weight</strong> over 2 months (Luszczynska et al., 2007). Mediation analysis confirmed the hypothesized mechanism.</p>
+    </div>
+  </div>
+
+  <div class="concept-callout">
+    <h4>Why If-Then Planning Bridges Both Systems</h4>
+    <p>The plan is formulated using the <em>reflective</em> system, but the pairing of a cue ("if") with an imagined response ("then") has the capacity to alter the <em>impulsive</em> system — so that when the cue is encountered later, a new automatic response is prompted without requiring conscious deliberation at that moment.</p>
+  </div>
+
+  <h3>Habit Reversal &amp; Food Rehabilitation</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">Habit Reversal Therapy (Dean, 2013)</h3>
+      <p>Originally for Tourette's syndrome — intensive (10+ h of contact): (1) build awareness of unwanted behavioral tics and their triggers, (2) practice a competing behavior whenever the urge arises. McGuire et al. (2014) confirm effectiveness of this intensive approach.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Food Rehabilitation (Kessler, 2009)</h3>
+      <p>Parallels habit reversal for unhealthy eating: (1) identify environmental cues and "premonitionary urges," (2) specify competing behaviors (e.g., taking a different route past a bakery), (3) cognitive-emotional reconstruction — reshaping how food cues are mentally represented to reduce their pull.</p>
+    </div>
+  </div>
+
+  <h3>Detailed Tailoring: The Same Technique, Different Applications</h3>
+  <p>Even within one technique category, precise tailoring to the specific barrier is critical:</p>
+  <div class="grid-2">
+    <div class="highlight green">
+      <p><strong>Sheeran &amp; Orbell (2000):</strong> A planning prompt asking women to specify <em>when and where</em> to make a cervical screening appointment increased attendance from <strong>67% → 92%</strong>. The barrier was failure to initiate action — so action planning worked.</p>
+    </div>
+    <div class="highlight" style="border-color:#2563eb;background:#eff6ff">
+      <p><strong>Sheeran et al. (2007):</strong> Advised anxious psychotherapy patients to use self-talk when appointment worries arose. Attendance rose from <strong>63% → 75%</strong>. The barrier here was cognitive elaboration of anxiety — so a thought-regulation technique was needed instead.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ───── 9. EVALUATION ───── -->
+<section class="section" id="evaluation">
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <h2>Evaluation of Behavior Change Interventions</h2>
+  </div>
+
+  <p>The final stage of IM is evaluation planning. Although listed last, it must be anticipated <strong>from the outset</strong>. When intervention objectives are defined in Stage 2, designers should simultaneously identify how to measure them. Three broad evaluation types are distinguished:</p>
+
+  <div class="grid-3">
+    <div class="card" style="border-top:4px solid #2563eb">
+      <div style="font-size:1.8rem;margin-bottom:10px">📊</div>
+      <h3 style="margin-top:0">Outcome Evaluation</h3>
+      <p style="font-size:0.9rem"><em>Did the intervention change the target behavior?</em> May include both behavioral measures (e.g., physical activity, smoking) and health outcomes (e.g., weight, disease incidence).</p>
+    </div>
+    <div class="card" style="border-top:4px solid #7c3aed">
+      <div style="font-size:1.8rem;margin-bottom:10px">🔬</div>
+      <h3 style="margin-top:0">Process Evaluation</h3>
+      <p style="font-size:0.9rem"><em>How did the intervention work?</em> Did it change the targeted mechanisms (e.g., attitudes, self-efficacy, planning)? Mediation analyses test the intervention's logic model (Moore et al., 2014).</p>
+    </div>
+    <div class="card" style="border-top:4px solid #059669">
+      <div style="font-size:1.8rem;margin-bottom:10px">💰</div>
+      <h3 style="margin-top:0">Economic Evaluation</h3>
+      <p style="font-size:0.9rem"><em>How much does the intervention cost per unit of effectiveness?</em> Preventive interventions are often highly cost-effective — e.g., HIV prevention vs. lifetime US treatment cost of ~$240,000+.</p>
+    </div>
+  </div>
+
+  <h3>The RE-AIM Framework (Glasgow et al., 2002; Green &amp; Glasgow, 2006)</h3>
+  <p>A comprehensive model for evaluating real-world delivery and implementation impact:</p>
+
+  <div class="reaim-grid">
+    <div class="reaim-item">
+      <div class="r-letter">R</div>
+      <div class="r-word">Reach</div>
+      <div class="r-desc">How many of the target population participated, and how representative were they?</div>
+    </div>
+    <div class="reaim-item">
+      <div class="r-letter">E</div>
+      <div class="r-word">Effectiveness</div>
+      <div class="r-desc">Range of effects, including intended outcomes, quality of life, and unintended consequences</div>
+    </div>
+    <div class="reaim-item">
+      <div class="r-letter">A</div>
+      <div class="r-word">Adoption</div>
+      <div class="r-desc">Were end-users (nurses, teachers, managers, public) persuaded to use the intervention? Depends on ease, value, cost, and goal compatibility</div>
+    </div>
+    <div class="reaim-item">
+      <div class="r-letter">I</div>
+      <div class="r-word">Implementation</div>
+      <div class="r-desc">Was it delivered as designed? Fidelity of delivery — did recipients receive adequate "dose"?</div>
+    </div>
+    <div class="reaim-item">
+      <div class="r-letter">M</div>
+      <div class="r-word">Maintenance</div>
+      <div class="r-desc">Is the intervention sustained in real-world settings long-term? Can the organization resource ongoing delivery?</div>
+    </div>
+  </div>
+
+  <div class="highlight green">
+    <p>✅ <strong>Key Insight:</strong> Even the most efficacious intervention has <strong>no public health impact if it is not adopted and translated into practice</strong> (Rogers, 2003). Understanding adoption and diffusion processes is as critical as the intervention design itself.</p>
+  </div>
+
+  <h3>Conclusions</h3>
+  <div class="concept-callout">
+    <h4>Towards a Science of Behavior Change</h4>
+    <p>We know a great deal about behavior change intervention design. By carefully following systematic planning procedures — understanding the detail of regulatory processes, tailoring techniques precisely, and rigorously evaluating both outcomes and processes — we can optimize effectiveness. Simplified "off-the-peg" approaches may sometimes generate results but lack the versatility to match techniques to specific challenges. Behavior change science advances project by project through careful planning and rigorous process evaluation.</p>
+  </div>
+</section>
+
+<!-- ═══════════ QUIZ ═══════════ -->
+<section class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>📝 Practice Quiz</h2>
+    <p>5 questions are randomly drawn from the question bank each time. Test your understanding, then click <strong>New Random Quiz</strong> for a fresh set!</p>
+  </div>
+
+  <div id="quiz-container"></div>
+
+  <div class="quiz-actions">
+    <button class="btn btn-primary" onclick="submitQuiz()">✔ Submit Answers</button>
+    <button class="btn btn-outline" onclick="generateQuiz()">🔀 New Random Quiz</button>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-stars" id="score-stars"></div>
+    <div class="score-number" id="score-number"></div>
+    <div class="score-label">out of 5 correct</div>
+    <div class="score-msg" id="score-msg"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copyright">
+    <strong>版權所有 &copy; 葉欲禾（Gary Yu-Ho Yen）</strong><br>
+    本教學素材依據原著內容製作，僅供學術教學用途。
+  </div>
+  <div class="book-ref">
+    Source: Little, L., Sillence, E., &amp; Joinson, A. (Eds.). (2017). <em>Behavior Change Research and Theory: Psychological and Technological Perspectives</em>. Academic Press / Elsevier.<br>
+    Chapter 1: Abraham, C., &amp; Denford, S. — Planning Interventions to Change Behavior.
+  </div>
+</footer>
+
+<script>
+const allQuestions = [
+  {
+    q: "According to the NUDGE framework (Thaler &amp; Sunstein, 2008), what does the letter 'D' stand for, and what is the key example discussed in the chapter?",
+    opts: [
+      "Determinants — identifying psychological determinants of behavior prior to intervention design",
+      "Defaults — designing systems that make the desired behavior the least-effort option (e.g., assumed-consent organ donation)",
+      "Delivery — the method used to provide intervention content to target participants",
+      "Denial — a psychological defense mechanism that reduces willingness to change"
+    ],
+    correct: 1,
+    feedback: "The 'D' stands for <strong>Defaults</strong> — constructing opt-in/opt-out systems that encourage the path of least resistance. Johnson &amp; Goldstein (2003) showed that countries using assumed-consent (opt-out) organ donation systems have rates above 99%, versus only ~17% in opt-in countries like the UK — demonstrating the enormous behavioral power of default architecture."
+  },
+  {
+    q: "The IMB model (Fisher &amp; Fisher, 1992) proposes that changes in the reflective regulatory system occur when which three conditions are simultaneously met?",
+    opts: [
+      "Individuals are well-informed, highly motivated, and possess the behavioral skills necessary to perform the desired behavior",
+      "Financial incentives are available, social support is provided, and professional counseling is received",
+      "The environment is changed, habit reversal occurs, and impulsive processes are extinguished through conditioning",
+      "SMART goals are set, self-monitoring is practiced, and the target behavior is regularly reinforced"
+    ],
+    correct: 0,
+    feedback: "The IMB model proposes behavior change is most likely when individuals are <strong>well-informed, highly motivated, and have the behavioral skills</strong> necessary for the desired behavior. Intervention designers should use elicitation research to identify which of these three elements is lacking in the target population, then specifically address those deficits."
+  },
+  {
+    q: "In the Intervention Mapping (IM) approach, what is the primary purpose of Stage 3?",
+    opts: [
+      "To recruit and screen participants and obtain ethical approval for the study",
+      "To identify modifiable regulatory processes that maintain behavior and select evidence-based techniques capable of altering those processes",
+      "To pilot-test the assembled intervention with a small sample of the target population",
+      "To calculate the cost-effectiveness ratio of the proposed intervention package"
+    ],
+    correct: 1,
+    feedback: "Stage 3 of IM focuses on <strong>identifying the modifiable processes regulating the target behavior</strong> (behavioral determinants) and selecting change techniques proven to alter them. Incorrect assumptions at this stage lead to suboptimal or counterproductive interventions — for example, applying fear appeals to an already-motivated audience, which may trigger defensive responses rather than behavior change."
+  },
+  {
+    q: "According to the Reflective-Impulsive Model (Strack &amp; Deutsch, 2004), why is sustainable behavior change particularly challenging?",
+    opts: [
+      "Because financial incentives are unavailable for most health behaviors in public health settings",
+      "Because the reflective system cannot be consciously activated to override the impulsive system",
+      "Because conscious reflective control is cognitively taxing and unsustainable; lasting change requires new automatic habits to be formed through practice",
+      "Because environmental factors are impossible to modify without legislative change"
+    ],
+    correct: 2,
+    feedback: "While activating the reflective system is critical to <em>initiating</em> change, relying on it to continuously override the impulsive system is cognitively demanding and unsustainable (Baumeister et al., 1998). Sustainable change requires that <strong>new behavioral routines eventually become automatic</strong> — meaning new habits must be built through repeated practice in relevant contexts, not just willpower."
+  },
+  {
+    q: "In the RE-AIM evaluation framework (Glasgow et al., 2002), what does 'Adoption' specifically refer to?",
+    opts: [
+      "Whether the intervention changed the target behavior in the study participants",
+      "Whether end-users who deliver the intervention (nurses, teachers, managers, etc.) found it useful and actually implemented it in their practice",
+      "The economic cost per unit of behavioral improvement produced by the intervention",
+      "Whether the intervention reached a representative and adequately sized sample of the target population"
+    ],
+    correct: 1,
+    feedback: "'Adoption' in RE-AIM refers to whether <strong>the practitioners and organizations who would deliver the intervention</strong> found it useful, acceptable, easy to implement, affordable, and compatible with their main goals (Paulussen et al., 1994). A highly efficacious intervention has zero public health impact if practitioners never adopt it — understanding this diffusion process (Rogers, 2003) is as critical as the design itself."
+  },
+  {
+    q: "Sheeran &amp; Orbell (2000) found that adding a brief planning prompt to a questionnaire increased cervical cancer screening attendance from 67% to 92%. This result best illustrates which behavior change technique?",
+    opts: [
+      "Inhibition training (go/no-go paradigm targeting the impulsive system)",
+      "Implementation intentions (if-then planning) targeting action initiation in motivated individuals",
+      "Motivational interviewing to resolve ambivalence toward the screening behavior",
+      "Social norms messaging leveraging descriptive peer-group norms"
+    ],
+    correct: 1,
+    feedback: "This is a classic demonstration of <strong>implementation intentions (if-then planning)</strong>. Motivated women who had not yet made an appointment were prompted to specify 'when, where, and how' they would make one — targeting the specific barrier of failing to translate intention into action. 92% attended vs. 67% in controls, despite equivalent motivation across both groups (Gollwitzer &amp; Sheeran, 2006)."
+  },
+  {
+    q: "Which of the following best describes 'choice architecture' as discussed in the chapter?",
+    opts: [
+      "A formal architectural design style developed specifically for healthcare environments to promote patient well-being",
+      "The structured physical and social environment that frames available options and shapes what people perceive, think about, and choose",
+      "A cognitive model explaining how people make fully rational, utility-maximizing economic decisions",
+      "A therapeutic technique that trains individuals to consciously evaluate all available behavioral alternatives"
+    ],
+    correct: 1,
+    feedback: "'Choice architecture' refers to <strong>the design of environments that frame available options</strong> — influencing what people see, think about, and choose, without explicitly restricting choices. Governments, retailers, and commercial organizations can all structure choice architecture to promote (or undermine) desired behaviors. Effective structuring raises important ethical and regulatory questions about manipulation vs. facilitation."
+  },
+  {
+    q: "Fishbein et al. (2001) identified five key determinants of motivation to change behavior. Which of the following is NOT among the five?",
+    opts: [
+      "Belief that behavior change is consistent with one's self-image or personal identity",
+      "Belief that one is physiologically or biologically ready to change (biological preparedness)",
+      "Belief that changing behavior will lead to a positive emotional reaction (anticipated affect)",
+      "Belief that significant others will approve of the proposed change (social norms)"
+    ],
+    correct: 1,
+    feedback: "Fishbein et al.'s five determinants are: (1) advantages outweigh disadvantages, (2) anticipated positive emotional reaction, (3) social norms / others' approval, (4) consistency with self-image/identity, and (5) self-efficacy. <strong>Physiological/biological readiness</strong> is not among them. Self-efficacy — the belief in one's <em>capability</em> to perform the behavior — is, which is conceptually distinct from biological capacity."
+  },
+  {
+    q: "The EAST framework (Behavioural Insights Team, 2014) was designed for which primary audience, and what does each letter represent?",
+    opts: [
+      "For academic researchers; stands for Evidence, Analysis, Synthesis, Translation",
+      "For busy policy makers; stands for Easy, Attractive, Social, Timely",
+      "For clinical practitioners; stands for Engage, Assess, Support, Track",
+      "For behavior change scientists; stands for Experiment, Apply, Scale, Test"
+    ],
+    correct: 1,
+    feedback: "EAST was designed for <strong>busy policy makers</strong> as an accessible, practical guide. It stands for <strong>Easy, Attractive, Social, Timely</strong> — if you want to encourage a behavior, reduce friction to make it easy, use salience to make it attractive, leverage social norms, and intervene at the most receptive moment."
+  },
+  {
+    q: "The Alameda County Study (Belloc &amp; Breslow, 1972) and Kvaavik et al. (2010) together provide the empirical foundation for which central argument of Chapter 1?",
+    opts: [
+      "That genetic and hereditary factors are the primary determinants of individual health outcomes",
+      "That pharmaceutical and medical treatments are more effective than behavioral interventions for improving population health",
+      "That patterns of everyday behavior shared across populations are key determinants of health and longevity, making population-level behavior change a critical public health priority",
+      "That individual choice is largely irrelevant since health outcomes are primarily determined by socioeconomic and structural factors"
+    ],
+    correct: 2,
+    feedback: "Both studies provide foundational evidence that <strong>everyday lifestyle behaviors</strong> — sleep, diet, exercise, smoking, alcohol — are powerful, modifiable predictors of mortality. Kvaavik et al. (2010) found that four combined unhealthy behaviors were associated with mortality risk equivalent to being 12 years older. Together they justify the chapter's core argument that population-level behavior change is a major public health opportunity."
+  },
+  {
+    q: "The chapter contrasts two if-then planning studies (Sheeran &amp; Orbell, 2000; Sheeran et al., 2007). What is the primary lesson from comparing these two studies?",
+    opts: [
+      "Face-to-face delivery is more effective than written questionnaire-based delivery for if-then planning",
+      "If-then planning works better for health screening behaviors than for psychotherapy attendance",
+      "If-then planning is a category of techniques, not a single technique — and the specific implementation must be precisely tailored to the particular barrier identified in needs assessment",
+      "Financial incentives should be added to if-then planning to maximize its effectiveness"
+    ],
+    correct: 2,
+    feedback: "The two studies illustrate that '<strong>if-then planning</strong>' is a <em>category</em> of techniques, not a single fixed intervention. Sheeran &amp; Orbell addressed <em>failure to initiate action</em> (specify when/where to book), while Sheeran et al. addressed <em>appointment anxiety</em> (thought regulation). Without detailed needs assessment and tailoring, bland off-the-peg applications of the technique category may fail — highlighting the importance of IM Stages 1–3."
+  },
+  {
+    q: "According to the chapter, why may fear appeals (messages emphasizing health risks or threats) sometimes fail or produce negative effects?",
+    opts: [
+      "Because people are generally unaware of health risks and require more basic information before threats become motivating",
+      "Because fear appeals are prohibitively expensive to design and distribute at the population level",
+      "Because people who perceive low personal susceptibility may defensively dismiss the message, and those with low self-efficacy may engage in psychological self-protection rather than behavior change",
+      "Because fear inherently reduces motivation, making people unwilling to attempt any behavior change"
+    ],
+    correct: 2,
+    feedback: "Fear appeals can fail via two routes: (1) individuals who feel the threat is not personally relevant may <strong>defensively dismiss the message</strong>; (2) those who acknowledge the threat but have <strong>low self-efficacy</strong> may protect themselves psychologically (rejecting the message's relevance) rather than acting (Ruiter et al., 2001; Witte &amp; Allen, 2000). Das et al. (2003) showed that fear appeals work best when combined with susceptibility cues; they should always be paired with self-efficacy-enhancing content."
+  }
+];
+
+let currentQuestions = [];
+let submitted = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateQuiz() {
+  submitted = false;
+  currentQuestions = shuffle(allQuestions).slice(0, 5);
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+
+  currentQuestions.forEach((q, qi) => {
+    const opts = shuffle(q.opts.map((o, i) => ({ text: o, origIdx: i })));
+    const correctShuffled = opts.findIndex(o => o.origIdx === q.correct);
+
+    const optsHTML = opts.map((o, i) => {
+      const letter = ['A','B','C','D'][i];
+      return `<li>
+        <input type="radio" name="q${qi}" id="q${qi}o${i}" value="${i}" data-correct="${correctShuffled}">
+        <label for="q${qi}o${i}">
+          <span class="option-letter">${letter}</span>${o.text}
+        </label>
+      </li>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qcard-${qi}`;
+    card.innerHTML = `
+      <div class="q-number">${qi + 1}</div>
+      <div class="q-text">${q.q}</div>
+      <ul class="options">${optsHTML}</ul>
+      <div class="feedback" id="fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+
+  document.getElementById('score-box').classList.remove('show');
+  document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+}
+
+function submitQuiz() {
+  if (submitted) return;
+  submitted = true;
+  let score = 0;
+
+  currentQuestions.forEach((q, qi) => {
+    const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb = document.getElementById(`fb-${qi}`);
+    const labels = document.querySelectorAll(`#qcard-${qi} label`);
+    const inputs = document.querySelectorAll(`input[name="q${qi}"]`);
+    const correctIdx = parseInt(inputs[0].dataset.correct);
+
+    labels[correctIdx].classList.add('correct');
+
+    if (selected) {
+      const selIdx = parseInt(selected.value);
+      if (selIdx === correctIdx) {
+        score++;
+        fb.innerHTML = `✅ <strong>Correct!</strong> ${q.feedback}`;
+        fb.className = 'feedback correct show';
+      } else {
+        labels[selIdx].classList.add('wrong');
+        fb.innerHTML = `❌ <strong>Incorrect.</strong> ${q.feedback}`;
+        fb.className = 'feedback wrong show';
+      }
+    } else {
+      fb.innerHTML = `⚠️ <strong>Not answered.</strong> ${q.feedback}`;
+      fb.className = 'feedback wrong show';
+    }
+    inputs.forEach(inp => inp.disabled = true);
+  });
+
+  const stars  = ['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
+  const msgs = [
+    'Keep reviewing — revisit the key theories and frameworks carefully.',
+    'A start! Focus on the IMB model, Intervention Mapping stages, and dual-process theory.',
+    'Good work! Review the NUDGE/EAST frameworks and RE-AIM evaluation criteria.',
+    'Excellent! You have a strong grasp of most core concepts.',
+    'Perfect score — outstanding mastery of all Chapter 1 concepts!'
+  ];
+
+  document.getElementById('score-number').textContent = `${score}/5`;
+  document.getElementById('score-stars').textContent = stars[score] || '';
+  document.getElementById('score-msg').textContent = msgs[score - 1] || msgs[0];
+  const box = document.getElementById('score-box');
+  box.classList.add('show');
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.addEventListener('DOMContentLoaded', generateQuiz);
+
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.section');
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  document.querySelectorAll('.toc-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + cur);
+  });
+});
+</script>
+</body>
+</html>
