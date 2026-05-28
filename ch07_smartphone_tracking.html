@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -185,6 +185,14 @@ p{margin-bottom:16px}
 .score-bar{height:10px;background:#dbeafe;border-radius:5px;margin:12px auto;max-width:320px;overflow:hidden}
 .score-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:5px;transition:width .5s}
 
+
+/* ── Chapter Nav ── */
+.ch-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-top:48px;box-shadow:var(--sh);flex-wrap:wrap}
+.ch-nav a{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:var(--rs);font-size:.88rem;font-weight:600;text-decoration:none;transition:all .2s;border:2px solid var(--border);color:var(--blue)}
+.ch-nav a:hover{border-color:var(--blue);background:#eff6ff;transform:translateY(-2px)}
+.ch-nav .cnh{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;border-color:transparent}
+.ch-nav .cnh:hover{background:linear-gradient(135deg,var(--blue-d),#1e40af);border-color:transparent}
+.ch-nav .disabled{color:var(--muted);pointer-events:none;opacity:.35;border-color:var(--border)}
 /* ── Footer ── */
 .footer{background:#0f172a;color:rgba(255,255,255,.55);text-align:center;padding:28px 24px;font-size:.85rem}
 .footer strong{color:rgba(255,255,255,.8)}
@@ -222,7 +230,7 @@ p{margin-bottom:16px}
 
 <!-- NAV -->
 <nav class="toc-bar">
-  <div class="toc-inner">
+  <div class="toc-inner"><a class="toc-link" href="index.html" style="color:var(--blue);font-weight:700;border-bottom-color:var(--blue)">🏠 首頁</a>
     <a href="#intro" class="toc-link">01 導論</a>
     <a href="#sensors" class="toc-link">02 感測器</a>
     <a href="#predictions" class="toc-link">03 行為預測</a>
@@ -885,6 +893,13 @@ p{margin-bottom:16px}
   </div>
 </section>
 
+
+<!-- Chapter Navigation -->
+<div class="ch-nav">
+  <a href="ch06_cybersecurity_behavior.html">← 第6章：網路安全</a>
+  <a href="index.html" class="cnh">🏠 課程首頁</a>
+  <a href="ch08_online_intervention_evaluation.html">第8章：線上評估 →</a>
+</div>
 </main>
 
 <footer class="footer">
